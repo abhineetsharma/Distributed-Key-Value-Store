@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+message InitReplica {
+    message Replica {
+        string name = 1;
+        string ip = 2;
+        uint32 port = 3;
+    }
+    repeated Replica all_replica = 1;
+}
+
+message GetKey {
+    uint64 timeStamp = 1;
+    string key = 2;
+}
+
+message PutKeyVal {
+    uint64 timeStamp = 1;
+    string key = 2;
+    string value = 3;
+}
+
+message Read {
+    string key = 2;
+}
+
+message Write {
+    string key = 2;
+    string value = 3;
+}
+
+message ReadRepair{
+    string key = 1;
+}
+
+message MapMessage {
+    oneof map_message {
+        InitReplica init_replica = 1;
+        GetKey getKey = 2;
+        PutKeyVal put_key_val = 3;
+        Read read = 4;
+        Write write = 5;
+        ReadRepair read_repair = 6;
+    }
+}
+
