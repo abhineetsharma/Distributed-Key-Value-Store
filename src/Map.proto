@@ -29,8 +29,16 @@ message Write {
     string value = 3;
 }
 
-message ReadRepair{
+message ReadRepair {
     string key = 1;
+}
+
+message Error {
+    string message = 1;
+}
+
+message Acknowledgement {
+    bool processCompleted = 1;
 }
 
 message MapMessage {
@@ -41,6 +49,8 @@ message MapMessage {
         Read read = 4;
         Write write = 5;
         ReadRepair read_repair = 6;
+        Error error_message = 7;
+        Acknowledgement acknowledgement= 8;
     }
 }
 
