@@ -1,13 +1,6 @@
 syntax = "proto3";
 
-message InitReplica {
-    message Replica {
-        string name = 1;
-        string ip = 2;
-        uint32 port = 3;
-    }
-    repeated Replica all_replica = 1;
-}
+
 
 message GetKey {
     uint64 timeStamp = 1;
@@ -45,14 +38,13 @@ message Acknowledgement {
 
 message MapMessage {
     oneof map_message {
-        InitReplica init_replica = 1;
-        GetKey getKey = 2;
-        PutKeyVal put_key_val = 3;
-        Read read = 4;
-        Write write = 5;
-        ReadRepair read_repair = 6;
-        Error error_message = 7;
-        Acknowledgement acknowledgement= 8;
+        GetKey getKey = 1;
+        PutKeyVal put_key_val = 2;
+        Read read = 3;
+        Write write = 4;
+        ReadRepair read_repair = 5;
+        Error error_message = 6;
+        Acknowledgement acknowledgement= 7;
     }
 }
 

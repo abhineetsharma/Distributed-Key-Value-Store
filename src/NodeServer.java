@@ -123,7 +123,8 @@ public class NodeServer {
         }
     }
 
-    private synchronized static void processRequest(String nodeName, String key, String value) {
+    private static void processRequest(String nodeName, String key, String value) {
+        String dateStr = Long.toString(System.currentTimeMillis());
 
         Thread thread = new Thread(() -> {
         });
@@ -131,18 +132,11 @@ public class NodeServer {
     }
 
     private static List<NodeServerData> getReplicaServer(String keyNode) {
-        String[] mapKeys = new String[nodeMap.size()];
-        int pos = 0;
-        int keyPosition = 0;
-        for (String key : nodeMap.keySet()) {
-            mapKeys[pos++] = key;
-            if (key.equalsIgnoreCase(keyNode))
-                keyPosition = pos - 1;
-        }
-
+        String[] mapKeys = nodeMap.keySet().toArray(new String[nodeMap.size()]);
+        int keyPosition = Arrays.asList(mapKeys).indexOf(keyNode);
         List<NodeServerData> nodeServerDataList = new ArrayList<>();
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4 && i < nodeMap.size(); i++) {
             nodeServerDataList.add(nodeMap.get(mapKeys[(nodeMap.size() + keyPosition + i) % nodeMap.size()]));
         }
 

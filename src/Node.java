@@ -12,1482 +12,6 @@ public final class Node {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
-  public interface InitReplicaOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:InitReplica)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-     */
-    java.util.List<Node.InitReplica.Replica> 
-        getAllReplicaList();
-    /**
-     * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-     */
-    Node.InitReplica.Replica getAllReplica(int index);
-    /**
-     * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-     */
-    int getAllReplicaCount();
-    /**
-     * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-     */
-    java.util.List<? extends Node.InitReplica.ReplicaOrBuilder> 
-        getAllReplicaOrBuilderList();
-    /**
-     * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-     */
-    Node.InitReplica.ReplicaOrBuilder getAllReplicaOrBuilder(
-        int index);
-  }
-  /**
-   * Protobuf type {@code InitReplica}
-   */
-  public  static final class InitReplica extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:InitReplica)
-      InitReplicaOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use InitReplica.newBuilder() to construct.
-    private InitReplica(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private InitReplica() {
-      allReplica_ = java.util.Collections.emptyList();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private InitReplica(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                allReplica_ = new java.util.ArrayList<Node.InitReplica.Replica>();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              allReplica_.add(
-                  input.readMessage(Node.InitReplica.Replica.parser(), extensionRegistry));
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          allReplica_ = java.util.Collections.unmodifiableList(allReplica_);
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return Node.internal_static_InitReplica_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return Node.internal_static_InitReplica_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              Node.InitReplica.class, Node.InitReplica.Builder.class);
-    }
-
-    public interface ReplicaOrBuilder extends
-        // @@protoc_insertion_point(interface_extends:InitReplica.Replica)
-        com.google.protobuf.MessageOrBuilder {
-
-      /**
-       * <code>string name = 1;</code>
-       */
-      java.lang.String getName();
-      /**
-       * <code>string name = 1;</code>
-       */
-      com.google.protobuf.ByteString
-          getNameBytes();
-
-      /**
-       * <code>string ip = 2;</code>
-       */
-      java.lang.String getIp();
-      /**
-       * <code>string ip = 2;</code>
-       */
-      com.google.protobuf.ByteString
-          getIpBytes();
-
-      /**
-       * <code>uint32 port = 3;</code>
-       */
-      int getPort();
-    }
-    /**
-     * Protobuf type {@code InitReplica.Replica}
-     */
-    public  static final class Replica extends
-        com.google.protobuf.GeneratedMessageV3 implements
-        // @@protoc_insertion_point(message_implements:InitReplica.Replica)
-        ReplicaOrBuilder {
-    private static final long serialVersionUID = 0L;
-      // Use Replica.newBuilder() to construct.
-      private Replica(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
-      }
-      private Replica() {
-        name_ = "";
-        ip_ = "";
-        port_ = 0;
-      }
-
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
-      private Replica(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        int mutable_bitField0_ = 0;
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-            com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-          boolean done = false;
-          while (!done) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                done = true;
-                break;
-              default: {
-                if (!parseUnknownFieldProto3(
-                    input, unknownFields, extensionRegistry, tag)) {
-                  done = true;
-                }
-                break;
-              }
-              case 10: {
-                java.lang.String s = input.readStringRequireUtf8();
-
-                name_ = s;
-                break;
-              }
-              case 18: {
-                java.lang.String s = input.readStringRequireUtf8();
-
-                ip_ = s;
-                break;
-              }
-              case 24: {
-
-                port_ = input.readUInt32();
-                break;
-              }
-            }
-          }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e).setUnfinishedMessage(this);
-        } finally {
-          this.unknownFields = unknownFields.build();
-          makeExtensionsImmutable();
-        }
-      }
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return Node.internal_static_InitReplica_Replica_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return Node.internal_static_InitReplica_Replica_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                Node.InitReplica.Replica.class, Node.InitReplica.Replica.Builder.class);
-      }
-
-      public static final int NAME_FIELD_NUMBER = 1;
-      private volatile java.lang.Object name_;
-      /**
-       * <code>string name = 1;</code>
-       */
-      public java.lang.String getName() {
-        java.lang.Object ref = name_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          name_ = s;
-          return s;
-        }
-      }
-      /**
-       * <code>string name = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getNameBytes() {
-        java.lang.Object ref = name_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          name_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-
-      public static final int IP_FIELD_NUMBER = 2;
-      private volatile java.lang.Object ip_;
-      /**
-       * <code>string ip = 2;</code>
-       */
-      public java.lang.String getIp() {
-        java.lang.Object ref = ip_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          ip_ = s;
-          return s;
-        }
-      }
-      /**
-       * <code>string ip = 2;</code>
-       */
-      public com.google.protobuf.ByteString
-          getIpBytes() {
-        java.lang.Object ref = ip_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          ip_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-
-      public static final int PORT_FIELD_NUMBER = 3;
-      private int port_;
-      /**
-       * <code>uint32 port = 3;</code>
-       */
-      public int getPort() {
-        return port_;
-      }
-
-      private byte memoizedIsInitialized = -1;
-      public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (isInitialized == 1) return true;
-        if (isInitialized == 0) return false;
-
-        memoizedIsInitialized = 1;
-        return true;
-      }
-
-      public void writeTo(com.google.protobuf.CodedOutputStream output)
-                          throws java.io.IOException {
-        if (!getNameBytes().isEmpty()) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
-        }
-        if (!getIpBytes().isEmpty()) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 2, ip_);
-        }
-        if (port_ != 0) {
-          output.writeUInt32(3, port_);
-        }
-        unknownFields.writeTo(output);
-      }
-
-      public int getSerializedSize() {
-        int size = memoizedSize;
-        if (size != -1) return size;
-
-        size = 0;
-        if (!getNameBytes().isEmpty()) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
-        }
-        if (!getIpBytes().isEmpty()) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, ip_);
-        }
-        if (port_ != 0) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeUInt32Size(3, port_);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-      }
-
-      @java.lang.Override
-      public boolean equals(final java.lang.Object obj) {
-        if (obj == this) {
-         return true;
-        }
-        if (!(obj instanceof Node.InitReplica.Replica)) {
-          return super.equals(obj);
-        }
-        Node.InitReplica.Replica other = (Node.InitReplica.Replica) obj;
-
-        boolean result = true;
-        result = result && getName()
-            .equals(other.getName());
-        result = result && getIp()
-            .equals(other.getIp());
-        result = result && (getPort()
-            == other.getPort());
-        result = result && unknownFields.equals(other.unknownFields);
-        return result;
-      }
-
-      @java.lang.Override
-      public int hashCode() {
-        if (memoizedHashCode != 0) {
-          return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + NAME_FIELD_NUMBER;
-        hash = (53 * hash) + getName().hashCode();
-        hash = (37 * hash) + IP_FIELD_NUMBER;
-        hash = (53 * hash) + getIp().hashCode();
-        hash = (37 * hash) + PORT_FIELD_NUMBER;
-        hash = (53 * hash) + getPort();
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-      }
-
-      public static Node.InitReplica.Replica parseFrom(
-          java.nio.ByteBuffer data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static Node.InitReplica.Replica parseFrom(
-          java.nio.ByteBuffer data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static Node.InitReplica.Replica parseFrom(
-          com.google.protobuf.ByteString data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static Node.InitReplica.Replica parseFrom(
-          com.google.protobuf.ByteString data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static Node.InitReplica.Replica parseFrom(byte[] data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static Node.InitReplica.Replica parseFrom(
-          byte[] data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static Node.InitReplica.Replica parseFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input);
-      }
-      public static Node.InitReplica.Replica parseFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input, extensionRegistry);
-      }
-      public static Node.InitReplica.Replica parseDelimitedFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseDelimitedWithIOException(PARSER, input);
-      }
-      public static Node.InitReplica.Replica parseDelimitedFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-      }
-      public static Node.InitReplica.Replica parseFrom(
-          com.google.protobuf.CodedInputStream input)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input);
-      }
-      public static Node.InitReplica.Replica parseFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input, extensionRegistry);
-      }
-
-      public Builder newBuilderForType() { return newBuilder(); }
-      public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-      }
-      public static Builder newBuilder(Node.InitReplica.Replica prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-      }
-      public Builder toBuilder() {
-        return this == DEFAULT_INSTANCE
-            ? new Builder() : new Builder().mergeFrom(this);
-      }
-
-      @java.lang.Override
-      protected Builder newBuilderForType(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-      }
-      /**
-       * Protobuf type {@code InitReplica.Replica}
-       */
-      public static final class Builder extends
-          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-          // @@protoc_insertion_point(builder_implements:InitReplica.Replica)
-          Node.InitReplica.ReplicaOrBuilder {
-        public static final com.google.protobuf.Descriptors.Descriptor
-            getDescriptor() {
-          return Node.internal_static_InitReplica_Replica_descriptor;
-        }
-
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-            internalGetFieldAccessorTable() {
-          return Node.internal_static_InitReplica_Replica_fieldAccessorTable
-              .ensureFieldAccessorsInitialized(
-                  Node.InitReplica.Replica.class, Node.InitReplica.Replica.Builder.class);
-        }
-
-        // Construct using Node.InitReplica.Replica.newBuilder()
-        private Builder() {
-          maybeForceBuilderInitialization();
-        }
-
-        private Builder(
-            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-          super(parent);
-          maybeForceBuilderInitialization();
-        }
-        private void maybeForceBuilderInitialization() {
-          if (com.google.protobuf.GeneratedMessageV3
-                  .alwaysUseFieldBuilders) {
-          }
-        }
-        public Builder clear() {
-          super.clear();
-          name_ = "";
-
-          ip_ = "";
-
-          port_ = 0;
-
-          return this;
-        }
-
-        public com.google.protobuf.Descriptors.Descriptor
-            getDescriptorForType() {
-          return Node.internal_static_InitReplica_Replica_descriptor;
-        }
-
-        public Node.InitReplica.Replica getDefaultInstanceForType() {
-          return Node.InitReplica.Replica.getDefaultInstance();
-        }
-
-        public Node.InitReplica.Replica build() {
-          Node.InitReplica.Replica result = buildPartial();
-          if (!result.isInitialized()) {
-            throw newUninitializedMessageException(result);
-          }
-          return result;
-        }
-
-        public Node.InitReplica.Replica buildPartial() {
-          Node.InitReplica.Replica result = new Node.InitReplica.Replica(this);
-          result.name_ = name_;
-          result.ip_ = ip_;
-          result.port_ = port_;
-          onBuilt();
-          return result;
-        }
-
-        public Builder clone() {
-          return (Builder) super.clone();
-        }
-        public Builder setField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return (Builder) super.setField(field, value);
-        }
-        public Builder clearField(
-            com.google.protobuf.Descriptors.FieldDescriptor field) {
-          return (Builder) super.clearField(field);
-        }
-        public Builder clearOneof(
-            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-          return (Builder) super.clearOneof(oneof);
-        }
-        public Builder setRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            int index, java.lang.Object value) {
-          return (Builder) super.setRepeatedField(field, index, value);
-        }
-        public Builder addRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return (Builder) super.addRepeatedField(field, value);
-        }
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-          if (other instanceof Node.InitReplica.Replica) {
-            return mergeFrom((Node.InitReplica.Replica)other);
-          } else {
-            super.mergeFrom(other);
-            return this;
-          }
-        }
-
-        public Builder mergeFrom(Node.InitReplica.Replica other) {
-          if (other == Node.InitReplica.Replica.getDefaultInstance()) return this;
-          if (!other.getName().isEmpty()) {
-            name_ = other.name_;
-            onChanged();
-          }
-          if (!other.getIp().isEmpty()) {
-            ip_ = other.ip_;
-            onChanged();
-          }
-          if (other.getPort() != 0) {
-            setPort(other.getPort());
-          }
-          this.mergeUnknownFields(other.unknownFields);
-          onChanged();
-          return this;
-        }
-
-        public final boolean isInitialized() {
-          return true;
-        }
-
-        public Builder mergeFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          Node.InitReplica.Replica parsedMessage = null;
-          try {
-            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            parsedMessage = (Node.InitReplica.Replica) e.getUnfinishedMessage();
-            throw e.unwrapIOException();
-          } finally {
-            if (parsedMessage != null) {
-              mergeFrom(parsedMessage);
-            }
-          }
-          return this;
-        }
-
-        private java.lang.Object name_ = "";
-        /**
-         * <code>string name = 1;</code>
-         */
-        public java.lang.String getName() {
-          java.lang.Object ref = name_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            name_ = s;
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
-        }
-        /**
-         * <code>string name = 1;</code>
-         */
-        public com.google.protobuf.ByteString
-            getNameBytes() {
-          java.lang.Object ref = name_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            name_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>string name = 1;</code>
-         */
-        public Builder setName(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  
-          name_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>string name = 1;</code>
-         */
-        public Builder clearName() {
-          
-          name_ = getDefaultInstance().getName();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>string name = 1;</code>
-         */
-        public Builder setNameBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-          
-          name_ = value;
-          onChanged();
-          return this;
-        }
-
-        private java.lang.Object ip_ = "";
-        /**
-         * <code>string ip = 2;</code>
-         */
-        public java.lang.String getIp() {
-          java.lang.Object ref = ip_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            ip_ = s;
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
-        }
-        /**
-         * <code>string ip = 2;</code>
-         */
-        public com.google.protobuf.ByteString
-            getIpBytes() {
-          java.lang.Object ref = ip_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            ip_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>string ip = 2;</code>
-         */
-        public Builder setIp(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  
-          ip_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>string ip = 2;</code>
-         */
-        public Builder clearIp() {
-          
-          ip_ = getDefaultInstance().getIp();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>string ip = 2;</code>
-         */
-        public Builder setIpBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-          
-          ip_ = value;
-          onChanged();
-          return this;
-        }
-
-        private int port_ ;
-        /**
-         * <code>uint32 port = 3;</code>
-         */
-        public int getPort() {
-          return port_;
-        }
-        /**
-         * <code>uint32 port = 3;</code>
-         */
-        public Builder setPort(int value) {
-          
-          port_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>uint32 port = 3;</code>
-         */
-        public Builder clearPort() {
-          
-          port_ = 0;
-          onChanged();
-          return this;
-        }
-        public final Builder setUnknownFields(
-            final com.google.protobuf.UnknownFieldSet unknownFields) {
-          return super.setUnknownFieldsProto3(unknownFields);
-        }
-
-        public final Builder mergeUnknownFields(
-            final com.google.protobuf.UnknownFieldSet unknownFields) {
-          return super.mergeUnknownFields(unknownFields);
-        }
-
-
-        // @@protoc_insertion_point(builder_scope:InitReplica.Replica)
-      }
-
-      // @@protoc_insertion_point(class_scope:InitReplica.Replica)
-      private static final Node.InitReplica.Replica DEFAULT_INSTANCE;
-      static {
-        DEFAULT_INSTANCE = new Node.InitReplica.Replica();
-      }
-
-      public static Node.InitReplica.Replica getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-      }
-
-      private static final com.google.protobuf.Parser<Replica>
-          PARSER = new com.google.protobuf.AbstractParser<Replica>() {
-        public Replica parsePartialFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-            return new Replica(input, extensionRegistry);
-        }
-      };
-
-      public static com.google.protobuf.Parser<Replica> parser() {
-        return PARSER;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Parser<Replica> getParserForType() {
-        return PARSER;
-      }
-
-      public Node.InitReplica.Replica getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-      }
-
-    }
-
-    public static final int ALL_REPLICA_FIELD_NUMBER = 1;
-    private java.util.List<Node.InitReplica.Replica> allReplica_;
-    /**
-     * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-     */
-    public java.util.List<Node.InitReplica.Replica> getAllReplicaList() {
-      return allReplica_;
-    }
-    /**
-     * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-     */
-    public java.util.List<? extends Node.InitReplica.ReplicaOrBuilder> 
-        getAllReplicaOrBuilderList() {
-      return allReplica_;
-    }
-    /**
-     * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-     */
-    public int getAllReplicaCount() {
-      return allReplica_.size();
-    }
-    /**
-     * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-     */
-    public Node.InitReplica.Replica getAllReplica(int index) {
-      return allReplica_.get(index);
-    }
-    /**
-     * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-     */
-    public Node.InitReplica.ReplicaOrBuilder getAllReplicaOrBuilder(
-        int index) {
-      return allReplica_.get(index);
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      for (int i = 0; i < allReplica_.size(); i++) {
-        output.writeMessage(1, allReplica_.get(i));
-      }
-      unknownFields.writeTo(output);
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      for (int i = 0; i < allReplica_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, allReplica_.get(i));
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof Node.InitReplica)) {
-        return super.equals(obj);
-      }
-      Node.InitReplica other = (Node.InitReplica) obj;
-
-      boolean result = true;
-      result = result && getAllReplicaList()
-          .equals(other.getAllReplicaList());
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      if (getAllReplicaCount() > 0) {
-        hash = (37 * hash) + ALL_REPLICA_FIELD_NUMBER;
-        hash = (53 * hash) + getAllReplicaList().hashCode();
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static Node.InitReplica parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static Node.InitReplica parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static Node.InitReplica parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static Node.InitReplica parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static Node.InitReplica parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static Node.InitReplica parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static Node.InitReplica parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static Node.InitReplica parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static Node.InitReplica parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static Node.InitReplica parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static Node.InitReplica parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static Node.InitReplica parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(Node.InitReplica prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code InitReplica}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:InitReplica)
-        Node.InitReplicaOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return Node.internal_static_InitReplica_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return Node.internal_static_InitReplica_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                Node.InitReplica.class, Node.InitReplica.Builder.class);
-      }
-
-      // Construct using Node.InitReplica.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-          getAllReplicaFieldBuilder();
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        if (allReplicaBuilder_ == null) {
-          allReplica_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          allReplicaBuilder_.clear();
-        }
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return Node.internal_static_InitReplica_descriptor;
-      }
-
-      public Node.InitReplica getDefaultInstanceForType() {
-        return Node.InitReplica.getDefaultInstance();
-      }
-
-      public Node.InitReplica build() {
-        Node.InitReplica result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public Node.InitReplica buildPartial() {
-        Node.InitReplica result = new Node.InitReplica(this);
-        int from_bitField0_ = bitField0_;
-        if (allReplicaBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            allReplica_ = java.util.Collections.unmodifiableList(allReplica_);
-            bitField0_ = (bitField0_ & ~0x00000001);
-          }
-          result.allReplica_ = allReplica_;
-        } else {
-          result.allReplica_ = allReplicaBuilder_.build();
-        }
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof Node.InitReplica) {
-          return mergeFrom((Node.InitReplica)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(Node.InitReplica other) {
-        if (other == Node.InitReplica.getDefaultInstance()) return this;
-        if (allReplicaBuilder_ == null) {
-          if (!other.allReplica_.isEmpty()) {
-            if (allReplica_.isEmpty()) {
-              allReplica_ = other.allReplica_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-            } else {
-              ensureAllReplicaIsMutable();
-              allReplica_.addAll(other.allReplica_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.allReplica_.isEmpty()) {
-            if (allReplicaBuilder_.isEmpty()) {
-              allReplicaBuilder_.dispose();
-              allReplicaBuilder_ = null;
-              allReplica_ = other.allReplica_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-              allReplicaBuilder_ = 
-                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getAllReplicaFieldBuilder() : null;
-            } else {
-              allReplicaBuilder_.addAllMessages(other.allReplica_);
-            }
-          }
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        Node.InitReplica parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (Node.InitReplica) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private java.util.List<Node.InitReplica.Replica> allReplica_ =
-        java.util.Collections.emptyList();
-      private void ensureAllReplicaIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          allReplica_ = new java.util.ArrayList<Node.InitReplica.Replica>(allReplica_);
-          bitField0_ |= 0x00000001;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          Node.InitReplica.Replica, Node.InitReplica.Replica.Builder, Node.InitReplica.ReplicaOrBuilder> allReplicaBuilder_;
-
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public java.util.List<Node.InitReplica.Replica> getAllReplicaList() {
-        if (allReplicaBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(allReplica_);
-        } else {
-          return allReplicaBuilder_.getMessageList();
-        }
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public int getAllReplicaCount() {
-        if (allReplicaBuilder_ == null) {
-          return allReplica_.size();
-        } else {
-          return allReplicaBuilder_.getCount();
-        }
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public Node.InitReplica.Replica getAllReplica(int index) {
-        if (allReplicaBuilder_ == null) {
-          return allReplica_.get(index);
-        } else {
-          return allReplicaBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public Builder setAllReplica(
-          int index, Node.InitReplica.Replica value) {
-        if (allReplicaBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureAllReplicaIsMutable();
-          allReplica_.set(index, value);
-          onChanged();
-        } else {
-          allReplicaBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public Builder setAllReplica(
-          int index, Node.InitReplica.Replica.Builder builderForValue) {
-        if (allReplicaBuilder_ == null) {
-          ensureAllReplicaIsMutable();
-          allReplica_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          allReplicaBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public Builder addAllReplica(Node.InitReplica.Replica value) {
-        if (allReplicaBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureAllReplicaIsMutable();
-          allReplica_.add(value);
-          onChanged();
-        } else {
-          allReplicaBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public Builder addAllReplica(
-          int index, Node.InitReplica.Replica value) {
-        if (allReplicaBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureAllReplicaIsMutable();
-          allReplica_.add(index, value);
-          onChanged();
-        } else {
-          allReplicaBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public Builder addAllReplica(
-          Node.InitReplica.Replica.Builder builderForValue) {
-        if (allReplicaBuilder_ == null) {
-          ensureAllReplicaIsMutable();
-          allReplica_.add(builderForValue.build());
-          onChanged();
-        } else {
-          allReplicaBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public Builder addAllReplica(
-          int index, Node.InitReplica.Replica.Builder builderForValue) {
-        if (allReplicaBuilder_ == null) {
-          ensureAllReplicaIsMutable();
-          allReplica_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          allReplicaBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public Builder addAllAllReplica(
-          java.lang.Iterable<? extends Node.InitReplica.Replica> values) {
-        if (allReplicaBuilder_ == null) {
-          ensureAllReplicaIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, allReplica_);
-          onChanged();
-        } else {
-          allReplicaBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public Builder clearAllReplica() {
-        if (allReplicaBuilder_ == null) {
-          allReplica_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-          onChanged();
-        } else {
-          allReplicaBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public Builder removeAllReplica(int index) {
-        if (allReplicaBuilder_ == null) {
-          ensureAllReplicaIsMutable();
-          allReplica_.remove(index);
-          onChanged();
-        } else {
-          allReplicaBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public Node.InitReplica.Replica.Builder getAllReplicaBuilder(
-          int index) {
-        return getAllReplicaFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public Node.InitReplica.ReplicaOrBuilder getAllReplicaOrBuilder(
-          int index) {
-        if (allReplicaBuilder_ == null) {
-          return allReplica_.get(index);  } else {
-          return allReplicaBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public java.util.List<? extends Node.InitReplica.ReplicaOrBuilder> 
-           getAllReplicaOrBuilderList() {
-        if (allReplicaBuilder_ != null) {
-          return allReplicaBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(allReplica_);
-        }
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public Node.InitReplica.Replica.Builder addAllReplicaBuilder() {
-        return getAllReplicaFieldBuilder().addBuilder(
-            Node.InitReplica.Replica.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public Node.InitReplica.Replica.Builder addAllReplicaBuilder(
-          int index) {
-        return getAllReplicaFieldBuilder().addBuilder(
-            index, Node.InitReplica.Replica.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .InitReplica.Replica all_replica = 1;</code>
-       */
-      public java.util.List<Node.InitReplica.Replica.Builder> 
-           getAllReplicaBuilderList() {
-        return getAllReplicaFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          Node.InitReplica.Replica, Node.InitReplica.Replica.Builder, Node.InitReplica.ReplicaOrBuilder> 
-          getAllReplicaFieldBuilder() {
-        if (allReplicaBuilder_ == null) {
-          allReplicaBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              Node.InitReplica.Replica, Node.InitReplica.Replica.Builder, Node.InitReplica.ReplicaOrBuilder>(
-                  allReplica_,
-                  ((bitField0_ & 0x00000001) == 0x00000001),
-                  getParentForChildren(),
-                  isClean());
-          allReplica_ = null;
-        }
-        return allReplicaBuilder_;
-      }
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFieldsProto3(unknownFields);
-      }
-
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:InitReplica)
-    }
-
-    // @@protoc_insertion_point(class_scope:InitReplica)
-    private static final Node.InitReplica DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new Node.InitReplica();
-    }
-
-    public static Node.InitReplica getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<InitReplica>
-        PARSER = new com.google.protobuf.AbstractParser<InitReplica>() {
-      public InitReplica parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-          return new InitReplica(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<InitReplica> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<InitReplica> getParserForType() {
-      return PARSER;
-    }
-
-    public Node.InitReplica getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   public interface GetKeyOrBuilder extends
       // @@protoc_insertion_point(interface_extends:GetKey)
       com.google.protobuf.MessageOrBuilder {
@@ -5164,7 +3688,12 @@ public final class Node {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>bool processCompleted = 1;</code>
+     * <code>uint64 timeStamp = 1;</code>
+     */
+    long getTimeStamp();
+
+    /**
+     * <code>bool processCompleted = 2;</code>
      */
     boolean getProcessCompleted();
   }
@@ -5181,6 +3710,7 @@ public final class Node {
       super(builder);
     }
     private Acknowledgement() {
+      timeStamp_ = 0L;
       processCompleted_ = false;
     }
 
@@ -5214,6 +3744,11 @@ public final class Node {
             }
             case 8: {
 
+              timeStamp_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+
               processCompleted_ = input.readBool();
               break;
             }
@@ -5241,10 +3776,19 @@ public final class Node {
               Node.Acknowledgement.class, Node.Acknowledgement.Builder.class);
     }
 
-    public static final int PROCESSCOMPLETED_FIELD_NUMBER = 1;
+    public static final int TIMESTAMP_FIELD_NUMBER = 1;
+    private long timeStamp_;
+    /**
+     * <code>uint64 timeStamp = 1;</code>
+     */
+    public long getTimeStamp() {
+      return timeStamp_;
+    }
+
+    public static final int PROCESSCOMPLETED_FIELD_NUMBER = 2;
     private boolean processCompleted_;
     /**
-     * <code>bool processCompleted = 1;</code>
+     * <code>bool processCompleted = 2;</code>
      */
     public boolean getProcessCompleted() {
       return processCompleted_;
@@ -5262,8 +3806,11 @@ public final class Node {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (timeStamp_ != 0L) {
+        output.writeUInt64(1, timeStamp_);
+      }
       if (processCompleted_ != false) {
-        output.writeBool(1, processCompleted_);
+        output.writeBool(2, processCompleted_);
       }
       unknownFields.writeTo(output);
     }
@@ -5273,9 +3820,13 @@ public final class Node {
       if (size != -1) return size;
 
       size = 0;
+      if (timeStamp_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, timeStamp_);
+      }
       if (processCompleted_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(1, processCompleted_);
+          .computeBoolSize(2, processCompleted_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -5293,6 +3844,8 @@ public final class Node {
       Node.Acknowledgement other = (Node.Acknowledgement) obj;
 
       boolean result = true;
+      result = result && (getTimeStamp()
+          == other.getTimeStamp());
       result = result && (getProcessCompleted()
           == other.getProcessCompleted());
       result = result && unknownFields.equals(other.unknownFields);
@@ -5306,6 +3859,9 @@ public final class Node {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getTimeStamp());
       hash = (37 * hash) + PROCESSCOMPLETED_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getProcessCompleted());
@@ -5438,6 +3994,8 @@ public final class Node {
       }
       public Builder clear() {
         super.clear();
+        timeStamp_ = 0L;
+
         processCompleted_ = false;
 
         return this;
@@ -5462,6 +4020,7 @@ public final class Node {
 
       public Node.Acknowledgement buildPartial() {
         Node.Acknowledgement result = new Node.Acknowledgement(this);
+        result.timeStamp_ = timeStamp_;
         result.processCompleted_ = processCompleted_;
         onBuilt();
         return result;
@@ -5504,6 +4063,9 @@ public final class Node {
 
       public Builder mergeFrom(Node.Acknowledgement other) {
         if (other == Node.Acknowledgement.getDefaultInstance()) return this;
+        if (other.getTimeStamp() != 0L) {
+          setTimeStamp(other.getTimeStamp());
+        }
         if (other.getProcessCompleted() != false) {
           setProcessCompleted(other.getProcessCompleted());
         }
@@ -5534,15 +4096,41 @@ public final class Node {
         return this;
       }
 
+      private long timeStamp_ ;
+      /**
+       * <code>uint64 timeStamp = 1;</code>
+       */
+      public long getTimeStamp() {
+        return timeStamp_;
+      }
+      /**
+       * <code>uint64 timeStamp = 1;</code>
+       */
+      public Builder setTimeStamp(long value) {
+        
+        timeStamp_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint64 timeStamp = 1;</code>
+       */
+      public Builder clearTimeStamp() {
+        
+        timeStamp_ = 0L;
+        onChanged();
+        return this;
+      }
+
       private boolean processCompleted_ ;
       /**
-       * <code>bool processCompleted = 1;</code>
+       * <code>bool processCompleted = 2;</code>
        */
       public boolean getProcessCompleted() {
         return processCompleted_;
       }
       /**
-       * <code>bool processCompleted = 1;</code>
+       * <code>bool processCompleted = 2;</code>
        */
       public Builder setProcessCompleted(boolean value) {
         
@@ -5551,7 +4139,7 @@ public final class Node {
         return this;
       }
       /**
-       * <code>bool processCompleted = 1;</code>
+       * <code>bool processCompleted = 2;</code>
        */
       public Builder clearProcessCompleted() {
         
@@ -5613,106 +4201,93 @@ public final class Node {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.InitReplica init_replica = 1;</code>
-     */
-    boolean hasInitReplica();
-    /**
-     * <code>.InitReplica init_replica = 1;</code>
-     */
-    Node.InitReplica getInitReplica();
-    /**
-     * <code>.InitReplica init_replica = 1;</code>
-     */
-    Node.InitReplicaOrBuilder getInitReplicaOrBuilder();
-
-    /**
-     * <code>.GetKey getKey = 2;</code>
+     * <code>.GetKey getKey = 1;</code>
      */
     boolean hasGetKey();
     /**
-     * <code>.GetKey getKey = 2;</code>
+     * <code>.GetKey getKey = 1;</code>
      */
     Node.GetKey getGetKey();
     /**
-     * <code>.GetKey getKey = 2;</code>
+     * <code>.GetKey getKey = 1;</code>
      */
     Node.GetKeyOrBuilder getGetKeyOrBuilder();
 
     /**
-     * <code>.PutKeyVal put_key_val = 3;</code>
+     * <code>.PutKeyVal put_key_val = 2;</code>
      */
     boolean hasPutKeyVal();
     /**
-     * <code>.PutKeyVal put_key_val = 3;</code>
+     * <code>.PutKeyVal put_key_val = 2;</code>
      */
     Node.PutKeyVal getPutKeyVal();
     /**
-     * <code>.PutKeyVal put_key_val = 3;</code>
+     * <code>.PutKeyVal put_key_val = 2;</code>
      */
     Node.PutKeyValOrBuilder getPutKeyValOrBuilder();
 
     /**
-     * <code>.Read read = 4;</code>
+     * <code>.Read read = 3;</code>
      */
     boolean hasRead();
     /**
-     * <code>.Read read = 4;</code>
+     * <code>.Read read = 3;</code>
      */
     Node.Read getRead();
     /**
-     * <code>.Read read = 4;</code>
+     * <code>.Read read = 3;</code>
      */
     Node.ReadOrBuilder getReadOrBuilder();
 
     /**
-     * <code>.Write write = 5;</code>
+     * <code>.Write write = 4;</code>
      */
     boolean hasWrite();
     /**
-     * <code>.Write write = 5;</code>
+     * <code>.Write write = 4;</code>
      */
     Node.Write getWrite();
     /**
-     * <code>.Write write = 5;</code>
+     * <code>.Write write = 4;</code>
      */
     Node.WriteOrBuilder getWriteOrBuilder();
 
     /**
-     * <code>.ReadRepair read_repair = 6;</code>
+     * <code>.ReadRepair read_repair = 5;</code>
      */
     boolean hasReadRepair();
     /**
-     * <code>.ReadRepair read_repair = 6;</code>
+     * <code>.ReadRepair read_repair = 5;</code>
      */
     Node.ReadRepair getReadRepair();
     /**
-     * <code>.ReadRepair read_repair = 6;</code>
+     * <code>.ReadRepair read_repair = 5;</code>
      */
     Node.ReadRepairOrBuilder getReadRepairOrBuilder();
 
     /**
-     * <code>.Error error_message = 7;</code>
+     * <code>.Error error_message = 6;</code>
      */
     boolean hasErrorMessage();
     /**
-     * <code>.Error error_message = 7;</code>
+     * <code>.Error error_message = 6;</code>
      */
     Node.Error getErrorMessage();
     /**
-     * <code>.Error error_message = 7;</code>
+     * <code>.Error error_message = 6;</code>
      */
     Node.ErrorOrBuilder getErrorMessageOrBuilder();
 
     /**
-     * <code>.Acknowledgement acknowledgement = 8;</code>
+     * <code>.Acknowledgement acknowledgement = 7;</code>
      */
     boolean hasAcknowledgement();
     /**
-     * <code>.Acknowledgement acknowledgement = 8;</code>
+     * <code>.Acknowledgement acknowledgement = 7;</code>
      */
     Node.Acknowledgement getAcknowledgement();
     /**
-     * <code>.Acknowledgement acknowledgement = 8;</code>
+     * <code>.Acknowledgement acknowledgement = 7;</code>
      */
     Node.AcknowledgementOrBuilder getAcknowledgementOrBuilder();
 
@@ -5762,22 +4337,8 @@ public final class Node {
               break;
             }
             case 10: {
-              Node.InitReplica.Builder subBuilder = null;
-              if (mapMessageCase_ == 1) {
-                subBuilder = ((Node.InitReplica) mapMessage_).toBuilder();
-              }
-              mapMessage_ =
-                  input.readMessage(Node.InitReplica.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom((Node.InitReplica) mapMessage_);
-                mapMessage_ = subBuilder.buildPartial();
-              }
-              mapMessageCase_ = 1;
-              break;
-            }
-            case 18: {
               Node.GetKey.Builder subBuilder = null;
-              if (mapMessageCase_ == 2) {
+              if (mapMessageCase_ == 1) {
                 subBuilder = ((Node.GetKey) mapMessage_).toBuilder();
               }
               mapMessage_ =
@@ -5786,12 +4347,12 @@ public final class Node {
                 subBuilder.mergeFrom((Node.GetKey) mapMessage_);
                 mapMessage_ = subBuilder.buildPartial();
               }
-              mapMessageCase_ = 2;
+              mapMessageCase_ = 1;
               break;
             }
-            case 26: {
+            case 18: {
               Node.PutKeyVal.Builder subBuilder = null;
-              if (mapMessageCase_ == 3) {
+              if (mapMessageCase_ == 2) {
                 subBuilder = ((Node.PutKeyVal) mapMessage_).toBuilder();
               }
               mapMessage_ =
@@ -5800,12 +4361,12 @@ public final class Node {
                 subBuilder.mergeFrom((Node.PutKeyVal) mapMessage_);
                 mapMessage_ = subBuilder.buildPartial();
               }
-              mapMessageCase_ = 3;
+              mapMessageCase_ = 2;
               break;
             }
-            case 34: {
+            case 26: {
               Node.Read.Builder subBuilder = null;
-              if (mapMessageCase_ == 4) {
+              if (mapMessageCase_ == 3) {
                 subBuilder = ((Node.Read) mapMessage_).toBuilder();
               }
               mapMessage_ =
@@ -5814,12 +4375,12 @@ public final class Node {
                 subBuilder.mergeFrom((Node.Read) mapMessage_);
                 mapMessage_ = subBuilder.buildPartial();
               }
-              mapMessageCase_ = 4;
+              mapMessageCase_ = 3;
               break;
             }
-            case 42: {
+            case 34: {
               Node.Write.Builder subBuilder = null;
-              if (mapMessageCase_ == 5) {
+              if (mapMessageCase_ == 4) {
                 subBuilder = ((Node.Write) mapMessage_).toBuilder();
               }
               mapMessage_ =
@@ -5828,12 +4389,12 @@ public final class Node {
                 subBuilder.mergeFrom((Node.Write) mapMessage_);
                 mapMessage_ = subBuilder.buildPartial();
               }
-              mapMessageCase_ = 5;
+              mapMessageCase_ = 4;
               break;
             }
-            case 50: {
+            case 42: {
               Node.ReadRepair.Builder subBuilder = null;
-              if (mapMessageCase_ == 6) {
+              if (mapMessageCase_ == 5) {
                 subBuilder = ((Node.ReadRepair) mapMessage_).toBuilder();
               }
               mapMessage_ =
@@ -5842,12 +4403,12 @@ public final class Node {
                 subBuilder.mergeFrom((Node.ReadRepair) mapMessage_);
                 mapMessage_ = subBuilder.buildPartial();
               }
-              mapMessageCase_ = 6;
+              mapMessageCase_ = 5;
               break;
             }
-            case 58: {
+            case 50: {
               Node.Error.Builder subBuilder = null;
-              if (mapMessageCase_ == 7) {
+              if (mapMessageCase_ == 6) {
                 subBuilder = ((Node.Error) mapMessage_).toBuilder();
               }
               mapMessage_ =
@@ -5856,12 +4417,12 @@ public final class Node {
                 subBuilder.mergeFrom((Node.Error) mapMessage_);
                 mapMessage_ = subBuilder.buildPartial();
               }
-              mapMessageCase_ = 7;
+              mapMessageCase_ = 6;
               break;
             }
-            case 66: {
+            case 58: {
               Node.Acknowledgement.Builder subBuilder = null;
-              if (mapMessageCase_ == 8) {
+              if (mapMessageCase_ == 7) {
                 subBuilder = ((Node.Acknowledgement) mapMessage_).toBuilder();
               }
               mapMessage_ =
@@ -5870,7 +4431,7 @@ public final class Node {
                 subBuilder.mergeFrom((Node.Acknowledgement) mapMessage_);
                 mapMessage_ = subBuilder.buildPartial();
               }
-              mapMessageCase_ = 8;
+              mapMessageCase_ = 7;
               break;
             }
           }
@@ -5901,14 +4462,13 @@ public final class Node {
     private java.lang.Object mapMessage_;
     public enum MapMessageCase
         implements com.google.protobuf.Internal.EnumLite {
-      INIT_REPLICA(1),
-      GETKEY(2),
-      PUT_KEY_VAL(3),
-      READ(4),
-      WRITE(5),
-      READ_REPAIR(6),
-      ERROR_MESSAGE(7),
-      ACKNOWLEDGEMENT(8),
+      GETKEY(1),
+      PUT_KEY_VAL(2),
+      READ(3),
+      WRITE(4),
+      READ_REPAIR(5),
+      ERROR_MESSAGE(6),
+      ACKNOWLEDGEMENT(7),
       MAPMESSAGE_NOT_SET(0);
       private final int value;
       private MapMessageCase(int value) {
@@ -5924,14 +4484,13 @@ public final class Node {
 
       public static MapMessageCase forNumber(int value) {
         switch (value) {
-          case 1: return INIT_REPLICA;
-          case 2: return GETKEY;
-          case 3: return PUT_KEY_VAL;
-          case 4: return READ;
-          case 5: return WRITE;
-          case 6: return READ_REPAIR;
-          case 7: return ERROR_MESSAGE;
-          case 8: return ACKNOWLEDGEMENT;
+          case 1: return GETKEY;
+          case 2: return PUT_KEY_VAL;
+          case 3: return READ;
+          case 4: return WRITE;
+          case 5: return READ_REPAIR;
+          case 6: return ERROR_MESSAGE;
+          case 7: return ACKNOWLEDGEMENT;
           case 0: return MAPMESSAGE_NOT_SET;
           default: return null;
         }
@@ -5947,209 +4506,183 @@ public final class Node {
           mapMessageCase_);
     }
 
-    public static final int INIT_REPLICA_FIELD_NUMBER = 1;
+    public static final int GETKEY_FIELD_NUMBER = 1;
     /**
-     * <code>.InitReplica init_replica = 1;</code>
+     * <code>.GetKey getKey = 1;</code>
      */
-    public boolean hasInitReplica() {
+    public boolean hasGetKey() {
       return mapMessageCase_ == 1;
     }
     /**
-     * <code>.InitReplica init_replica = 1;</code>
+     * <code>.GetKey getKey = 1;</code>
      */
-    public Node.InitReplica getInitReplica() {
+    public Node.GetKey getGetKey() {
       if (mapMessageCase_ == 1) {
-         return (Node.InitReplica) mapMessage_;
+         return (Node.GetKey) mapMessage_;
       }
-      return Node.InitReplica.getDefaultInstance();
+      return Node.GetKey.getDefaultInstance();
     }
     /**
-     * <code>.InitReplica init_replica = 1;</code>
+     * <code>.GetKey getKey = 1;</code>
      */
-    public Node.InitReplicaOrBuilder getInitReplicaOrBuilder() {
+    public Node.GetKeyOrBuilder getGetKeyOrBuilder() {
       if (mapMessageCase_ == 1) {
-         return (Node.InitReplica) mapMessage_;
+         return (Node.GetKey) mapMessage_;
       }
-      return Node.InitReplica.getDefaultInstance();
+      return Node.GetKey.getDefaultInstance();
     }
 
-    public static final int GETKEY_FIELD_NUMBER = 2;
+    public static final int PUT_KEY_VAL_FIELD_NUMBER = 2;
     /**
-     * <code>.GetKey getKey = 2;</code>
+     * <code>.PutKeyVal put_key_val = 2;</code>
      */
-    public boolean hasGetKey() {
+    public boolean hasPutKeyVal() {
       return mapMessageCase_ == 2;
     }
     /**
-     * <code>.GetKey getKey = 2;</code>
+     * <code>.PutKeyVal put_key_val = 2;</code>
      */
-    public Node.GetKey getGetKey() {
+    public Node.PutKeyVal getPutKeyVal() {
       if (mapMessageCase_ == 2) {
-         return (Node.GetKey) mapMessage_;
+         return (Node.PutKeyVal) mapMessage_;
       }
-      return Node.GetKey.getDefaultInstance();
+      return Node.PutKeyVal.getDefaultInstance();
     }
     /**
-     * <code>.GetKey getKey = 2;</code>
+     * <code>.PutKeyVal put_key_val = 2;</code>
      */
-    public Node.GetKeyOrBuilder getGetKeyOrBuilder() {
+    public Node.PutKeyValOrBuilder getPutKeyValOrBuilder() {
       if (mapMessageCase_ == 2) {
-         return (Node.GetKey) mapMessage_;
+         return (Node.PutKeyVal) mapMessage_;
       }
-      return Node.GetKey.getDefaultInstance();
+      return Node.PutKeyVal.getDefaultInstance();
     }
 
-    public static final int PUT_KEY_VAL_FIELD_NUMBER = 3;
+    public static final int READ_FIELD_NUMBER = 3;
     /**
-     * <code>.PutKeyVal put_key_val = 3;</code>
+     * <code>.Read read = 3;</code>
      */
-    public boolean hasPutKeyVal() {
+    public boolean hasRead() {
       return mapMessageCase_ == 3;
     }
     /**
-     * <code>.PutKeyVal put_key_val = 3;</code>
+     * <code>.Read read = 3;</code>
      */
-    public Node.PutKeyVal getPutKeyVal() {
+    public Node.Read getRead() {
       if (mapMessageCase_ == 3) {
-         return (Node.PutKeyVal) mapMessage_;
+         return (Node.Read) mapMessage_;
       }
-      return Node.PutKeyVal.getDefaultInstance();
+      return Node.Read.getDefaultInstance();
     }
     /**
-     * <code>.PutKeyVal put_key_val = 3;</code>
+     * <code>.Read read = 3;</code>
      */
-    public Node.PutKeyValOrBuilder getPutKeyValOrBuilder() {
+    public Node.ReadOrBuilder getReadOrBuilder() {
       if (mapMessageCase_ == 3) {
-         return (Node.PutKeyVal) mapMessage_;
+         return (Node.Read) mapMessage_;
       }
-      return Node.PutKeyVal.getDefaultInstance();
+      return Node.Read.getDefaultInstance();
     }
 
-    public static final int READ_FIELD_NUMBER = 4;
+    public static final int WRITE_FIELD_NUMBER = 4;
     /**
-     * <code>.Read read = 4;</code>
+     * <code>.Write write = 4;</code>
      */
-    public boolean hasRead() {
+    public boolean hasWrite() {
       return mapMessageCase_ == 4;
     }
     /**
-     * <code>.Read read = 4;</code>
+     * <code>.Write write = 4;</code>
      */
-    public Node.Read getRead() {
+    public Node.Write getWrite() {
       if (mapMessageCase_ == 4) {
-         return (Node.Read) mapMessage_;
+         return (Node.Write) mapMessage_;
       }
-      return Node.Read.getDefaultInstance();
+      return Node.Write.getDefaultInstance();
     }
     /**
-     * <code>.Read read = 4;</code>
+     * <code>.Write write = 4;</code>
      */
-    public Node.ReadOrBuilder getReadOrBuilder() {
+    public Node.WriteOrBuilder getWriteOrBuilder() {
       if (mapMessageCase_ == 4) {
-         return (Node.Read) mapMessage_;
+         return (Node.Write) mapMessage_;
       }
-      return Node.Read.getDefaultInstance();
+      return Node.Write.getDefaultInstance();
     }
 
-    public static final int WRITE_FIELD_NUMBER = 5;
+    public static final int READ_REPAIR_FIELD_NUMBER = 5;
     /**
-     * <code>.Write write = 5;</code>
+     * <code>.ReadRepair read_repair = 5;</code>
      */
-    public boolean hasWrite() {
+    public boolean hasReadRepair() {
       return mapMessageCase_ == 5;
     }
     /**
-     * <code>.Write write = 5;</code>
+     * <code>.ReadRepair read_repair = 5;</code>
      */
-    public Node.Write getWrite() {
+    public Node.ReadRepair getReadRepair() {
       if (mapMessageCase_ == 5) {
-         return (Node.Write) mapMessage_;
+         return (Node.ReadRepair) mapMessage_;
       }
-      return Node.Write.getDefaultInstance();
+      return Node.ReadRepair.getDefaultInstance();
     }
     /**
-     * <code>.Write write = 5;</code>
+     * <code>.ReadRepair read_repair = 5;</code>
      */
-    public Node.WriteOrBuilder getWriteOrBuilder() {
+    public Node.ReadRepairOrBuilder getReadRepairOrBuilder() {
       if (mapMessageCase_ == 5) {
-         return (Node.Write) mapMessage_;
+         return (Node.ReadRepair) mapMessage_;
       }
-      return Node.Write.getDefaultInstance();
+      return Node.ReadRepair.getDefaultInstance();
     }
 
-    public static final int READ_REPAIR_FIELD_NUMBER = 6;
+    public static final int ERROR_MESSAGE_FIELD_NUMBER = 6;
     /**
-     * <code>.ReadRepair read_repair = 6;</code>
+     * <code>.Error error_message = 6;</code>
      */
-    public boolean hasReadRepair() {
+    public boolean hasErrorMessage() {
       return mapMessageCase_ == 6;
     }
     /**
-     * <code>.ReadRepair read_repair = 6;</code>
+     * <code>.Error error_message = 6;</code>
      */
-    public Node.ReadRepair getReadRepair() {
+    public Node.Error getErrorMessage() {
       if (mapMessageCase_ == 6) {
-         return (Node.ReadRepair) mapMessage_;
+         return (Node.Error) mapMessage_;
       }
-      return Node.ReadRepair.getDefaultInstance();
+      return Node.Error.getDefaultInstance();
     }
     /**
-     * <code>.ReadRepair read_repair = 6;</code>
+     * <code>.Error error_message = 6;</code>
      */
-    public Node.ReadRepairOrBuilder getReadRepairOrBuilder() {
+    public Node.ErrorOrBuilder getErrorMessageOrBuilder() {
       if (mapMessageCase_ == 6) {
-         return (Node.ReadRepair) mapMessage_;
+         return (Node.Error) mapMessage_;
       }
-      return Node.ReadRepair.getDefaultInstance();
+      return Node.Error.getDefaultInstance();
     }
 
-    public static final int ERROR_MESSAGE_FIELD_NUMBER = 7;
+    public static final int ACKNOWLEDGEMENT_FIELD_NUMBER = 7;
     /**
-     * <code>.Error error_message = 7;</code>
+     * <code>.Acknowledgement acknowledgement = 7;</code>
      */
-    public boolean hasErrorMessage() {
+    public boolean hasAcknowledgement() {
       return mapMessageCase_ == 7;
     }
     /**
-     * <code>.Error error_message = 7;</code>
-     */
-    public Node.Error getErrorMessage() {
-      if (mapMessageCase_ == 7) {
-         return (Node.Error) mapMessage_;
-      }
-      return Node.Error.getDefaultInstance();
-    }
-    /**
-     * <code>.Error error_message = 7;</code>
-     */
-    public Node.ErrorOrBuilder getErrorMessageOrBuilder() {
-      if (mapMessageCase_ == 7) {
-         return (Node.Error) mapMessage_;
-      }
-      return Node.Error.getDefaultInstance();
-    }
-
-    public static final int ACKNOWLEDGEMENT_FIELD_NUMBER = 8;
-    /**
-     * <code>.Acknowledgement acknowledgement = 8;</code>
-     */
-    public boolean hasAcknowledgement() {
-      return mapMessageCase_ == 8;
-    }
-    /**
-     * <code>.Acknowledgement acknowledgement = 8;</code>
+     * <code>.Acknowledgement acknowledgement = 7;</code>
      */
     public Node.Acknowledgement getAcknowledgement() {
-      if (mapMessageCase_ == 8) {
+      if (mapMessageCase_ == 7) {
          return (Node.Acknowledgement) mapMessage_;
       }
       return Node.Acknowledgement.getDefaultInstance();
     }
     /**
-     * <code>.Acknowledgement acknowledgement = 8;</code>
+     * <code>.Acknowledgement acknowledgement = 7;</code>
      */
     public Node.AcknowledgementOrBuilder getAcknowledgementOrBuilder() {
-      if (mapMessageCase_ == 8) {
+      if (mapMessageCase_ == 7) {
          return (Node.Acknowledgement) mapMessage_;
       }
       return Node.Acknowledgement.getDefaultInstance();
@@ -6168,28 +4701,25 @@ public final class Node {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (mapMessageCase_ == 1) {
-        output.writeMessage(1, (Node.InitReplica) mapMessage_);
+        output.writeMessage(1, (Node.GetKey) mapMessage_);
       }
       if (mapMessageCase_ == 2) {
-        output.writeMessage(2, (Node.GetKey) mapMessage_);
+        output.writeMessage(2, (Node.PutKeyVal) mapMessage_);
       }
       if (mapMessageCase_ == 3) {
-        output.writeMessage(3, (Node.PutKeyVal) mapMessage_);
+        output.writeMessage(3, (Node.Read) mapMessage_);
       }
       if (mapMessageCase_ == 4) {
-        output.writeMessage(4, (Node.Read) mapMessage_);
+        output.writeMessage(4, (Node.Write) mapMessage_);
       }
       if (mapMessageCase_ == 5) {
-        output.writeMessage(5, (Node.Write) mapMessage_);
+        output.writeMessage(5, (Node.ReadRepair) mapMessage_);
       }
       if (mapMessageCase_ == 6) {
-        output.writeMessage(6, (Node.ReadRepair) mapMessage_);
+        output.writeMessage(6, (Node.Error) mapMessage_);
       }
       if (mapMessageCase_ == 7) {
-        output.writeMessage(7, (Node.Error) mapMessage_);
-      }
-      if (mapMessageCase_ == 8) {
-        output.writeMessage(8, (Node.Acknowledgement) mapMessage_);
+        output.writeMessage(7, (Node.Acknowledgement) mapMessage_);
       }
       unknownFields.writeTo(output);
     }
@@ -6201,35 +4731,31 @@ public final class Node {
       size = 0;
       if (mapMessageCase_ == 1) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, (Node.InitReplica) mapMessage_);
+          .computeMessageSize(1, (Node.GetKey) mapMessage_);
       }
       if (mapMessageCase_ == 2) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, (Node.GetKey) mapMessage_);
+          .computeMessageSize(2, (Node.PutKeyVal) mapMessage_);
       }
       if (mapMessageCase_ == 3) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, (Node.PutKeyVal) mapMessage_);
+          .computeMessageSize(3, (Node.Read) mapMessage_);
       }
       if (mapMessageCase_ == 4) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, (Node.Read) mapMessage_);
+          .computeMessageSize(4, (Node.Write) mapMessage_);
       }
       if (mapMessageCase_ == 5) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, (Node.Write) mapMessage_);
+          .computeMessageSize(5, (Node.ReadRepair) mapMessage_);
       }
       if (mapMessageCase_ == 6) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, (Node.ReadRepair) mapMessage_);
+          .computeMessageSize(6, (Node.Error) mapMessage_);
       }
       if (mapMessageCase_ == 7) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, (Node.Error) mapMessage_);
-      }
-      if (mapMessageCase_ == 8) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(8, (Node.Acknowledgement) mapMessage_);
+          .computeMessageSize(7, (Node.Acknowledgement) mapMessage_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -6252,34 +4778,30 @@ public final class Node {
       if (!result) return false;
       switch (mapMessageCase_) {
         case 1:
-          result = result && getInitReplica()
-              .equals(other.getInitReplica());
-          break;
-        case 2:
           result = result && getGetKey()
               .equals(other.getGetKey());
           break;
-        case 3:
+        case 2:
           result = result && getPutKeyVal()
               .equals(other.getPutKeyVal());
           break;
-        case 4:
+        case 3:
           result = result && getRead()
               .equals(other.getRead());
           break;
-        case 5:
+        case 4:
           result = result && getWrite()
               .equals(other.getWrite());
           break;
-        case 6:
+        case 5:
           result = result && getReadRepair()
               .equals(other.getReadRepair());
           break;
-        case 7:
+        case 6:
           result = result && getErrorMessage()
               .equals(other.getErrorMessage());
           break;
-        case 8:
+        case 7:
           result = result && getAcknowledgement()
               .equals(other.getAcknowledgement());
           break;
@@ -6299,34 +4821,30 @@ public final class Node {
       hash = (19 * hash) + getDescriptor().hashCode();
       switch (mapMessageCase_) {
         case 1:
-          hash = (37 * hash) + INIT_REPLICA_FIELD_NUMBER;
-          hash = (53 * hash) + getInitReplica().hashCode();
-          break;
-        case 2:
           hash = (37 * hash) + GETKEY_FIELD_NUMBER;
           hash = (53 * hash) + getGetKey().hashCode();
           break;
-        case 3:
+        case 2:
           hash = (37 * hash) + PUT_KEY_VAL_FIELD_NUMBER;
           hash = (53 * hash) + getPutKeyVal().hashCode();
           break;
-        case 4:
+        case 3:
           hash = (37 * hash) + READ_FIELD_NUMBER;
           hash = (53 * hash) + getRead().hashCode();
           break;
-        case 5:
+        case 4:
           hash = (37 * hash) + WRITE_FIELD_NUMBER;
           hash = (53 * hash) + getWrite().hashCode();
           break;
-        case 6:
+        case 5:
           hash = (37 * hash) + READ_REPAIR_FIELD_NUMBER;
           hash = (53 * hash) + getReadRepair().hashCode();
           break;
-        case 7:
+        case 6:
           hash = (37 * hash) + ERROR_MESSAGE_FIELD_NUMBER;
           hash = (53 * hash) + getErrorMessage().hashCode();
           break;
-        case 8:
+        case 7:
           hash = (37 * hash) + ACKNOWLEDGEMENT_FIELD_NUMBER;
           hash = (53 * hash) + getAcknowledgement().hashCode();
           break;
@@ -6487,55 +5005,48 @@ public final class Node {
       public Node.MapMessage buildPartial() {
         Node.MapMessage result = new Node.MapMessage(this);
         if (mapMessageCase_ == 1) {
-          if (initReplicaBuilder_ == null) {
-            result.mapMessage_ = mapMessage_;
-          } else {
-            result.mapMessage_ = initReplicaBuilder_.build();
-          }
-        }
-        if (mapMessageCase_ == 2) {
           if (getKeyBuilder_ == null) {
             result.mapMessage_ = mapMessage_;
           } else {
             result.mapMessage_ = getKeyBuilder_.build();
           }
         }
-        if (mapMessageCase_ == 3) {
+        if (mapMessageCase_ == 2) {
           if (putKeyValBuilder_ == null) {
             result.mapMessage_ = mapMessage_;
           } else {
             result.mapMessage_ = putKeyValBuilder_.build();
           }
         }
-        if (mapMessageCase_ == 4) {
+        if (mapMessageCase_ == 3) {
           if (readBuilder_ == null) {
             result.mapMessage_ = mapMessage_;
           } else {
             result.mapMessage_ = readBuilder_.build();
           }
         }
-        if (mapMessageCase_ == 5) {
+        if (mapMessageCase_ == 4) {
           if (writeBuilder_ == null) {
             result.mapMessage_ = mapMessage_;
           } else {
             result.mapMessage_ = writeBuilder_.build();
           }
         }
-        if (mapMessageCase_ == 6) {
+        if (mapMessageCase_ == 5) {
           if (readRepairBuilder_ == null) {
             result.mapMessage_ = mapMessage_;
           } else {
             result.mapMessage_ = readRepairBuilder_.build();
           }
         }
-        if (mapMessageCase_ == 7) {
+        if (mapMessageCase_ == 6) {
           if (errorMessageBuilder_ == null) {
             result.mapMessage_ = mapMessage_;
           } else {
             result.mapMessage_ = errorMessageBuilder_.build();
           }
         }
-        if (mapMessageCase_ == 8) {
+        if (mapMessageCase_ == 7) {
           if (acknowledgementBuilder_ == null) {
             result.mapMessage_ = mapMessage_;
           } else {
@@ -6585,10 +5096,6 @@ public final class Node {
       public Builder mergeFrom(Node.MapMessage other) {
         if (other == Node.MapMessage.getDefaultInstance()) return this;
         switch (other.getMapMessageCase()) {
-          case INIT_REPLICA: {
-            mergeInitReplica(other.getInitReplica());
-            break;
-          }
           case GETKEY: {
             mergeGetKey(other.getGetKey());
             break;
@@ -6664,167 +5171,31 @@ public final class Node {
 
 
       private com.google.protobuf.SingleFieldBuilderV3<
-          Node.InitReplica, Node.InitReplica.Builder, Node.InitReplicaOrBuilder> initReplicaBuilder_;
+          Node.GetKey, Node.GetKey.Builder, Node.GetKeyOrBuilder> getKeyBuilder_;
       /**
-       * <code>.InitReplica init_replica = 1;</code>
+       * <code>.GetKey getKey = 1;</code>
        */
-      public boolean hasInitReplica() {
+      public boolean hasGetKey() {
         return mapMessageCase_ == 1;
       }
       /**
-       * <code>.InitReplica init_replica = 1;</code>
-       */
-      public Node.InitReplica getInitReplica() {
-        if (initReplicaBuilder_ == null) {
-          if (mapMessageCase_ == 1) {
-            return (Node.InitReplica) mapMessage_;
-          }
-          return Node.InitReplica.getDefaultInstance();
-        } else {
-          if (mapMessageCase_ == 1) {
-            return initReplicaBuilder_.getMessage();
-          }
-          return Node.InitReplica.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.InitReplica init_replica = 1;</code>
-       */
-      public Builder setInitReplica(Node.InitReplica value) {
-        if (initReplicaBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          mapMessage_ = value;
-          onChanged();
-        } else {
-          initReplicaBuilder_.setMessage(value);
-        }
-        mapMessageCase_ = 1;
-        return this;
-      }
-      /**
-       * <code>.InitReplica init_replica = 1;</code>
-       */
-      public Builder setInitReplica(
-          Node.InitReplica.Builder builderForValue) {
-        if (initReplicaBuilder_ == null) {
-          mapMessage_ = builderForValue.build();
-          onChanged();
-        } else {
-          initReplicaBuilder_.setMessage(builderForValue.build());
-        }
-        mapMessageCase_ = 1;
-        return this;
-      }
-      /**
-       * <code>.InitReplica init_replica = 1;</code>
-       */
-      public Builder mergeInitReplica(Node.InitReplica value) {
-        if (initReplicaBuilder_ == null) {
-          if (mapMessageCase_ == 1 &&
-              mapMessage_ != Node.InitReplica.getDefaultInstance()) {
-            mapMessage_ = Node.InitReplica.newBuilder((Node.InitReplica) mapMessage_)
-                .mergeFrom(value).buildPartial();
-          } else {
-            mapMessage_ = value;
-          }
-          onChanged();
-        } else {
-          if (mapMessageCase_ == 1) {
-            initReplicaBuilder_.mergeFrom(value);
-          }
-          initReplicaBuilder_.setMessage(value);
-        }
-        mapMessageCase_ = 1;
-        return this;
-      }
-      /**
-       * <code>.InitReplica init_replica = 1;</code>
-       */
-      public Builder clearInitReplica() {
-        if (initReplicaBuilder_ == null) {
-          if (mapMessageCase_ == 1) {
-            mapMessageCase_ = 0;
-            mapMessage_ = null;
-            onChanged();
-          }
-        } else {
-          if (mapMessageCase_ == 1) {
-            mapMessageCase_ = 0;
-            mapMessage_ = null;
-          }
-          initReplicaBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>.InitReplica init_replica = 1;</code>
-       */
-      public Node.InitReplica.Builder getInitReplicaBuilder() {
-        return getInitReplicaFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.InitReplica init_replica = 1;</code>
-       */
-      public Node.InitReplicaOrBuilder getInitReplicaOrBuilder() {
-        if ((mapMessageCase_ == 1) && (initReplicaBuilder_ != null)) {
-          return initReplicaBuilder_.getMessageOrBuilder();
-        } else {
-          if (mapMessageCase_ == 1) {
-            return (Node.InitReplica) mapMessage_;
-          }
-          return Node.InitReplica.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.InitReplica init_replica = 1;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          Node.InitReplica, Node.InitReplica.Builder, Node.InitReplicaOrBuilder> 
-          getInitReplicaFieldBuilder() {
-        if (initReplicaBuilder_ == null) {
-          if (!(mapMessageCase_ == 1)) {
-            mapMessage_ = Node.InitReplica.getDefaultInstance();
-          }
-          initReplicaBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              Node.InitReplica, Node.InitReplica.Builder, Node.InitReplicaOrBuilder>(
-                  (Node.InitReplica) mapMessage_,
-                  getParentForChildren(),
-                  isClean());
-          mapMessage_ = null;
-        }
-        mapMessageCase_ = 1;
-        onChanged();;
-        return initReplicaBuilder_;
-      }
-
-      private com.google.protobuf.SingleFieldBuilderV3<
-          Node.GetKey, Node.GetKey.Builder, Node.GetKeyOrBuilder> getKeyBuilder_;
-      /**
-       * <code>.GetKey getKey = 2;</code>
-       */
-      public boolean hasGetKey() {
-        return mapMessageCase_ == 2;
-      }
-      /**
-       * <code>.GetKey getKey = 2;</code>
+       * <code>.GetKey getKey = 1;</code>
        */
       public Node.GetKey getGetKey() {
         if (getKeyBuilder_ == null) {
-          if (mapMessageCase_ == 2) {
+          if (mapMessageCase_ == 1) {
             return (Node.GetKey) mapMessage_;
           }
           return Node.GetKey.getDefaultInstance();
         } else {
-          if (mapMessageCase_ == 2) {
+          if (mapMessageCase_ == 1) {
             return getKeyBuilder_.getMessage();
           }
           return Node.GetKey.getDefaultInstance();
         }
       }
       /**
-       * <code>.GetKey getKey = 2;</code>
+       * <code>.GetKey getKey = 1;</code>
        */
       public Builder setGetKey(Node.GetKey value) {
         if (getKeyBuilder_ == null) {
@@ -6836,11 +5207,11 @@ public final class Node {
         } else {
           getKeyBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 2;
+        mapMessageCase_ = 1;
         return this;
       }
       /**
-       * <code>.GetKey getKey = 2;</code>
+       * <code>.GetKey getKey = 1;</code>
        */
       public Builder setGetKey(
           Node.GetKey.Builder builderForValue) {
@@ -6850,15 +5221,15 @@ public final class Node {
         } else {
           getKeyBuilder_.setMessage(builderForValue.build());
         }
-        mapMessageCase_ = 2;
+        mapMessageCase_ = 1;
         return this;
       }
       /**
-       * <code>.GetKey getKey = 2;</code>
+       * <code>.GetKey getKey = 1;</code>
        */
       public Builder mergeGetKey(Node.GetKey value) {
         if (getKeyBuilder_ == null) {
-          if (mapMessageCase_ == 2 &&
+          if (mapMessageCase_ == 1 &&
               mapMessage_ != Node.GetKey.getDefaultInstance()) {
             mapMessage_ = Node.GetKey.newBuilder((Node.GetKey) mapMessage_)
                 .mergeFrom(value).buildPartial();
@@ -6867,26 +5238,26 @@ public final class Node {
           }
           onChanged();
         } else {
-          if (mapMessageCase_ == 2) {
+          if (mapMessageCase_ == 1) {
             getKeyBuilder_.mergeFrom(value);
           }
           getKeyBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 2;
+        mapMessageCase_ = 1;
         return this;
       }
       /**
-       * <code>.GetKey getKey = 2;</code>
+       * <code>.GetKey getKey = 1;</code>
        */
       public Builder clearGetKey() {
         if (getKeyBuilder_ == null) {
-          if (mapMessageCase_ == 2) {
+          if (mapMessageCase_ == 1) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
             onChanged();
           }
         } else {
-          if (mapMessageCase_ == 2) {
+          if (mapMessageCase_ == 1) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
           }
@@ -6895,32 +5266,32 @@ public final class Node {
         return this;
       }
       /**
-       * <code>.GetKey getKey = 2;</code>
+       * <code>.GetKey getKey = 1;</code>
        */
       public Node.GetKey.Builder getGetKeyBuilder() {
         return getGetKeyFieldBuilder().getBuilder();
       }
       /**
-       * <code>.GetKey getKey = 2;</code>
+       * <code>.GetKey getKey = 1;</code>
        */
       public Node.GetKeyOrBuilder getGetKeyOrBuilder() {
-        if ((mapMessageCase_ == 2) && (getKeyBuilder_ != null)) {
+        if ((mapMessageCase_ == 1) && (getKeyBuilder_ != null)) {
           return getKeyBuilder_.getMessageOrBuilder();
         } else {
-          if (mapMessageCase_ == 2) {
+          if (mapMessageCase_ == 1) {
             return (Node.GetKey) mapMessage_;
           }
           return Node.GetKey.getDefaultInstance();
         }
       }
       /**
-       * <code>.GetKey getKey = 2;</code>
+       * <code>.GetKey getKey = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           Node.GetKey, Node.GetKey.Builder, Node.GetKeyOrBuilder> 
           getGetKeyFieldBuilder() {
         if (getKeyBuilder_ == null) {
-          if (!(mapMessageCase_ == 2)) {
+          if (!(mapMessageCase_ == 1)) {
             mapMessage_ = Node.GetKey.getDefaultInstance();
           }
           getKeyBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -6930,7 +5301,7 @@ public final class Node {
                   isClean());
           mapMessage_ = null;
         }
-        mapMessageCase_ = 2;
+        mapMessageCase_ = 1;
         onChanged();;
         return getKeyBuilder_;
       }
@@ -6938,29 +5309,29 @@ public final class Node {
       private com.google.protobuf.SingleFieldBuilderV3<
           Node.PutKeyVal, Node.PutKeyVal.Builder, Node.PutKeyValOrBuilder> putKeyValBuilder_;
       /**
-       * <code>.PutKeyVal put_key_val = 3;</code>
+       * <code>.PutKeyVal put_key_val = 2;</code>
        */
       public boolean hasPutKeyVal() {
-        return mapMessageCase_ == 3;
+        return mapMessageCase_ == 2;
       }
       /**
-       * <code>.PutKeyVal put_key_val = 3;</code>
+       * <code>.PutKeyVal put_key_val = 2;</code>
        */
       public Node.PutKeyVal getPutKeyVal() {
         if (putKeyValBuilder_ == null) {
-          if (mapMessageCase_ == 3) {
+          if (mapMessageCase_ == 2) {
             return (Node.PutKeyVal) mapMessage_;
           }
           return Node.PutKeyVal.getDefaultInstance();
         } else {
-          if (mapMessageCase_ == 3) {
+          if (mapMessageCase_ == 2) {
             return putKeyValBuilder_.getMessage();
           }
           return Node.PutKeyVal.getDefaultInstance();
         }
       }
       /**
-       * <code>.PutKeyVal put_key_val = 3;</code>
+       * <code>.PutKeyVal put_key_val = 2;</code>
        */
       public Builder setPutKeyVal(Node.PutKeyVal value) {
         if (putKeyValBuilder_ == null) {
@@ -6972,11 +5343,11 @@ public final class Node {
         } else {
           putKeyValBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 3;
+        mapMessageCase_ = 2;
         return this;
       }
       /**
-       * <code>.PutKeyVal put_key_val = 3;</code>
+       * <code>.PutKeyVal put_key_val = 2;</code>
        */
       public Builder setPutKeyVal(
           Node.PutKeyVal.Builder builderForValue) {
@@ -6986,15 +5357,15 @@ public final class Node {
         } else {
           putKeyValBuilder_.setMessage(builderForValue.build());
         }
-        mapMessageCase_ = 3;
+        mapMessageCase_ = 2;
         return this;
       }
       /**
-       * <code>.PutKeyVal put_key_val = 3;</code>
+       * <code>.PutKeyVal put_key_val = 2;</code>
        */
       public Builder mergePutKeyVal(Node.PutKeyVal value) {
         if (putKeyValBuilder_ == null) {
-          if (mapMessageCase_ == 3 &&
+          if (mapMessageCase_ == 2 &&
               mapMessage_ != Node.PutKeyVal.getDefaultInstance()) {
             mapMessage_ = Node.PutKeyVal.newBuilder((Node.PutKeyVal) mapMessage_)
                 .mergeFrom(value).buildPartial();
@@ -7003,26 +5374,26 @@ public final class Node {
           }
           onChanged();
         } else {
-          if (mapMessageCase_ == 3) {
+          if (mapMessageCase_ == 2) {
             putKeyValBuilder_.mergeFrom(value);
           }
           putKeyValBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 3;
+        mapMessageCase_ = 2;
         return this;
       }
       /**
-       * <code>.PutKeyVal put_key_val = 3;</code>
+       * <code>.PutKeyVal put_key_val = 2;</code>
        */
       public Builder clearPutKeyVal() {
         if (putKeyValBuilder_ == null) {
-          if (mapMessageCase_ == 3) {
+          if (mapMessageCase_ == 2) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
             onChanged();
           }
         } else {
-          if (mapMessageCase_ == 3) {
+          if (mapMessageCase_ == 2) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
           }
@@ -7031,32 +5402,32 @@ public final class Node {
         return this;
       }
       /**
-       * <code>.PutKeyVal put_key_val = 3;</code>
+       * <code>.PutKeyVal put_key_val = 2;</code>
        */
       public Node.PutKeyVal.Builder getPutKeyValBuilder() {
         return getPutKeyValFieldBuilder().getBuilder();
       }
       /**
-       * <code>.PutKeyVal put_key_val = 3;</code>
+       * <code>.PutKeyVal put_key_val = 2;</code>
        */
       public Node.PutKeyValOrBuilder getPutKeyValOrBuilder() {
-        if ((mapMessageCase_ == 3) && (putKeyValBuilder_ != null)) {
+        if ((mapMessageCase_ == 2) && (putKeyValBuilder_ != null)) {
           return putKeyValBuilder_.getMessageOrBuilder();
         } else {
-          if (mapMessageCase_ == 3) {
+          if (mapMessageCase_ == 2) {
             return (Node.PutKeyVal) mapMessage_;
           }
           return Node.PutKeyVal.getDefaultInstance();
         }
       }
       /**
-       * <code>.PutKeyVal put_key_val = 3;</code>
+       * <code>.PutKeyVal put_key_val = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           Node.PutKeyVal, Node.PutKeyVal.Builder, Node.PutKeyValOrBuilder> 
           getPutKeyValFieldBuilder() {
         if (putKeyValBuilder_ == null) {
-          if (!(mapMessageCase_ == 3)) {
+          if (!(mapMessageCase_ == 2)) {
             mapMessage_ = Node.PutKeyVal.getDefaultInstance();
           }
           putKeyValBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -7066,7 +5437,7 @@ public final class Node {
                   isClean());
           mapMessage_ = null;
         }
-        mapMessageCase_ = 3;
+        mapMessageCase_ = 2;
         onChanged();;
         return putKeyValBuilder_;
       }
@@ -7074,29 +5445,29 @@ public final class Node {
       private com.google.protobuf.SingleFieldBuilderV3<
           Node.Read, Node.Read.Builder, Node.ReadOrBuilder> readBuilder_;
       /**
-       * <code>.Read read = 4;</code>
+       * <code>.Read read = 3;</code>
        */
       public boolean hasRead() {
-        return mapMessageCase_ == 4;
+        return mapMessageCase_ == 3;
       }
       /**
-       * <code>.Read read = 4;</code>
+       * <code>.Read read = 3;</code>
        */
       public Node.Read getRead() {
         if (readBuilder_ == null) {
-          if (mapMessageCase_ == 4) {
+          if (mapMessageCase_ == 3) {
             return (Node.Read) mapMessage_;
           }
           return Node.Read.getDefaultInstance();
         } else {
-          if (mapMessageCase_ == 4) {
+          if (mapMessageCase_ == 3) {
             return readBuilder_.getMessage();
           }
           return Node.Read.getDefaultInstance();
         }
       }
       /**
-       * <code>.Read read = 4;</code>
+       * <code>.Read read = 3;</code>
        */
       public Builder setRead(Node.Read value) {
         if (readBuilder_ == null) {
@@ -7108,11 +5479,11 @@ public final class Node {
         } else {
           readBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 4;
+        mapMessageCase_ = 3;
         return this;
       }
       /**
-       * <code>.Read read = 4;</code>
+       * <code>.Read read = 3;</code>
        */
       public Builder setRead(
           Node.Read.Builder builderForValue) {
@@ -7122,15 +5493,15 @@ public final class Node {
         } else {
           readBuilder_.setMessage(builderForValue.build());
         }
-        mapMessageCase_ = 4;
+        mapMessageCase_ = 3;
         return this;
       }
       /**
-       * <code>.Read read = 4;</code>
+       * <code>.Read read = 3;</code>
        */
       public Builder mergeRead(Node.Read value) {
         if (readBuilder_ == null) {
-          if (mapMessageCase_ == 4 &&
+          if (mapMessageCase_ == 3 &&
               mapMessage_ != Node.Read.getDefaultInstance()) {
             mapMessage_ = Node.Read.newBuilder((Node.Read) mapMessage_)
                 .mergeFrom(value).buildPartial();
@@ -7139,26 +5510,26 @@ public final class Node {
           }
           onChanged();
         } else {
-          if (mapMessageCase_ == 4) {
+          if (mapMessageCase_ == 3) {
             readBuilder_.mergeFrom(value);
           }
           readBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 4;
+        mapMessageCase_ = 3;
         return this;
       }
       /**
-       * <code>.Read read = 4;</code>
+       * <code>.Read read = 3;</code>
        */
       public Builder clearRead() {
         if (readBuilder_ == null) {
-          if (mapMessageCase_ == 4) {
+          if (mapMessageCase_ == 3) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
             onChanged();
           }
         } else {
-          if (mapMessageCase_ == 4) {
+          if (mapMessageCase_ == 3) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
           }
@@ -7167,32 +5538,32 @@ public final class Node {
         return this;
       }
       /**
-       * <code>.Read read = 4;</code>
+       * <code>.Read read = 3;</code>
        */
       public Node.Read.Builder getReadBuilder() {
         return getReadFieldBuilder().getBuilder();
       }
       /**
-       * <code>.Read read = 4;</code>
+       * <code>.Read read = 3;</code>
        */
       public Node.ReadOrBuilder getReadOrBuilder() {
-        if ((mapMessageCase_ == 4) && (readBuilder_ != null)) {
+        if ((mapMessageCase_ == 3) && (readBuilder_ != null)) {
           return readBuilder_.getMessageOrBuilder();
         } else {
-          if (mapMessageCase_ == 4) {
+          if (mapMessageCase_ == 3) {
             return (Node.Read) mapMessage_;
           }
           return Node.Read.getDefaultInstance();
         }
       }
       /**
-       * <code>.Read read = 4;</code>
+       * <code>.Read read = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           Node.Read, Node.Read.Builder, Node.ReadOrBuilder> 
           getReadFieldBuilder() {
         if (readBuilder_ == null) {
-          if (!(mapMessageCase_ == 4)) {
+          if (!(mapMessageCase_ == 3)) {
             mapMessage_ = Node.Read.getDefaultInstance();
           }
           readBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -7202,7 +5573,7 @@ public final class Node {
                   isClean());
           mapMessage_ = null;
         }
-        mapMessageCase_ = 4;
+        mapMessageCase_ = 3;
         onChanged();;
         return readBuilder_;
       }
@@ -7210,29 +5581,29 @@ public final class Node {
       private com.google.protobuf.SingleFieldBuilderV3<
           Node.Write, Node.Write.Builder, Node.WriteOrBuilder> writeBuilder_;
       /**
-       * <code>.Write write = 5;</code>
+       * <code>.Write write = 4;</code>
        */
       public boolean hasWrite() {
-        return mapMessageCase_ == 5;
+        return mapMessageCase_ == 4;
       }
       /**
-       * <code>.Write write = 5;</code>
+       * <code>.Write write = 4;</code>
        */
       public Node.Write getWrite() {
         if (writeBuilder_ == null) {
-          if (mapMessageCase_ == 5) {
+          if (mapMessageCase_ == 4) {
             return (Node.Write) mapMessage_;
           }
           return Node.Write.getDefaultInstance();
         } else {
-          if (mapMessageCase_ == 5) {
+          if (mapMessageCase_ == 4) {
             return writeBuilder_.getMessage();
           }
           return Node.Write.getDefaultInstance();
         }
       }
       /**
-       * <code>.Write write = 5;</code>
+       * <code>.Write write = 4;</code>
        */
       public Builder setWrite(Node.Write value) {
         if (writeBuilder_ == null) {
@@ -7244,11 +5615,11 @@ public final class Node {
         } else {
           writeBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 5;
+        mapMessageCase_ = 4;
         return this;
       }
       /**
-       * <code>.Write write = 5;</code>
+       * <code>.Write write = 4;</code>
        */
       public Builder setWrite(
           Node.Write.Builder builderForValue) {
@@ -7258,15 +5629,15 @@ public final class Node {
         } else {
           writeBuilder_.setMessage(builderForValue.build());
         }
-        mapMessageCase_ = 5;
+        mapMessageCase_ = 4;
         return this;
       }
       /**
-       * <code>.Write write = 5;</code>
+       * <code>.Write write = 4;</code>
        */
       public Builder mergeWrite(Node.Write value) {
         if (writeBuilder_ == null) {
-          if (mapMessageCase_ == 5 &&
+          if (mapMessageCase_ == 4 &&
               mapMessage_ != Node.Write.getDefaultInstance()) {
             mapMessage_ = Node.Write.newBuilder((Node.Write) mapMessage_)
                 .mergeFrom(value).buildPartial();
@@ -7275,26 +5646,26 @@ public final class Node {
           }
           onChanged();
         } else {
-          if (mapMessageCase_ == 5) {
+          if (mapMessageCase_ == 4) {
             writeBuilder_.mergeFrom(value);
           }
           writeBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 5;
+        mapMessageCase_ = 4;
         return this;
       }
       /**
-       * <code>.Write write = 5;</code>
+       * <code>.Write write = 4;</code>
        */
       public Builder clearWrite() {
         if (writeBuilder_ == null) {
-          if (mapMessageCase_ == 5) {
+          if (mapMessageCase_ == 4) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
             onChanged();
           }
         } else {
-          if (mapMessageCase_ == 5) {
+          if (mapMessageCase_ == 4) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
           }
@@ -7303,32 +5674,32 @@ public final class Node {
         return this;
       }
       /**
-       * <code>.Write write = 5;</code>
+       * <code>.Write write = 4;</code>
        */
       public Node.Write.Builder getWriteBuilder() {
         return getWriteFieldBuilder().getBuilder();
       }
       /**
-       * <code>.Write write = 5;</code>
+       * <code>.Write write = 4;</code>
        */
       public Node.WriteOrBuilder getWriteOrBuilder() {
-        if ((mapMessageCase_ == 5) && (writeBuilder_ != null)) {
+        if ((mapMessageCase_ == 4) && (writeBuilder_ != null)) {
           return writeBuilder_.getMessageOrBuilder();
         } else {
-          if (mapMessageCase_ == 5) {
+          if (mapMessageCase_ == 4) {
             return (Node.Write) mapMessage_;
           }
           return Node.Write.getDefaultInstance();
         }
       }
       /**
-       * <code>.Write write = 5;</code>
+       * <code>.Write write = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           Node.Write, Node.Write.Builder, Node.WriteOrBuilder> 
           getWriteFieldBuilder() {
         if (writeBuilder_ == null) {
-          if (!(mapMessageCase_ == 5)) {
+          if (!(mapMessageCase_ == 4)) {
             mapMessage_ = Node.Write.getDefaultInstance();
           }
           writeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -7338,7 +5709,7 @@ public final class Node {
                   isClean());
           mapMessage_ = null;
         }
-        mapMessageCase_ = 5;
+        mapMessageCase_ = 4;
         onChanged();;
         return writeBuilder_;
       }
@@ -7346,29 +5717,29 @@ public final class Node {
       private com.google.protobuf.SingleFieldBuilderV3<
           Node.ReadRepair, Node.ReadRepair.Builder, Node.ReadRepairOrBuilder> readRepairBuilder_;
       /**
-       * <code>.ReadRepair read_repair = 6;</code>
+       * <code>.ReadRepair read_repair = 5;</code>
        */
       public boolean hasReadRepair() {
-        return mapMessageCase_ == 6;
+        return mapMessageCase_ == 5;
       }
       /**
-       * <code>.ReadRepair read_repair = 6;</code>
+       * <code>.ReadRepair read_repair = 5;</code>
        */
       public Node.ReadRepair getReadRepair() {
         if (readRepairBuilder_ == null) {
-          if (mapMessageCase_ == 6) {
+          if (mapMessageCase_ == 5) {
             return (Node.ReadRepair) mapMessage_;
           }
           return Node.ReadRepair.getDefaultInstance();
         } else {
-          if (mapMessageCase_ == 6) {
+          if (mapMessageCase_ == 5) {
             return readRepairBuilder_.getMessage();
           }
           return Node.ReadRepair.getDefaultInstance();
         }
       }
       /**
-       * <code>.ReadRepair read_repair = 6;</code>
+       * <code>.ReadRepair read_repair = 5;</code>
        */
       public Builder setReadRepair(Node.ReadRepair value) {
         if (readRepairBuilder_ == null) {
@@ -7380,11 +5751,11 @@ public final class Node {
         } else {
           readRepairBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 6;
+        mapMessageCase_ = 5;
         return this;
       }
       /**
-       * <code>.ReadRepair read_repair = 6;</code>
+       * <code>.ReadRepair read_repair = 5;</code>
        */
       public Builder setReadRepair(
           Node.ReadRepair.Builder builderForValue) {
@@ -7394,15 +5765,15 @@ public final class Node {
         } else {
           readRepairBuilder_.setMessage(builderForValue.build());
         }
-        mapMessageCase_ = 6;
+        mapMessageCase_ = 5;
         return this;
       }
       /**
-       * <code>.ReadRepair read_repair = 6;</code>
+       * <code>.ReadRepair read_repair = 5;</code>
        */
       public Builder mergeReadRepair(Node.ReadRepair value) {
         if (readRepairBuilder_ == null) {
-          if (mapMessageCase_ == 6 &&
+          if (mapMessageCase_ == 5 &&
               mapMessage_ != Node.ReadRepair.getDefaultInstance()) {
             mapMessage_ = Node.ReadRepair.newBuilder((Node.ReadRepair) mapMessage_)
                 .mergeFrom(value).buildPartial();
@@ -7411,26 +5782,26 @@ public final class Node {
           }
           onChanged();
         } else {
-          if (mapMessageCase_ == 6) {
+          if (mapMessageCase_ == 5) {
             readRepairBuilder_.mergeFrom(value);
           }
           readRepairBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 6;
+        mapMessageCase_ = 5;
         return this;
       }
       /**
-       * <code>.ReadRepair read_repair = 6;</code>
+       * <code>.ReadRepair read_repair = 5;</code>
        */
       public Builder clearReadRepair() {
         if (readRepairBuilder_ == null) {
-          if (mapMessageCase_ == 6) {
+          if (mapMessageCase_ == 5) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
             onChanged();
           }
         } else {
-          if (mapMessageCase_ == 6) {
+          if (mapMessageCase_ == 5) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
           }
@@ -7439,32 +5810,32 @@ public final class Node {
         return this;
       }
       /**
-       * <code>.ReadRepair read_repair = 6;</code>
+       * <code>.ReadRepair read_repair = 5;</code>
        */
       public Node.ReadRepair.Builder getReadRepairBuilder() {
         return getReadRepairFieldBuilder().getBuilder();
       }
       /**
-       * <code>.ReadRepair read_repair = 6;</code>
+       * <code>.ReadRepair read_repair = 5;</code>
        */
       public Node.ReadRepairOrBuilder getReadRepairOrBuilder() {
-        if ((mapMessageCase_ == 6) && (readRepairBuilder_ != null)) {
+        if ((mapMessageCase_ == 5) && (readRepairBuilder_ != null)) {
           return readRepairBuilder_.getMessageOrBuilder();
         } else {
-          if (mapMessageCase_ == 6) {
+          if (mapMessageCase_ == 5) {
             return (Node.ReadRepair) mapMessage_;
           }
           return Node.ReadRepair.getDefaultInstance();
         }
       }
       /**
-       * <code>.ReadRepair read_repair = 6;</code>
+       * <code>.ReadRepair read_repair = 5;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           Node.ReadRepair, Node.ReadRepair.Builder, Node.ReadRepairOrBuilder> 
           getReadRepairFieldBuilder() {
         if (readRepairBuilder_ == null) {
-          if (!(mapMessageCase_ == 6)) {
+          if (!(mapMessageCase_ == 5)) {
             mapMessage_ = Node.ReadRepair.getDefaultInstance();
           }
           readRepairBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -7474,7 +5845,7 @@ public final class Node {
                   isClean());
           mapMessage_ = null;
         }
-        mapMessageCase_ = 6;
+        mapMessageCase_ = 5;
         onChanged();;
         return readRepairBuilder_;
       }
@@ -7482,29 +5853,29 @@ public final class Node {
       private com.google.protobuf.SingleFieldBuilderV3<
           Node.Error, Node.Error.Builder, Node.ErrorOrBuilder> errorMessageBuilder_;
       /**
-       * <code>.Error error_message = 7;</code>
+       * <code>.Error error_message = 6;</code>
        */
       public boolean hasErrorMessage() {
-        return mapMessageCase_ == 7;
+        return mapMessageCase_ == 6;
       }
       /**
-       * <code>.Error error_message = 7;</code>
+       * <code>.Error error_message = 6;</code>
        */
       public Node.Error getErrorMessage() {
         if (errorMessageBuilder_ == null) {
-          if (mapMessageCase_ == 7) {
+          if (mapMessageCase_ == 6) {
             return (Node.Error) mapMessage_;
           }
           return Node.Error.getDefaultInstance();
         } else {
-          if (mapMessageCase_ == 7) {
+          if (mapMessageCase_ == 6) {
             return errorMessageBuilder_.getMessage();
           }
           return Node.Error.getDefaultInstance();
         }
       }
       /**
-       * <code>.Error error_message = 7;</code>
+       * <code>.Error error_message = 6;</code>
        */
       public Builder setErrorMessage(Node.Error value) {
         if (errorMessageBuilder_ == null) {
@@ -7516,11 +5887,11 @@ public final class Node {
         } else {
           errorMessageBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 7;
+        mapMessageCase_ = 6;
         return this;
       }
       /**
-       * <code>.Error error_message = 7;</code>
+       * <code>.Error error_message = 6;</code>
        */
       public Builder setErrorMessage(
           Node.Error.Builder builderForValue) {
@@ -7530,15 +5901,15 @@ public final class Node {
         } else {
           errorMessageBuilder_.setMessage(builderForValue.build());
         }
-        mapMessageCase_ = 7;
+        mapMessageCase_ = 6;
         return this;
       }
       /**
-       * <code>.Error error_message = 7;</code>
+       * <code>.Error error_message = 6;</code>
        */
       public Builder mergeErrorMessage(Node.Error value) {
         if (errorMessageBuilder_ == null) {
-          if (mapMessageCase_ == 7 &&
+          if (mapMessageCase_ == 6 &&
               mapMessage_ != Node.Error.getDefaultInstance()) {
             mapMessage_ = Node.Error.newBuilder((Node.Error) mapMessage_)
                 .mergeFrom(value).buildPartial();
@@ -7547,26 +5918,26 @@ public final class Node {
           }
           onChanged();
         } else {
-          if (mapMessageCase_ == 7) {
+          if (mapMessageCase_ == 6) {
             errorMessageBuilder_.mergeFrom(value);
           }
           errorMessageBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 7;
+        mapMessageCase_ = 6;
         return this;
       }
       /**
-       * <code>.Error error_message = 7;</code>
+       * <code>.Error error_message = 6;</code>
        */
       public Builder clearErrorMessage() {
         if (errorMessageBuilder_ == null) {
-          if (mapMessageCase_ == 7) {
+          if (mapMessageCase_ == 6) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
             onChanged();
           }
         } else {
-          if (mapMessageCase_ == 7) {
+          if (mapMessageCase_ == 6) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
           }
@@ -7575,32 +5946,32 @@ public final class Node {
         return this;
       }
       /**
-       * <code>.Error error_message = 7;</code>
+       * <code>.Error error_message = 6;</code>
        */
       public Node.Error.Builder getErrorMessageBuilder() {
         return getErrorMessageFieldBuilder().getBuilder();
       }
       /**
-       * <code>.Error error_message = 7;</code>
+       * <code>.Error error_message = 6;</code>
        */
       public Node.ErrorOrBuilder getErrorMessageOrBuilder() {
-        if ((mapMessageCase_ == 7) && (errorMessageBuilder_ != null)) {
+        if ((mapMessageCase_ == 6) && (errorMessageBuilder_ != null)) {
           return errorMessageBuilder_.getMessageOrBuilder();
         } else {
-          if (mapMessageCase_ == 7) {
+          if (mapMessageCase_ == 6) {
             return (Node.Error) mapMessage_;
           }
           return Node.Error.getDefaultInstance();
         }
       }
       /**
-       * <code>.Error error_message = 7;</code>
+       * <code>.Error error_message = 6;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           Node.Error, Node.Error.Builder, Node.ErrorOrBuilder> 
           getErrorMessageFieldBuilder() {
         if (errorMessageBuilder_ == null) {
-          if (!(mapMessageCase_ == 7)) {
+          if (!(mapMessageCase_ == 6)) {
             mapMessage_ = Node.Error.getDefaultInstance();
           }
           errorMessageBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -7610,7 +5981,7 @@ public final class Node {
                   isClean());
           mapMessage_ = null;
         }
-        mapMessageCase_ = 7;
+        mapMessageCase_ = 6;
         onChanged();;
         return errorMessageBuilder_;
       }
@@ -7618,29 +5989,29 @@ public final class Node {
       private com.google.protobuf.SingleFieldBuilderV3<
           Node.Acknowledgement, Node.Acknowledgement.Builder, Node.AcknowledgementOrBuilder> acknowledgementBuilder_;
       /**
-       * <code>.Acknowledgement acknowledgement = 8;</code>
+       * <code>.Acknowledgement acknowledgement = 7;</code>
        */
       public boolean hasAcknowledgement() {
-        return mapMessageCase_ == 8;
+        return mapMessageCase_ == 7;
       }
       /**
-       * <code>.Acknowledgement acknowledgement = 8;</code>
+       * <code>.Acknowledgement acknowledgement = 7;</code>
        */
       public Node.Acknowledgement getAcknowledgement() {
         if (acknowledgementBuilder_ == null) {
-          if (mapMessageCase_ == 8) {
+          if (mapMessageCase_ == 7) {
             return (Node.Acknowledgement) mapMessage_;
           }
           return Node.Acknowledgement.getDefaultInstance();
         } else {
-          if (mapMessageCase_ == 8) {
+          if (mapMessageCase_ == 7) {
             return acknowledgementBuilder_.getMessage();
           }
           return Node.Acknowledgement.getDefaultInstance();
         }
       }
       /**
-       * <code>.Acknowledgement acknowledgement = 8;</code>
+       * <code>.Acknowledgement acknowledgement = 7;</code>
        */
       public Builder setAcknowledgement(Node.Acknowledgement value) {
         if (acknowledgementBuilder_ == null) {
@@ -7652,11 +6023,11 @@ public final class Node {
         } else {
           acknowledgementBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 8;
+        mapMessageCase_ = 7;
         return this;
       }
       /**
-       * <code>.Acknowledgement acknowledgement = 8;</code>
+       * <code>.Acknowledgement acknowledgement = 7;</code>
        */
       public Builder setAcknowledgement(
           Node.Acknowledgement.Builder builderForValue) {
@@ -7666,15 +6037,15 @@ public final class Node {
         } else {
           acknowledgementBuilder_.setMessage(builderForValue.build());
         }
-        mapMessageCase_ = 8;
+        mapMessageCase_ = 7;
         return this;
       }
       /**
-       * <code>.Acknowledgement acknowledgement = 8;</code>
+       * <code>.Acknowledgement acknowledgement = 7;</code>
        */
       public Builder mergeAcknowledgement(Node.Acknowledgement value) {
         if (acknowledgementBuilder_ == null) {
-          if (mapMessageCase_ == 8 &&
+          if (mapMessageCase_ == 7 &&
               mapMessage_ != Node.Acknowledgement.getDefaultInstance()) {
             mapMessage_ = Node.Acknowledgement.newBuilder((Node.Acknowledgement) mapMessage_)
                 .mergeFrom(value).buildPartial();
@@ -7683,26 +6054,26 @@ public final class Node {
           }
           onChanged();
         } else {
-          if (mapMessageCase_ == 8) {
+          if (mapMessageCase_ == 7) {
             acknowledgementBuilder_.mergeFrom(value);
           }
           acknowledgementBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 8;
+        mapMessageCase_ = 7;
         return this;
       }
       /**
-       * <code>.Acknowledgement acknowledgement = 8;</code>
+       * <code>.Acknowledgement acknowledgement = 7;</code>
        */
       public Builder clearAcknowledgement() {
         if (acknowledgementBuilder_ == null) {
-          if (mapMessageCase_ == 8) {
+          if (mapMessageCase_ == 7) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
             onChanged();
           }
         } else {
-          if (mapMessageCase_ == 8) {
+          if (mapMessageCase_ == 7) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
           }
@@ -7711,32 +6082,32 @@ public final class Node {
         return this;
       }
       /**
-       * <code>.Acknowledgement acknowledgement = 8;</code>
+       * <code>.Acknowledgement acknowledgement = 7;</code>
        */
       public Node.Acknowledgement.Builder getAcknowledgementBuilder() {
         return getAcknowledgementFieldBuilder().getBuilder();
       }
       /**
-       * <code>.Acknowledgement acknowledgement = 8;</code>
+       * <code>.Acknowledgement acknowledgement = 7;</code>
        */
       public Node.AcknowledgementOrBuilder getAcknowledgementOrBuilder() {
-        if ((mapMessageCase_ == 8) && (acknowledgementBuilder_ != null)) {
+        if ((mapMessageCase_ == 7) && (acknowledgementBuilder_ != null)) {
           return acknowledgementBuilder_.getMessageOrBuilder();
         } else {
-          if (mapMessageCase_ == 8) {
+          if (mapMessageCase_ == 7) {
             return (Node.Acknowledgement) mapMessage_;
           }
           return Node.Acknowledgement.getDefaultInstance();
         }
       }
       /**
-       * <code>.Acknowledgement acknowledgement = 8;</code>
+       * <code>.Acknowledgement acknowledgement = 7;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           Node.Acknowledgement, Node.Acknowledgement.Builder, Node.AcknowledgementOrBuilder> 
           getAcknowledgementFieldBuilder() {
         if (acknowledgementBuilder_ == null) {
-          if (!(mapMessageCase_ == 8)) {
+          if (!(mapMessageCase_ == 7)) {
             mapMessage_ = Node.Acknowledgement.getDefaultInstance();
           }
           acknowledgementBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -7746,7 +6117,7 @@ public final class Node {
                   isClean());
           mapMessage_ = null;
         }
-        mapMessageCase_ = 8;
+        mapMessageCase_ = 7;
         onChanged();;
         return acknowledgementBuilder_;
       }
@@ -7800,16 +6171,6 @@ public final class Node {
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_InitReplica_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_InitReplica_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_InitReplica_Replica_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_InitReplica_Replica_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_GetKey_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -7858,24 +6219,21 @@ public final class Node {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\nNode.proto\"k\n\013InitReplica\022)\n\013all_repli" +
-      "ca\030\001 \003(\0132\024.InitReplica.Replica\0321\n\007Replic" +
-      "a\022\014\n\004name\030\001 \001(\t\022\n\n\002ip\030\002 \001(\t\022\014\n\004port\030\003 \001(" +
-      "\r\"(\n\006GetKey\022\021\n\ttimeStamp\030\001 \001(\004\022\013\n\003key\030\002 " +
-      "\001(\t\":\n\tPutKeyVal\022\021\n\ttimeStamp\030\001 \001(\004\022\013\n\003k" +
-      "ey\030\002 \001(\t\022\r\n\005value\030\003 \001(\t\"\023\n\004Read\022\013\n\003key\030\001" +
-      " \001(\t\"#\n\005Write\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(" +
-      "\t\"(\n\nReadRepair\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 " +
-      "\001(\t\"\030\n\005Error\022\017\n\007message\030\001 \001(\t\"+\n\017Acknowl" +
-      "edgement\022\030\n\020processCompleted\030\001 \001(\010\"\241\002\n\nM",
-      "apMessage\022$\n\014init_replica\030\001 \001(\0132\014.InitRe" +
-      "plicaH\000\022\031\n\006getKey\030\002 \001(\0132\007.GetKeyH\000\022!\n\013pu" +
-      "t_key_val\030\003 \001(\0132\n.PutKeyValH\000\022\025\n\004read\030\004 " +
-      "\001(\0132\005.ReadH\000\022\027\n\005write\030\005 \001(\0132\006.WriteH\000\022\"\n" +
-      "\013read_repair\030\006 \001(\0132\013.ReadRepairH\000\022\037\n\rerr" +
-      "or_message\030\007 \001(\0132\006.ErrorH\000\022+\n\017acknowledg" +
-      "ement\030\010 \001(\0132\020.AcknowledgementH\000B\r\n\013map_m" +
-      "essageb\006proto3"
+      "\n\nNode.proto\"(\n\006GetKey\022\021\n\ttimeStamp\030\001 \001(" +
+      "\004\022\013\n\003key\030\002 \001(\t\":\n\tPutKeyVal\022\021\n\ttimeStamp" +
+      "\030\001 \001(\004\022\013\n\003key\030\002 \001(\t\022\r\n\005value\030\003 \001(\t\"\023\n\004Re" +
+      "ad\022\013\n\003key\030\001 \001(\t\"#\n\005Write\022\013\n\003key\030\001 \001(\t\022\r\n" +
+      "\005value\030\002 \001(\t\"(\n\nReadRepair\022\013\n\003key\030\001 \001(\t\022" +
+      "\r\n\005value\030\002 \001(\t\"\030\n\005Error\022\017\n\007message\030\001 \001(\t" +
+      "\">\n\017Acknowledgement\022\021\n\ttimeStamp\030\001 \001(\004\022\030" +
+      "\n\020processCompleted\030\002 \001(\010\"\373\001\n\nMapMessage\022" +
+      "\031\n\006getKey\030\001 \001(\0132\007.GetKeyH\000\022!\n\013put_key_va" +
+      "l\030\002 \001(\0132\n.PutKeyValH\000\022\025\n\004read\030\003 \001(\0132\005.Re",
+      "adH\000\022\027\n\005write\030\004 \001(\0132\006.WriteH\000\022\"\n\013read_re" +
+      "pair\030\005 \001(\0132\013.ReadRepairH\000\022\037\n\rerror_messa" +
+      "ge\030\006 \001(\0132\006.ErrorH\000\022+\n\017acknowledgement\030\007 " +
+      "\001(\0132\020.AcknowledgementH\000B\r\n\013map_messageb\006" +
+      "proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -7889,66 +6247,54 @@ public final class Node {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_InitReplica_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_InitReplica_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_InitReplica_descriptor,
-        new java.lang.String[] { "AllReplica", });
-    internal_static_InitReplica_Replica_descriptor =
-      internal_static_InitReplica_descriptor.getNestedTypes().get(0);
-    internal_static_InitReplica_Replica_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_InitReplica_Replica_descriptor,
-        new java.lang.String[] { "Name", "Ip", "Port", });
     internal_static_GetKey_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(0);
     internal_static_GetKey_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetKey_descriptor,
         new java.lang.String[] { "TimeStamp", "Key", });
     internal_static_PutKeyVal_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(1);
     internal_static_PutKeyVal_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_PutKeyVal_descriptor,
         new java.lang.String[] { "TimeStamp", "Key", "Value", });
     internal_static_Read_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_Read_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Read_descriptor,
         new java.lang.String[] { "Key", });
     internal_static_Write_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_Write_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Write_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_ReadRepair_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_ReadRepair_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ReadRepair_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_Error_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_Error_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Error_descriptor,
         new java.lang.String[] { "Message", });
     internal_static_Acknowledgement_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_Acknowledgement_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Acknowledgement_descriptor,
-        new java.lang.String[] { "ProcessCompleted", });
+        new java.lang.String[] { "TimeStamp", "ProcessCompleted", });
     internal_static_MapMessage_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_MapMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_MapMessage_descriptor,
-        new java.lang.String[] { "InitReplica", "GetKey", "PutKeyVal", "Read", "Write", "ReadRepair", "ErrorMessage", "Acknowledgement", "MapMessage", });
+        new java.lang.String[] { "GetKey", "PutKeyVal", "Read", "Write", "ReadRepair", "ErrorMessage", "Acknowledgement", "MapMessage", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
