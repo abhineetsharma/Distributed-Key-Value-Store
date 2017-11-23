@@ -9,10 +9,10 @@ public class NodeServer {
 
     static int portNumber;
     static String nodeName;
-    private static Map<String, MapMessage.InitReplica.Replica> NodeMap;
+    private static Map<String, Node.InitReplica.Replica> NodeMap;
 
     static {
-        NodeMap = new TreehMap<>();
+        NodeMap = new TreeMap<>();
     }
 
     public static void main(String[] args) {
@@ -32,7 +32,7 @@ public class NodeServer {
                 while (true) {
                     clientSocket = branchSocket.accept();
                     InputStream is = clientSocket.getInputStream();
-                            NodeServer.MapMessage msg = Map.MapMessage.parseDelimitedFrom(is);
+                    Node.MapMessage msg = Node.MapMessage.parseDelimitedFrom(is);
 
 
                 }
