@@ -6,7 +6,7 @@ import java.net.UnknownHostException;
 import java.time.LocalTime;
 import java.util.*;
 
-public class NodeServer {
+public class Server {
 
     static int currentServerPortNumber;
     static String currentServerName;
@@ -57,7 +57,7 @@ public class NodeServer {
                 while (true) {
                     clientSocket = branchSocket.accept();
                     InputStream is = clientSocket.getInputStream();
-                    Node.MapMessage msg = Node.MapMessage.parseDelimitedFrom(is);
+                    Node.WrapperMessage msg = Node.WrapperMessage.parseDelimitedFrom(is);
 
 
                     if (msg != null) {
@@ -70,25 +70,25 @@ public class NodeServer {
                         //Replica message from controller
 
                         //Read message from the controller
-                        if (msg.hasRead()) {
+                        if (msg.hasClientReadRequest()) {
                             print("----------Read Start----------");
 
                             print("----------Read End----------");
                         }
                         //Write message from the controller
-                        else if (msg.hasWrite()) {
+                        else if (msg.hasClientWriteRequest()) {
                             print("----------Write Start----------");
 
                             print("----------Write End----------");
                         }
                         //Get Key message from coordinator
-                        else if (msg.hasGetKey()) {
+                        else if (msg.hasGetKeyFromCoordinator()) {
                             print("----------GetKey Start----------");
 
                             print("----------GetKey End----------");
                         }
                         //Put Key message from coordinator
-                        else if (msg.hasPutKeyVal()) {
+                        else if (msg.hasPutKeyFromCoordinator()) {
                             print("----------PutKeyVal Start----------");
 
                             print("----------PutKeyVal End----------");

@@ -2,22 +2,22 @@ syntax = "proto3";
 
 
 
-message GetKey {
+message GetKeyFromCoordinator {
     uint64 timeStamp = 1;
     string key = 2;
 }
 
-message PutKeyVal {
+message PutKeyFromCoordinator {
     uint64 timeStamp = 1;
     string key = 2;
     string value = 3;
 }
 
-message Read {
+message ClientReadRequest {
     string key = 1;
 }
 
-message Write {
+message ClientWriteRequest {
     string key = 1;
     string value = 2;
 }
@@ -36,12 +36,12 @@ message Acknowledgement {
     bool processCompleted = 2;
 }
 
-message MapMessage {
+message WrapperMessage {
     oneof map_message {
-        GetKey getKey = 1;
-        PutKeyVal put_key_val = 2;
-        Read read = 3;
-        Write write = 4;
+        GetKeyFromCoordinator get_key_from_coordinator = 1;
+        PutKeyFromCoordinator put_key_from_coordinator = 2;
+        ClientReadRequest client_read_request = 3;
+        ClientWriteRequest client_write_request = 4;
         ReadRepair read_repair = 5;
         Error error_message = 6;
         Acknowledgement acknowledgement= 7;
