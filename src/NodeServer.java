@@ -9,10 +9,10 @@ public class NodeServer {
 
     static int portNumber;
     static String nodeName;
-    private static Map<String, Node.InitReplica.Replica> NodeMap;
+    private static Map<String, Node.InitReplica.Replica> nodeMap;
 
     static {
-        NodeMap = new TreeMap<>();
+        nodeMap = new TreeMap<>();
     }
 
     public static void main(String[] args) {
@@ -34,6 +34,15 @@ public class NodeServer {
                     InputStream is = clientSocket.getInputStream();
                     Node.MapMessage msg = Node.MapMessage.parseDelimitedFrom(is);
 
+                    if (msg != null) {
+                        if (msg.hasInitReplica()) {
+                            for(Node.InitReplica.Replica replica : msg.getInitReplica().getAllReplicaList()){
+                                if(!replica.getName().equalsIgnoreCase(nodeName)){
+                                    nodeMap.put(replica.getName(),replica);
+                                }
+                            }
+                        }
+                    }
 
                 }
             }
