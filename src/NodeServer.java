@@ -4,15 +4,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
-public class Node {
+public class NodeServer {
 
     static int portNumber;
     static String nodeName;
+    private static Map<String, MapMessage.InitReplica.Replica> NodeMap;
+
+    static {
+        NodeMap = new TreehMap<>();
+    }
 
     public static void main(String[] args) {
 
@@ -25,13 +26,14 @@ public class Node {
                 portNumber = Integer.parseInt(args[1]);
 
                 branchSocket = new ServerSocket(portNumber);
-                System.out.println("Node Server Started");
+                System.out.println("NodeServer Server Started");
 
 
                 while (true) {
                     clientSocket = branchSocket.accept();
-
                     InputStream is = clientSocket.getInputStream();
+                            NodeServer.MapMessage msg = Map.MapMessage.parseDelimitedFrom(is);
+
 
                 }
             }
