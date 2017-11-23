@@ -29,15 +29,21 @@ public class NodeServer {
 
                 branchSocket = new ServerSocket(portNumber);
                 System.out.println("NodeServer Server Started");
-
+                int msgCount = 0;
 
                 while (true) {
                     clientSocket = branchSocket.accept();
                     InputStream is = clientSocket.getInputStream();
                     Node.MapMessage msg = Node.MapMessage.parseDelimitedFrom(is);
 
+
                     if (msg != null) {
+                        print("\n\n----------------------------------------");
+                        print("====Message received count = " + (++msgCount));
+                        print("----------------------------------------\n\n");
+
                         print(msg);
+
                         //Replica message from controller
                         if (msg.hasInitReplica()) {
                             print("----------InitReplica Start----------");
@@ -78,6 +84,10 @@ public class NodeServer {
 
                             print("----------ReadRepair End----------");
                         }
+
+                        print("\n\n---------------------------------------------");
+                        print("=====Message received End count = " + msgCount);
+                        print("---------------------------------------------\n\n");
                     }
 
                 }
