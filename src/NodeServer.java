@@ -52,7 +52,7 @@ public class NodeServer {
                 }
 
                 print(nodeMap);
-                print(getReplicaServer("node4"));
+                print(getReplicaServersList("node4"));
 
                 while (true) {
                     clientSocket = branchSocket.accept();
@@ -131,7 +131,7 @@ public class NodeServer {
         thread.start();
     }
 
-    private static List<NodeServerData> getReplicaServer(String keyNode) {
+    private static List<NodeServerData> getReplicaServersList(String keyNode) {
         String[] mapKeys = nodeMap.keySet().toArray(new String[nodeMap.size()]);
         int keyPosition = Arrays.asList(mapKeys).indexOf(keyNode);
         List<NodeServerData> nodeServerDataList = new ArrayList<>();
