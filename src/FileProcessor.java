@@ -11,6 +11,10 @@ public class FileProcessor {
     //constructor
     public FileProcessor(String path) {
         this.filePath = path;
+        if (filePath.equals(null)) {
+            System.err.println("File path is null");
+            System.exit(1);
+        }
         getInitializedFileObject();
         count = 0;
     }

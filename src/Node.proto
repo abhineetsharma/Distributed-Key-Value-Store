@@ -39,7 +39,8 @@ message Error {
 }
 
 message Acknowledgement {
-    bool processCompleted = 1;
+    uint64 timeStamp = 1;
+    bool processCompleted = 2;
 }
 
 message MapMessage {

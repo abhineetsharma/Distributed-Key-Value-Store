@@ -3,19 +3,25 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.time.LocalTime;
 import java.util.*;
 
 public class NodeServer {
 
-    static int portNumber;
-    static String nodeName;
-    private static Map<String, Node.InitReplica.Replica> nodeMap;
+    static int currentServerPortNumber;
+    static String currentServerName;
+    static String filePath;
+    static String currentServerIp;
+
+    private static Map<String, NodeServerData> nodeMap;
 
     private static boolean printFlag = true;//flag to stop print
 
     static {
         nodeMap = new TreeMap<>();
     }
+
+    enum RequestType {GET, PUT}
 
     public static void main(String[] args) {
 
@@ -24,12 +30,29 @@ public class NodeServer {
 
         try {
             if (args.length > 1) {
-                nodeName = args[0];
-                portNumber = Integer.parseInt(args[1]);
 
-                branchSocket = new ServerSocket(portNumber);
-                System.out.println("NodeServer Server Started");
+                currentServerPortNumber = Integer.parseInt(args[0]);
+                filePath = args[1];
+
+                branchSocket = new ServerSocket(currentServerPortNumber);
+                System.out.println("Node Server Server Started");
                 int msgCount = 0;
+
+                //server information read by the server read by server
+                FileProcessor fPro = new FileProcessor(filePath);
+                String str = "";
+                while ((str = fPro.readLine()) != null) {
+                    NodeServerData nodeServerData = new NodeServerData(str);
+                    nodeMap.put(nodeServerData.getName(), nodeServerData);
+
+                    if (nodeServerData.getPort() == currentServerPortNumber) {
+                        currentServerName = nodeServerData.getName();
+                        currentServerIp = nodeServerData.getIp();
+                    }
+                }
+
+                print(nodeMap);
+                print(getReplicaServer("node4"));
 
                 while (true) {
                     clientSocket = branchSocket.accept();
@@ -45,41 +68,33 @@ public class NodeServer {
                         print(msg);
 
                         //Replica message from controller
-                        if (msg.hasInitReplica()) {
-                            print("----------InitReplica Start----------");
-                            for(Node.InitReplica.Replica replica : msg.getInitReplica().getAllReplicaList()){
-                                if(!replica.getName().equalsIgnoreCase(nodeName)){
-                                    nodeMap.put(replica.getName(),replica);
-                                }
-                            }
-                            print("----------InitReplica End----------");
-                        }
+
                         //Read message from the controller
-                        else if(msg.hasRead()){
+                        if (msg.hasRead()) {
                             print("----------Read Start----------");
 
                             print("----------Read End----------");
                         }
                         //Write message from the controller
-                        else if(msg.hasWrite()){
+                        else if (msg.hasWrite()) {
                             print("----------Write Start----------");
 
                             print("----------Write End----------");
                         }
                         //Get Key message from coordinator
-                        else if(msg.hasGetKey()){
+                        else if (msg.hasGetKey()) {
                             print("----------GetKey Start----------");
 
                             print("----------GetKey End----------");
                         }
                         //Put Key message from coordinator
-                        else if(msg.hasPutKeyVal()){
+                        else if (msg.hasPutKeyVal()) {
                             print("----------PutKeyVal Start----------");
 
                             print("----------PutKeyVal End----------");
                         }
                         //Read Repair Message from the coordinator
-                        else if(msg.hasReadRepair()){
+                        else if (msg.hasReadRepair()) {
                             print("----------ReadRepair Start----------");
 
                             print("----------ReadRepair End----------");
@@ -98,6 +113,7 @@ public class NodeServer {
             e1.printStackTrace();
         }
     }
+
     private static void print(Object obj) {
         if (printFlag) {
             if (obj != null)
@@ -105,6 +121,32 @@ public class NodeServer {
             else
                 System.out.println("null");
         }
+    }
+
+    private synchronized static void processRequest(String nodeName, String key, String value) {
+
+        Thread thread = new Thread(() -> {
+        });
+        thread.start();
+    }
+
+    private static List<NodeServerData> getReplicaServer(String keyNode) {
+        String[] mapKeys = new String[nodeMap.size()];
+        int pos = 0;
+        int keyPosition = 0;
+        for (String key : nodeMap.keySet()) {
+            mapKeys[pos++] = key;
+            if (key.equalsIgnoreCase(keyNode))
+                keyPosition = pos - 1;
+        }
+
+        List<NodeServerData> nodeServerDataList = new ArrayList<>();
+
+        for (int i = 0; i < 4; i++) {
+            nodeServerDataList.add(nodeMap.get(mapKeys[(nodeMap.size() + keyPosition + i) % nodeMap.size()]));
+        }
+
+        return nodeServerDataList;
     }
 
 
