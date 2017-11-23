@@ -35,12 +35,33 @@ public class NodeServer {
                     Node.MapMessage msg = Node.MapMessage.parseDelimitedFrom(is);
 
                     if (msg != null) {
+                        //Replica message from controller
                         if (msg.hasInitReplica()) {
                             for(Node.InitReplica.Replica replica : msg.getInitReplica().getAllReplicaList()){
                                 if(!replica.getName().equalsIgnoreCase(nodeName)){
                                     nodeMap.put(replica.getName(),replica);
                                 }
                             }
+                        }
+                        //Read message from the controller
+                        else if(msg.hasRead()){
+
+                        }
+                        //Write message from the controller
+                        else if(msg.hasWrite()){
+
+                        }
+                        //Get Key message from coordinator
+                        else if(msg.hasGetKey()){
+
+                        }
+                        //Put Key message from coordinator
+                        else if(msg.hasPutKeyVal()){
+
+                        }
+                        //Read Repair Message from the coordinator
+                        else if(msg.hasReadRepair()){
+
                         }
                     }
 
