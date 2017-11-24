@@ -81,7 +81,7 @@ public class Server {
         server.initServer();
 
         ServerSocket serverSocket = null;
-           try {
+            try {
 				serverSocket = new ServerSocket(server.portNumber);
 			} catch (IOException ex) {
 	            System.out.println("Server socket cannot be created");
@@ -90,30 +90,30 @@ public class Server {
 	        }
 
             while(true){
-    			Socket reciever = null;
+    			Socket receiver = null;
     			try{
-    				reciever = serverSocket.accept();
-    				Node.WrapperMessage message = Node.WrapperMessage.parseDelimitedFrom(reciever.getInputStream());
+    				receiver = serverSocket.accept();
+    				Node.WrapperMessage message = Node.WrapperMessage.parseDelimitedFrom(receiver.getInputStream());
 
     				if (message.hasClientReadRequest()) {
     					//call appropriate method from here
-    					reciever.close();
+    					receiver.close();
     				}
     				else if (message.hasClientWriteRequest()) {
     					//call appropriate method from here
-    					reciever.close();
+    					receiver.close();
     				}
     				else if (message.hasGetKeyFromCoordinator()) {
     					//call appropriate method from here
-    					reciever.close();
+    					receiver.close();
     				}
     				else if (message.hasPutKeyFromCoordinator()) {
     					//call appropriate method from here
-    					reciever.close();
+    					receiver.close();
     				}
     				else if (message.hasReadRepair()) {
     					//call appropriate method from here
-    					reciever.close();
+    					receiver.close();
     				}
     			}catch (IOException e) {
     				System.out.println("Error reading data from socket. Exiting main thread");
