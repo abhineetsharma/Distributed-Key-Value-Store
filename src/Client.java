@@ -26,29 +26,29 @@ public class Client {
                 nodeMap.put(nodeServerData.getName(), nodeServerData);
             }
             print(nodeMap);
-            sendPUTrequestToCoordinator();
+            sendPUTrequestToCoordinator("node0");
 //			Thread.sleep(10000);
 //			sendGETrequestToCoordinator();
         }
     }
 
-    private static void sendPUTrequestToCoordinator() throws UnknownHostException, IOException {
-        System.out.println("IP: " + nodeMap.get("node1").getIp() + " Port:" + nodeMap.get("node1").getPort());
-        Socket socket = new Socket(nodeMap.get("node1").getIp(), nodeMap.get("node1").getPort());
+    private static void sendPUTrequestToCoordinator(String node) throws UnknownHostException, IOException {
+        System.out.println("IP: " + nodeMap.get(node).getIp() + " Port:" + nodeMap.get(node).getPort());
+        Socket socket = new Socket(nodeMap.get(node).getIp(), nodeMap.get(node).getPort());
         Node.ClientWriteRequest.Builder putKeyVal = Node.ClientWriteRequest.newBuilder();
-        putKeyVal.setKey(1).setValue("XYZ").build();
+        putKeyVal.setKey(4).setValue("XYZ").build();
         Node.WrapperMessage.Builder msg = Node.WrapperMessage.newBuilder();
         msg.setClientWriteRequest(putKeyVal).build().writeDelimitedTo(socket.getOutputStream());
         socket.close();
     }
 
-    private static void sendGETrequestToCoordinator() throws UnknownHostException, IOException {
-        System.out.println("IP: " + nodeMap.get("node1").getIp() + " Port:" + nodeMap.get("node1").getPort());
-        Socket socket = new Socket(nodeMap.get("node1").getIp(), nodeMap.get("node1").getPort());
-        Node.ClientReadRequest.Builder getkeyBuilder = Node.ClientReadRequest.newBuilder();
-        getkeyBuilder.setKey(1).build();
+    private static void sendGETrequestToCoordinator(String node) throws UnknownHostException, IOException {
+        System.out.println("IP: " + nodeMap.get(node).getIp() + " Port:" + nodeMap.get(node).getPort());
+        Socket socket = new Socket(nodeMap.get(node).getIp(), nodeMap.get(node).getPort());
+        Node.ClientReadRequest.Builder getKeyBuilder = Node.ClientReadRequest.newBuilder();
+        getKeyBuilder.setKey(1).build();
         Node.WrapperMessage.Builder msg = Node.WrapperMessage.newBuilder();
-        msg.setClientReadRequest(getkeyBuilder).build().writeDelimitedTo(socket.getOutputStream());
+        msg.setClientReadRequest(getKeyBuilder).build().writeDelimitedTo(socket.getOutputStream());
         socket.close();
     }
 
@@ -60,4 +60,5 @@ public class Client {
                 System.out.println("null");
         }
     }
+
 }

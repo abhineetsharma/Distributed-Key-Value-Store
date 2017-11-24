@@ -60,6 +60,22 @@ public class Server {
         return nodeServerDataList;
     }
 
+    private NodeServerData getNodeByKey(int key) {
+        int num = (key + nodeMap.size()) % nodeMap.size();
+        String[] nodeKeys = nodeMap.keySet().toArray(new String[nodeMap.size()]);
+        return nodeMap.get(nodeKeys[num]);
+    }
+
+    private void processingClientWriteRequest(Node.ClientWriteRequest clientWriteRequest) {
+        int key = clientWriteRequest.getKey();
+        String value = clientWriteRequest.getValue();
+
+        NodeServerData primaryReplica = getNodeByKey(key);
+        print(primaryReplica.toString());
+        List<NodeServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
+        print(replicaServerList);
+    }
+
 
     public static void main(String[] args) {
 
@@ -79,6 +95,7 @@ public class Server {
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(server.portNumber);
+            System.out.println("Server started with " + server.portNumber);
         } catch (IOException ex) {
             System.out.println("Server socket cannot be created");
             ex.printStackTrace();
@@ -97,6 +114,7 @@ public class Server {
                         receiver.close();
                     } else if (message.hasClientWriteRequest()) {
                         //call appropriate method from here
+                        server.processingClientWriteRequest(message.getClientWriteRequest());
                         receiver.close();
                     } else if (message.hasGetKeyFromCoordinator()) {
                         //call appropriate method from here
@@ -124,6 +142,7 @@ public class Server {
             }
         }
     }
+
 
     private String getCurrentTimeString() {
         return Long.toString(System.currentTimeMillis());
