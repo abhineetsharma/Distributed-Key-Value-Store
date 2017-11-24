@@ -36,7 +36,7 @@ public class Client {
         System.out.println("IP: " + nodeMap.get(node).getIp() + " Port:" + nodeMap.get(node).getPort());
         Socket socket = new Socket(nodeMap.get(node).getIp(), nodeMap.get(node).getPort());
         Node.ClientWriteRequest.Builder putKeyVal = Node.ClientWriteRequest.newBuilder();
-        putKeyVal.setKey(1).setValue("XYZ").build();
+        putKeyVal.setKey(1).setValue("XYZ").setConsistencyLevel(Node.ConsistencyLevel.TWO).build();
         Node.WrapperMessage.Builder msg = Node.WrapperMessage.newBuilder();
         msg.setClientWriteRequest(putKeyVal).build().writeDelimitedTo(socket.getOutputStream());
         socket.close();

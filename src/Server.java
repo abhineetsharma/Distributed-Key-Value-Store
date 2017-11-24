@@ -3,6 +3,8 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 public class Server {
 
@@ -18,6 +20,7 @@ public class Server {
         //server information read by the server read by server
         FileProcessor fPro = new FileProcessor(filePath);
         nodeMap = new TreeMap<>();
+        keyValueMap = new ConcurrentSkipListMap<>();
         String str = "";
         while ((str = fPro.readLine()) != null) {
             NodeServerData nodeServerData = new NodeServerData(str);
@@ -77,40 +80,60 @@ public class Server {
         String timeStamp = getCurrentTimeString();
 
         for (NodeServerData replica : replicaServerList) {
-            int replicaPort = replica.getPort();
-            String replicaIp = replica.getIp();
 
             Node.PutKeyFromCoordinator.Builder putKeyFromCoordinatorBuilder = Node.PutKeyFromCoordinator.newBuilder();
 
             putKeyFromCoordinatorBuilder.setKey(key);
             putKeyFromCoordinatorBuilder.setTimeStamp(timeStamp);
             putKeyFromCoordinatorBuilder.setValue(value);
+            putKeyFromCoordinatorBuilder.setCoordinatorName(name);
 
             Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setPutKeyFromCoordinator(putKeyFromCoordinatorBuilder).build();
-            Socket replicaSocket = null;
             try {
-                replicaSocket = new Socket(replicaIp, replicaPort);
-                message.writeDelimitedTo(replicaSocket.getOutputStream());
-
+                sendMessageToNodeSocket(replica, message);
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                if (replicaSocket != null)
-                    try {
-                        replicaSocket.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
             }
-
-
         }
     }
 
     private void processingPutKeyFromCoordinatorRequest(Node.PutKeyFromCoordinator putKeyFromCoordinator) {
+        int key = putKeyFromCoordinator.getKey();
+        String value = putKeyFromCoordinator.getValue();
+        String timeStamp = putKeyFromCoordinator.getTimeStamp();
+        String coordinatorName = putKeyFromCoordinator.getCoordinatorName();
+
+        //do pre-commit processing via log file and code
+        if (keyValueMap.containsKey(key)) {
+            keyValueMap.get(key).updateKeyWithValue(timeStamp, value);
+        } else {
+            keyValueMap.put(key, new ValueMetaData(timeStamp, value));
+        }
+        //do post commit processing via log file and code
+        print(keyValueMap.get(key));
+
+
+        Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator.newBuilder();
+        acknowledgementBuilder.setKey(key);
+        acknowledgementBuilder.setTimeStamp(timeStamp);
+        acknowledgementBuilder.setValue(value);
+        acknowledgementBuilder.setReplicaName(name);
+
+        Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setAcknowledgementToCoordinator(acknowledgementBuilder).build();
+
+        NodeServerData coordinator = nodeMap.get(coordinatorName);
+
+        //sendMessageToNodeSocket(coordinator,message);
 
     }
 
+    private void sendMessageToNodeSocket(NodeServerData nodeServerData, Node.WrapperMessage message) throws IOException {
+        Socket nodeServerSocket = null;
+
+        nodeServerSocket = new Socket(nodeServerData.getIp(), nodeServerData.getPort());
+        message.writeDelimitedTo(nodeServerSocket.getOutputStream());
+        nodeServerSocket.close();
+    }
 
     public static void main(String[] args) {
 
