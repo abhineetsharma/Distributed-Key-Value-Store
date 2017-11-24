@@ -94,6 +94,7 @@ public class Server {
     			try{
     				receiver = serverSocket.accept();
     				Node.WrapperMessage message = Node.WrapperMessage.parseDelimitedFrom(receiver.getInputStream());
+					print(message);
 
     				if (message.hasClientReadRequest()) {
     					//call appropriate method from here
