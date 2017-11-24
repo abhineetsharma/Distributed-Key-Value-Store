@@ -4,26 +4,26 @@ syntax = "proto3";
 
 message GetKeyFromCoordinator {
     uint64 timeStamp = 1;
-    string key = 2;
+    uint32 key = 2;
 }
 
 message PutKeyFromCoordinator {
     uint64 timeStamp = 1;
-    string key = 2;
+    uint32 key = 2;
     string value = 3;
 }
 
 message ClientReadRequest {
-    string key = 1;
+    uint32 key = 1;
 }
 
 message ClientWriteRequest {
-    string key = 1;
+    uint32 key = 1;
     string value = 2;
 }
 
 message ReadRepair {
-    string key = 1;
+    uint32 key = 1;
     string value = 2;
 }
 

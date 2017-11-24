@@ -11,7 +11,7 @@ public class Server {
     private String filePath;
     private String ip;
     private Map<String, NodeServerData> nodeMap;
-    private Map<String, ValueMetaData> keyValueMap;
+    private Map<Integer, ValueMetaData> keyValueMap;
     private static boolean printFlag = true;//flag to stop print
 
     private void initServer() {
@@ -113,8 +113,8 @@ public class Server {
                 System.out.println("Error reading data from socket. Exiting main thread");
                 e.printStackTrace();
                 System.exit(1);
-            }finally {
-                if(receiver!=null){
+            } finally {
+                if (receiver != null) {
                     try {
                         receiver.close();
                     } catch (IOException e) {
@@ -128,9 +128,6 @@ public class Server {
     private String getCurrentTimeString() {
         return Long.toString(System.currentTimeMillis());
     }
-
-
-
 
 
 }

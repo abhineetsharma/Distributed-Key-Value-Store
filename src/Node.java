@@ -22,14 +22,9 @@ public final class Node {
     long getTimeStamp();
 
     /**
-     * <code>string key = 2;</code>
+     * <code>uint32 key = 2;</code>
      */
-    java.lang.String getKey();
-    /**
-     * <code>string key = 2;</code>
-     */
-    com.google.protobuf.ByteString
-        getKeyBytes();
+    int getKey();
   }
   /**
    * Protobuf type {@code GetKeyFromCoordinator}
@@ -45,7 +40,7 @@ public final class Node {
     }
     private GetKeyFromCoordinator() {
       timeStamp_ = 0L;
-      key_ = "";
+      key_ = 0;
     }
 
     @java.lang.Override
@@ -81,10 +76,9 @@ public final class Node {
               timeStamp_ = input.readUInt64();
               break;
             }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 16: {
 
-              key_ = s;
+              key_ = input.readUInt32();
               break;
             }
           }
@@ -121,37 +115,12 @@ public final class Node {
     }
 
     public static final int KEY_FIELD_NUMBER = 2;
-    private volatile java.lang.Object key_;
+    private int key_;
     /**
-     * <code>string key = 2;</code>
+     * <code>uint32 key = 2;</code>
      */
-    public java.lang.String getKey() {
-      java.lang.Object ref = key_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        key_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string key = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-        getKeyBytes() {
-      java.lang.Object ref = key_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        key_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getKey() {
+      return key_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -169,8 +138,8 @@ public final class Node {
       if (timeStamp_ != 0L) {
         output.writeUInt64(1, timeStamp_);
       }
-      if (!getKeyBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, key_);
+      if (key_ != 0) {
+        output.writeUInt32(2, key_);
       }
       unknownFields.writeTo(output);
     }
@@ -184,8 +153,9 @@ public final class Node {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt64Size(1, timeStamp_);
       }
-      if (!getKeyBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, key_);
+      if (key_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, key_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -205,8 +175,8 @@ public final class Node {
       boolean result = true;
       result = result && (getTimeStamp()
           == other.getTimeStamp());
-      result = result && getKey()
-          .equals(other.getKey());
+      result = result && (getKey()
+          == other.getKey());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -222,7 +192,7 @@ public final class Node {
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getTimeStamp());
       hash = (37 * hash) + KEY_FIELD_NUMBER;
-      hash = (53 * hash) + getKey().hashCode();
+      hash = (53 * hash) + getKey();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -354,7 +324,7 @@ public final class Node {
         super.clear();
         timeStamp_ = 0L;
 
-        key_ = "";
+        key_ = 0;
 
         return this;
       }
@@ -424,9 +394,8 @@ public final class Node {
         if (other.getTimeStamp() != 0L) {
           setTimeStamp(other.getTimeStamp());
         }
-        if (!other.getKey().isEmpty()) {
-          key_ = other.key_;
-          onChanged();
+        if (other.getKey() != 0) {
+          setKey(other.getKey());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -481,71 +450,28 @@ public final class Node {
         return this;
       }
 
-      private java.lang.Object key_ = "";
+      private int key_ ;
       /**
-       * <code>string key = 2;</code>
+       * <code>uint32 key = 2;</code>
        */
-      public java.lang.String getKey() {
-        java.lang.Object ref = key_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          key_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      public int getKey() {
+        return key_;
       }
       /**
-       * <code>string key = 2;</code>
+       * <code>uint32 key = 2;</code>
        */
-      public com.google.protobuf.ByteString
-          getKeyBytes() {
-        java.lang.Object ref = key_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          key_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string key = 2;</code>
-       */
-      public Builder setKey(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setKey(int value) {
+        
         key_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>string key = 2;</code>
+       * <code>uint32 key = 2;</code>
        */
       public Builder clearKey() {
         
-        key_ = getDefaultInstance().getKey();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string key = 2;</code>
-       */
-      public Builder setKeyBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        key_ = value;
+        key_ = 0;
         onChanged();
         return this;
       }
@@ -608,14 +534,9 @@ public final class Node {
     long getTimeStamp();
 
     /**
-     * <code>string key = 2;</code>
+     * <code>uint32 key = 2;</code>
      */
-    java.lang.String getKey();
-    /**
-     * <code>string key = 2;</code>
-     */
-    com.google.protobuf.ByteString
-        getKeyBytes();
+    int getKey();
 
     /**
      * <code>string value = 3;</code>
@@ -641,7 +562,7 @@ public final class Node {
     }
     private PutKeyFromCoordinator() {
       timeStamp_ = 0L;
-      key_ = "";
+      key_ = 0;
       value_ = "";
     }
 
@@ -678,10 +599,9 @@ public final class Node {
               timeStamp_ = input.readUInt64();
               break;
             }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 16: {
 
-              key_ = s;
+              key_ = input.readUInt32();
               break;
             }
             case 26: {
@@ -724,37 +644,12 @@ public final class Node {
     }
 
     public static final int KEY_FIELD_NUMBER = 2;
-    private volatile java.lang.Object key_;
+    private int key_;
     /**
-     * <code>string key = 2;</code>
+     * <code>uint32 key = 2;</code>
      */
-    public java.lang.String getKey() {
-      java.lang.Object ref = key_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        key_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string key = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-        getKeyBytes() {
-      java.lang.Object ref = key_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        key_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getKey() {
+      return key_;
     }
 
     public static final int VALUE_FIELD_NUMBER = 3;
@@ -806,8 +701,8 @@ public final class Node {
       if (timeStamp_ != 0L) {
         output.writeUInt64(1, timeStamp_);
       }
-      if (!getKeyBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, key_);
+      if (key_ != 0) {
+        output.writeUInt32(2, key_);
       }
       if (!getValueBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, value_);
@@ -824,8 +719,9 @@ public final class Node {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt64Size(1, timeStamp_);
       }
-      if (!getKeyBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, key_);
+      if (key_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, key_);
       }
       if (!getValueBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, value_);
@@ -848,8 +744,8 @@ public final class Node {
       boolean result = true;
       result = result && (getTimeStamp()
           == other.getTimeStamp());
-      result = result && getKey()
-          .equals(other.getKey());
+      result = result && (getKey()
+          == other.getKey());
       result = result && getValue()
           .equals(other.getValue());
       result = result && unknownFields.equals(other.unknownFields);
@@ -867,7 +763,7 @@ public final class Node {
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getTimeStamp());
       hash = (37 * hash) + KEY_FIELD_NUMBER;
-      hash = (53 * hash) + getKey().hashCode();
+      hash = (53 * hash) + getKey();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
       hash = (53 * hash) + getValue().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -1001,7 +897,7 @@ public final class Node {
         super.clear();
         timeStamp_ = 0L;
 
-        key_ = "";
+        key_ = 0;
 
         value_ = "";
 
@@ -1074,9 +970,8 @@ public final class Node {
         if (other.getTimeStamp() != 0L) {
           setTimeStamp(other.getTimeStamp());
         }
-        if (!other.getKey().isEmpty()) {
-          key_ = other.key_;
-          onChanged();
+        if (other.getKey() != 0) {
+          setKey(other.getKey());
         }
         if (!other.getValue().isEmpty()) {
           value_ = other.value_;
@@ -1135,71 +1030,28 @@ public final class Node {
         return this;
       }
 
-      private java.lang.Object key_ = "";
+      private int key_ ;
       /**
-       * <code>string key = 2;</code>
+       * <code>uint32 key = 2;</code>
        */
-      public java.lang.String getKey() {
-        java.lang.Object ref = key_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          key_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      public int getKey() {
+        return key_;
       }
       /**
-       * <code>string key = 2;</code>
+       * <code>uint32 key = 2;</code>
        */
-      public com.google.protobuf.ByteString
-          getKeyBytes() {
-        java.lang.Object ref = key_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          key_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string key = 2;</code>
-       */
-      public Builder setKey(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setKey(int value) {
+        
         key_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>string key = 2;</code>
+       * <code>uint32 key = 2;</code>
        */
       public Builder clearKey() {
         
-        key_ = getDefaultInstance().getKey();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string key = 2;</code>
-       */
-      public Builder setKeyBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        key_ = value;
+        key_ = 0;
         onChanged();
         return this;
       }
@@ -1326,14 +1178,9 @@ public final class Node {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>string key = 1;</code>
+     * <code>uint32 key = 1;</code>
      */
-    java.lang.String getKey();
-    /**
-     * <code>string key = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getKeyBytes();
+    int getKey();
   }
   /**
    * Protobuf type {@code ClientReadRequest}
@@ -1348,7 +1195,7 @@ public final class Node {
       super(builder);
     }
     private ClientReadRequest() {
-      key_ = "";
+      key_ = 0;
     }
 
     @java.lang.Override
@@ -1379,10 +1226,9 @@ public final class Node {
               }
               break;
             }
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 8: {
 
-              key_ = s;
+              key_ = input.readUInt32();
               break;
             }
           }
@@ -1410,37 +1256,12 @@ public final class Node {
     }
 
     public static final int KEY_FIELD_NUMBER = 1;
-    private volatile java.lang.Object key_;
+    private int key_;
     /**
-     * <code>string key = 1;</code>
+     * <code>uint32 key = 1;</code>
      */
-    public java.lang.String getKey() {
-      java.lang.Object ref = key_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        key_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string key = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getKeyBytes() {
-      java.lang.Object ref = key_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        key_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getKey() {
+      return key_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1455,8 +1276,8 @@ public final class Node {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getKeyBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, key_);
+      if (key_ != 0) {
+        output.writeUInt32(1, key_);
       }
       unknownFields.writeTo(output);
     }
@@ -1466,8 +1287,9 @@ public final class Node {
       if (size != -1) return size;
 
       size = 0;
-      if (!getKeyBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, key_);
+      if (key_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, key_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1485,8 +1307,8 @@ public final class Node {
       Node.ClientReadRequest other = (Node.ClientReadRequest) obj;
 
       boolean result = true;
-      result = result && getKey()
-          .equals(other.getKey());
+      result = result && (getKey()
+          == other.getKey());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1499,7 +1321,7 @@ public final class Node {
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + KEY_FIELD_NUMBER;
-      hash = (53 * hash) + getKey().hashCode();
+      hash = (53 * hash) + getKey();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1629,7 +1451,7 @@ public final class Node {
       }
       public Builder clear() {
         super.clear();
-        key_ = "";
+        key_ = 0;
 
         return this;
       }
@@ -1695,9 +1517,8 @@ public final class Node {
 
       public Builder mergeFrom(Node.ClientReadRequest other) {
         if (other == Node.ClientReadRequest.getDefaultInstance()) return this;
-        if (!other.getKey().isEmpty()) {
-          key_ = other.key_;
-          onChanged();
+        if (other.getKey() != 0) {
+          setKey(other.getKey());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1726,71 +1547,28 @@ public final class Node {
         return this;
       }
 
-      private java.lang.Object key_ = "";
+      private int key_ ;
       /**
-       * <code>string key = 1;</code>
+       * <code>uint32 key = 1;</code>
        */
-      public java.lang.String getKey() {
-        java.lang.Object ref = key_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          key_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      public int getKey() {
+        return key_;
       }
       /**
-       * <code>string key = 1;</code>
+       * <code>uint32 key = 1;</code>
        */
-      public com.google.protobuf.ByteString
-          getKeyBytes() {
-        java.lang.Object ref = key_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          key_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string key = 1;</code>
-       */
-      public Builder setKey(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setKey(int value) {
+        
         key_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>string key = 1;</code>
+       * <code>uint32 key = 1;</code>
        */
       public Builder clearKey() {
         
-        key_ = getDefaultInstance().getKey();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string key = 1;</code>
-       */
-      public Builder setKeyBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        key_ = value;
+        key_ = 0;
         onChanged();
         return this;
       }
@@ -1848,14 +1626,9 @@ public final class Node {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>string key = 1;</code>
+     * <code>uint32 key = 1;</code>
      */
-    java.lang.String getKey();
-    /**
-     * <code>string key = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getKeyBytes();
+    int getKey();
 
     /**
      * <code>string value = 2;</code>
@@ -1880,7 +1653,7 @@ public final class Node {
       super(builder);
     }
     private ClientWriteRequest() {
-      key_ = "";
+      key_ = 0;
       value_ = "";
     }
 
@@ -1912,10 +1685,9 @@ public final class Node {
               }
               break;
             }
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 8: {
 
-              key_ = s;
+              key_ = input.readUInt32();
               break;
             }
             case 18: {
@@ -1949,37 +1721,12 @@ public final class Node {
     }
 
     public static final int KEY_FIELD_NUMBER = 1;
-    private volatile java.lang.Object key_;
+    private int key_;
     /**
-     * <code>string key = 1;</code>
+     * <code>uint32 key = 1;</code>
      */
-    public java.lang.String getKey() {
-      java.lang.Object ref = key_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        key_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string key = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getKeyBytes() {
-      java.lang.Object ref = key_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        key_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getKey() {
+      return key_;
     }
 
     public static final int VALUE_FIELD_NUMBER = 2;
@@ -2028,8 +1775,8 @@ public final class Node {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getKeyBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, key_);
+      if (key_ != 0) {
+        output.writeUInt32(1, key_);
       }
       if (!getValueBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, value_);
@@ -2042,8 +1789,9 @@ public final class Node {
       if (size != -1) return size;
 
       size = 0;
-      if (!getKeyBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, key_);
+      if (key_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, key_);
       }
       if (!getValueBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, value_);
@@ -2064,8 +1812,8 @@ public final class Node {
       Node.ClientWriteRequest other = (Node.ClientWriteRequest) obj;
 
       boolean result = true;
-      result = result && getKey()
-          .equals(other.getKey());
+      result = result && (getKey()
+          == other.getKey());
       result = result && getValue()
           .equals(other.getValue());
       result = result && unknownFields.equals(other.unknownFields);
@@ -2080,7 +1828,7 @@ public final class Node {
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + KEY_FIELD_NUMBER;
-      hash = (53 * hash) + getKey().hashCode();
+      hash = (53 * hash) + getKey();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
       hash = (53 * hash) + getValue().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -2212,7 +1960,7 @@ public final class Node {
       }
       public Builder clear() {
         super.clear();
-        key_ = "";
+        key_ = 0;
 
         value_ = "";
 
@@ -2281,9 +2029,8 @@ public final class Node {
 
       public Builder mergeFrom(Node.ClientWriteRequest other) {
         if (other == Node.ClientWriteRequest.getDefaultInstance()) return this;
-        if (!other.getKey().isEmpty()) {
-          key_ = other.key_;
-          onChanged();
+        if (other.getKey() != 0) {
+          setKey(other.getKey());
         }
         if (!other.getValue().isEmpty()) {
           value_ = other.value_;
@@ -2316,71 +2063,28 @@ public final class Node {
         return this;
       }
 
-      private java.lang.Object key_ = "";
+      private int key_ ;
       /**
-       * <code>string key = 1;</code>
+       * <code>uint32 key = 1;</code>
        */
-      public java.lang.String getKey() {
-        java.lang.Object ref = key_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          key_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      public int getKey() {
+        return key_;
       }
       /**
-       * <code>string key = 1;</code>
+       * <code>uint32 key = 1;</code>
        */
-      public com.google.protobuf.ByteString
-          getKeyBytes() {
-        java.lang.Object ref = key_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          key_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string key = 1;</code>
-       */
-      public Builder setKey(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setKey(int value) {
+        
         key_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>string key = 1;</code>
+       * <code>uint32 key = 1;</code>
        */
       public Builder clearKey() {
         
-        key_ = getDefaultInstance().getKey();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string key = 1;</code>
-       */
-      public Builder setKeyBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        key_ = value;
+        key_ = 0;
         onChanged();
         return this;
       }
@@ -2507,14 +2211,9 @@ public final class Node {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>string key = 1;</code>
+     * <code>uint32 key = 1;</code>
      */
-    java.lang.String getKey();
-    /**
-     * <code>string key = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getKeyBytes();
+    int getKey();
 
     /**
      * <code>string value = 2;</code>
@@ -2539,7 +2238,7 @@ public final class Node {
       super(builder);
     }
     private ReadRepair() {
-      key_ = "";
+      key_ = 0;
       value_ = "";
     }
 
@@ -2571,10 +2270,9 @@ public final class Node {
               }
               break;
             }
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 8: {
 
-              key_ = s;
+              key_ = input.readUInt32();
               break;
             }
             case 18: {
@@ -2608,37 +2306,12 @@ public final class Node {
     }
 
     public static final int KEY_FIELD_NUMBER = 1;
-    private volatile java.lang.Object key_;
+    private int key_;
     /**
-     * <code>string key = 1;</code>
+     * <code>uint32 key = 1;</code>
      */
-    public java.lang.String getKey() {
-      java.lang.Object ref = key_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        key_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string key = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getKeyBytes() {
-      java.lang.Object ref = key_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        key_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getKey() {
+      return key_;
     }
 
     public static final int VALUE_FIELD_NUMBER = 2;
@@ -2687,8 +2360,8 @@ public final class Node {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getKeyBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, key_);
+      if (key_ != 0) {
+        output.writeUInt32(1, key_);
       }
       if (!getValueBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, value_);
@@ -2701,8 +2374,9 @@ public final class Node {
       if (size != -1) return size;
 
       size = 0;
-      if (!getKeyBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, key_);
+      if (key_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, key_);
       }
       if (!getValueBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, value_);
@@ -2723,8 +2397,8 @@ public final class Node {
       Node.ReadRepair other = (Node.ReadRepair) obj;
 
       boolean result = true;
-      result = result && getKey()
-          .equals(other.getKey());
+      result = result && (getKey()
+          == other.getKey());
       result = result && getValue()
           .equals(other.getValue());
       result = result && unknownFields.equals(other.unknownFields);
@@ -2739,7 +2413,7 @@ public final class Node {
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + KEY_FIELD_NUMBER;
-      hash = (53 * hash) + getKey().hashCode();
+      hash = (53 * hash) + getKey();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
       hash = (53 * hash) + getValue().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -2871,7 +2545,7 @@ public final class Node {
       }
       public Builder clear() {
         super.clear();
-        key_ = "";
+        key_ = 0;
 
         value_ = "";
 
@@ -2940,9 +2614,8 @@ public final class Node {
 
       public Builder mergeFrom(Node.ReadRepair other) {
         if (other == Node.ReadRepair.getDefaultInstance()) return this;
-        if (!other.getKey().isEmpty()) {
-          key_ = other.key_;
-          onChanged();
+        if (other.getKey() != 0) {
+          setKey(other.getKey());
         }
         if (!other.getValue().isEmpty()) {
           value_ = other.value_;
@@ -2975,71 +2648,28 @@ public final class Node {
         return this;
       }
 
-      private java.lang.Object key_ = "";
+      private int key_ ;
       /**
-       * <code>string key = 1;</code>
+       * <code>uint32 key = 1;</code>
        */
-      public java.lang.String getKey() {
-        java.lang.Object ref = key_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          key_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      public int getKey() {
+        return key_;
       }
       /**
-       * <code>string key = 1;</code>
+       * <code>uint32 key = 1;</code>
        */
-      public com.google.protobuf.ByteString
-          getKeyBytes() {
-        java.lang.Object ref = key_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          key_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string key = 1;</code>
-       */
-      public Builder setKey(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setKey(int value) {
+        
         key_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>string key = 1;</code>
+       * <code>uint32 key = 1;</code>
        */
       public Builder clearKey() {
         
-        key_ = getDefaultInstance().getKey();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string key = 1;</code>
-       */
-      public Builder setKeyBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        key_ = value;
+        key_ = 0;
         onChanged();
         return this;
       }
@@ -6220,12 +5850,12 @@ public final class Node {
   static {
     java.lang.String[] descriptorData = {
       "\n\nNode.proto\"7\n\025GetKeyFromCoordinator\022\021\n" +
-      "\ttimeStamp\030\001 \001(\004\022\013\n\003key\030\002 \001(\t\"F\n\025PutKeyF" +
+      "\ttimeStamp\030\001 \001(\004\022\013\n\003key\030\002 \001(\r\"F\n\025PutKeyF" +
       "romCoordinator\022\021\n\ttimeStamp\030\001 \001(\004\022\013\n\003key" +
-      "\030\002 \001(\t\022\r\n\005value\030\003 \001(\t\" \n\021ClientReadReque" +
-      "st\022\013\n\003key\030\001 \001(\t\"0\n\022ClientWriteRequest\022\013\n" +
-      "\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\"(\n\nReadRepair\022" +
-      "\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\"\030\n\005Error\022\017\n\007" +
+      "\030\002 \001(\r\022\r\n\005value\030\003 \001(\t\" \n\021ClientReadReque" +
+      "st\022\013\n\003key\030\001 \001(\r\"0\n\022ClientWriteRequest\022\013\n" +
+      "\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\t\"(\n\nReadRepair\022" +
+      "\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\t\"\030\n\005Error\022\017\n\007" +
       "message\030\001 \001(\t\">\n\017Acknowledgement\022\021\n\ttime" +
       "Stamp\030\001 \001(\004\022\030\n\020processCompleted\030\002 \001(\010\"\361\002" +
       "\n\016WrapperMessage\022:\n\030get_key_from_coordin",
