@@ -10,8 +10,8 @@ public class Server {
     private String name;
     private String filePath;
     private String ip;
-    private  Map<String, NodeServerData> nodeMap;
-    private  Map<String,ValueMetaData> keyValueMap;
+    private Map<String, NodeServerData> nodeMap;
+    private Map<String, ValueMetaData> keyValueMap;
     private static boolean printFlag = true;//flag to stop print
 
     private void initServer() {
@@ -28,12 +28,9 @@ public class Server {
                 ip = nodeServerData.getIp();
             }
         }
-        print(nodeMap);
-        print(getReplicaServersList("node4"));
-
     }
 
-	private static void print(Object obj) {
+    private static void print(Object obj) {
         if (printFlag) {
             if (obj != null)
                 System.out.println(obj.toString());
@@ -43,7 +40,7 @@ public class Server {
     }
 
 
-    private static void processRequest(String nodeName, String key, String value) {
+    private void processRequest(String nodeName, String key, String value) {
         String dateStr = getCurrentTimeString();
 
         Thread thread = new Thread(() -> {
@@ -66,66 +63,74 @@ public class Server {
 
     public static void main(String[] args) {
 
-    	Server server = new Server();
+        Server server = new Server();
 
         if (args.length > 1) {
             server.portNumber = Integer.parseInt(args[0]);
             server.filePath = args[1];
 
-        }
-        else {
-        	System.out.println("Invalid number of arguments to controller");
-			System.exit(0);
+        } else {
+            System.out.println("Invalid number of arguments to controller");
+            System.exit(0);
         }
 
         server.initServer();
 
         ServerSocket serverSocket = null;
+        try {
+            serverSocket = new ServerSocket(server.portNumber);
+        } catch (IOException ex) {
+            System.out.println("Server socket cannot be created");
+            ex.printStackTrace();
+            System.exit(1);
+        }
+
+        while (true) {
+            Socket receiver = null;
             try {
-				serverSocket = new ServerSocket(server.portNumber);
-			} catch (IOException ex) {
-	            System.out.println("Server socket cannot be created");
-	            ex.printStackTrace();
-	            System.exit(1);
-	        }
-
-            while(true){
-    			Socket receiver = null;
-    			try{
-    				receiver = serverSocket.accept();
-    				Node.WrapperMessage message = Node.WrapperMessage.parseDelimitedFrom(receiver.getInputStream());
-
-    				if (message.hasClientReadRequest()) {
-    					//call appropriate method from here
-    					receiver.close();
-    				}
-    				else if (message.hasClientWriteRequest()) {
-    					//call appropriate method from here
-    					receiver.close();
-    				}
-    				else if (message.hasGetKeyFromCoordinator()) {
-    					//call appropriate method from here
-    					receiver.close();
-    				}
-    				else if (message.hasPutKeyFromCoordinator()) {
-    					//call appropriate method from here
-    					receiver.close();
-    				}
-    				else if (message.hasReadRepair()) {
-    					//call appropriate method from here
-    					receiver.close();
-    				}
-    			}catch (IOException e) {
-    				System.out.println("Error reading data from socket. Exiting main thread");
-    				e.printStackTrace();
-    				System.exit(1);
-    			}
-    	  }
+                receiver = serverSocket.accept();
+                Node.WrapperMessage message = Node.WrapperMessage.parseDelimitedFrom(receiver.getInputStream());
+                print(message);
+                if (message != null) {
+                    if (message.hasClientReadRequest()) {
+                        //call appropriate method from here
+                        receiver.close();
+                    } else if (message.hasClientWriteRequest()) {
+                        //call appropriate method from here
+                        receiver.close();
+                    } else if (message.hasGetKeyFromCoordinator()) {
+                        //call appropriate method from here
+                        receiver.close();
+                    } else if (message.hasPutKeyFromCoordinator()) {
+                        //call appropriate method from here
+                        receiver.close();
+                    } else if (message.hasReadRepair()) {
+                        //call appropriate method from here
+                        receiver.close();
+                    }
+                }
+            } catch (IOException e) {
+                System.out.println("Error reading data from socket. Exiting main thread");
+                e.printStackTrace();
+                System.exit(1);
+            }finally {
+                if(receiver!=null){
+                    try {
+                        receiver.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
-    private static String getCurrentTimeString(){
+    private String getCurrentTimeString() {
         return Long.toString(System.currentTimeMillis());
     }
+
+
+
 
 
 }
