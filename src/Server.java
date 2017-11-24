@@ -3,7 +3,6 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.time.LocalTime;
 import java.util.*;
 
 public class Server {
@@ -14,6 +13,7 @@ public class Server {
     static String currentServerIp;
 
     private static Map<String, NodeServerData> nodeMap;
+    private static Map<String,ValueMetaData> keyValueMap;
 
     private static boolean printFlag = true;//flag to stop print
 
@@ -21,12 +21,11 @@ public class Server {
         nodeMap = new TreeMap<>();
     }
 
-    enum RequestType {GET, PUT}
-
     public static void main(String[] args) {
 
         ServerSocket branchSocket = null;
         Socket clientSocket = null;
+
 
         try {
             if (args.length > 1) {
@@ -67,31 +66,29 @@ public class Server {
 
                         print(msg);
 
-                        //Replica message from controller
-
                         //Read message from the controller
                         if (msg.hasClientReadRequest()) {
-                            print("----------Read Start----------");
+                            print("----------Client Read Request Start----------");
 
-                            print("----------Read End----------");
+                            print("----------Client Read Request End----------");
                         }
                         //Write message from the controller
                         else if (msg.hasClientWriteRequest()) {
-                            print("----------Write Start----------");
+                            print("----------Client Write Request Start----------");
 
-                            print("----------Write End----------");
+                            print("----------Client Write Request End----------");
                         }
                         //Get Key message from coordinator
                         else if (msg.hasGetKeyFromCoordinator()) {
-                            print("----------GetKey Start----------");
+                            print("----------Get Key From Coordinator Start----------");
 
-                            print("----------GetKey End----------");
+                            print("----------Get Key From Coordinator End----------");
                         }
                         //Put Key message from coordinator
                         else if (msg.hasPutKeyFromCoordinator()) {
-                            print("----------PutKeyVal Start----------");
+                            print("----------Put Key From Coordinator Start----------");
 
-                            print("----------PutKeyVal End----------");
+                            print("----------Put Key From Coordinator End----------");
                         }
                         //Read Repair Message from the coordinator
                         else if (msg.hasReadRepair()) {
@@ -124,7 +121,7 @@ public class Server {
     }
 
     private static void processRequest(String nodeName, String key, String value) {
-        String dateStr = Long.toString(System.currentTimeMillis());
+        String dateStr = getCurrentTimeString();
 
         Thread thread = new Thread(() -> {
         });
@@ -141,6 +138,10 @@ public class Server {
         }
 
         return nodeServerDataList;
+    }
+
+    private static String getCurrentTimeString(){
+        return Long.toString(System.currentTimeMillis());
     }
 
 
