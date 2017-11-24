@@ -3,12 +3,12 @@ syntax = "proto3";
 
 
 message GetKeyFromCoordinator {
-    uint64 timeStamp = 1;
+    string timeStamp = 1;
     uint32 key = 2;
 }
 
 message PutKeyFromCoordinator {
-    uint64 timeStamp = 1;
+    string timeStamp = 1;
     uint32 key = 2;
     string value = 3;
 }
@@ -32,7 +32,7 @@ message Error {
 }
 
 message Acknowledgement {
-    uint64 timeStamp = 1;
+    string timeStamp = 1;
     bool processCompleted = 2;
 }
 

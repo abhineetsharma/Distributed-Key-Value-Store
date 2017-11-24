@@ -69,11 +69,46 @@ public class Server {
     private void processingClientWriteRequest(Node.ClientWriteRequest clientWriteRequest) {
         int key = clientWriteRequest.getKey();
         String value = clientWriteRequest.getValue();
-
         NodeServerData primaryReplica = getNodeByKey(key);
         print(primaryReplica.toString());
         List<NodeServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
         print(replicaServerList);
+
+        String timeStamp = getCurrentTimeString();
+
+        for (NodeServerData replica : replicaServerList) {
+            int replicaPort = replica.getPort();
+            String replicaIp = replica.getIp();
+
+            Node.PutKeyFromCoordinator.Builder putKeyFromCoordinatorBuilder = Node.PutKeyFromCoordinator.newBuilder();
+
+            putKeyFromCoordinatorBuilder.setKey(key);
+            putKeyFromCoordinatorBuilder.setTimeStamp(timeStamp);
+            putKeyFromCoordinatorBuilder.setValue(value);
+
+            Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setPutKeyFromCoordinator(putKeyFromCoordinatorBuilder).build();
+            Socket replicaSocket = null;
+            try {
+                replicaSocket = new Socket(replicaIp, replicaPort);
+                message.writeDelimitedTo(replicaSocket.getOutputStream());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (replicaSocket != null)
+                    try {
+                        replicaSocket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+            }
+
+
+        }
+    }
+
+    private void processingPutKeyFromCoordinatorRequest(Node.PutKeyFromCoordinator putKeyFromCoordinator) {
+
     }
 
 
@@ -101,30 +136,45 @@ public class Server {
             ex.printStackTrace();
             System.exit(1);
         }
-
+        int msgCount = 0;
         while (true) {
             Socket receiver = null;
             try {
                 receiver = serverSocket.accept();
+                print("\n\n----------------------------------------");
+                print("====Message received count = " + (++msgCount));
+                print("----------------------------------------\n\n");
                 Node.WrapperMessage message = Node.WrapperMessage.parseDelimitedFrom(receiver.getInputStream());
+
                 print(message);
                 if (message != null) {
                     if (message.hasClientReadRequest()) {
+                        print("----ClientReadRequest Start----");
                         //call appropriate method from here
                         receiver.close();
+                        print("----ClientReadRequest End----");
                     } else if (message.hasClientWriteRequest()) {
+                        print("----ClientWriteRequest Start----");
                         //call appropriate method from here
                         server.processingClientWriteRequest(message.getClientWriteRequest());
                         receiver.close();
+                        print("----ClientWriteRequest End----");
                     } else if (message.hasGetKeyFromCoordinator()) {
+                        print("----GetKeyFromCoordinator Start----");
                         //call appropriate method from here
                         receiver.close();
+                        print("----GetKeyFromCoordinator End----");
                     } else if (message.hasPutKeyFromCoordinator()) {
+                        print("----PutKeyFromCoordinator Start----");
                         //call appropriate method from here
+                        server.processingPutKeyFromCoordinatorRequest(message.getPutKeyFromCoordinator());
                         receiver.close();
+                        print("----PutKeyFromCoordinator End----");
                     } else if (message.hasReadRepair()) {
+                        print("----ReadRepair Start----");
                         //call appropriate method from here
                         receiver.close();
+                        print("----ReadRepair End----");
                     }
                 }
             } catch (IOException e) {
@@ -140,6 +190,9 @@ public class Server {
                     }
                 }
             }
+            print("\n\n---------------------------------------------");
+            print("=====Message received End count = " + msgCount);
+            print("---------------------------------------------\n\n");
         }
     }
 

@@ -17,9 +17,14 @@ public final class Node {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>uint64 timeStamp = 1;</code>
+     * <code>string timeStamp = 1;</code>
      */
-    long getTimeStamp();
+    java.lang.String getTimeStamp();
+    /**
+     * <code>string timeStamp = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getTimeStampBytes();
 
     /**
      * <code>uint32 key = 2;</code>
@@ -39,7 +44,7 @@ public final class Node {
       super(builder);
     }
     private GetKeyFromCoordinator() {
-      timeStamp_ = 0L;
+      timeStamp_ = "";
       key_ = 0;
     }
 
@@ -71,9 +76,10 @@ public final class Node {
               }
               break;
             }
-            case 8: {
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              timeStamp_ = input.readUInt64();
+              timeStamp_ = s;
               break;
             }
             case 16: {
@@ -106,12 +112,37 @@ public final class Node {
     }
 
     public static final int TIMESTAMP_FIELD_NUMBER = 1;
-    private long timeStamp_;
+    private volatile java.lang.Object timeStamp_;
     /**
-     * <code>uint64 timeStamp = 1;</code>
+     * <code>string timeStamp = 1;</code>
      */
-    public long getTimeStamp() {
-      return timeStamp_;
+    public java.lang.String getTimeStamp() {
+      java.lang.Object ref = timeStamp_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        timeStamp_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string timeStamp = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getTimeStampBytes() {
+      java.lang.Object ref = timeStamp_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        timeStamp_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     public static final int KEY_FIELD_NUMBER = 2;
@@ -135,8 +166,8 @@ public final class Node {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (timeStamp_ != 0L) {
-        output.writeUInt64(1, timeStamp_);
+      if (!getTimeStampBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, timeStamp_);
       }
       if (key_ != 0) {
         output.writeUInt32(2, key_);
@@ -149,9 +180,8 @@ public final class Node {
       if (size != -1) return size;
 
       size = 0;
-      if (timeStamp_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, timeStamp_);
+      if (!getTimeStampBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, timeStamp_);
       }
       if (key_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -173,8 +203,8 @@ public final class Node {
       Node.GetKeyFromCoordinator other = (Node.GetKeyFromCoordinator) obj;
 
       boolean result = true;
-      result = result && (getTimeStamp()
-          == other.getTimeStamp());
+      result = result && getTimeStamp()
+          .equals(other.getTimeStamp());
       result = result && (getKey()
           == other.getKey());
       result = result && unknownFields.equals(other.unknownFields);
@@ -189,8 +219,7 @@ public final class Node {
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getTimeStamp());
+      hash = (53 * hash) + getTimeStamp().hashCode();
       hash = (37 * hash) + KEY_FIELD_NUMBER;
       hash = (53 * hash) + getKey();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -322,7 +351,7 @@ public final class Node {
       }
       public Builder clear() {
         super.clear();
-        timeStamp_ = 0L;
+        timeStamp_ = "";
 
         key_ = 0;
 
@@ -391,8 +420,9 @@ public final class Node {
 
       public Builder mergeFrom(Node.GetKeyFromCoordinator other) {
         if (other == Node.GetKeyFromCoordinator.getDefaultInstance()) return this;
-        if (other.getTimeStamp() != 0L) {
-          setTimeStamp(other.getTimeStamp());
+        if (!other.getTimeStamp().isEmpty()) {
+          timeStamp_ = other.timeStamp_;
+          onChanged();
         }
         if (other.getKey() != 0) {
           setKey(other.getKey());
@@ -424,28 +454,71 @@ public final class Node {
         return this;
       }
 
-      private long timeStamp_ ;
+      private java.lang.Object timeStamp_ = "";
       /**
-       * <code>uint64 timeStamp = 1;</code>
+       * <code>string timeStamp = 1;</code>
        */
-      public long getTimeStamp() {
-        return timeStamp_;
+      public java.lang.String getTimeStamp() {
+        java.lang.Object ref = timeStamp_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          timeStamp_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>uint64 timeStamp = 1;</code>
+       * <code>string timeStamp = 1;</code>
        */
-      public Builder setTimeStamp(long value) {
-        
+      public com.google.protobuf.ByteString
+          getTimeStampBytes() {
+        java.lang.Object ref = timeStamp_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          timeStamp_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string timeStamp = 1;</code>
+       */
+      public Builder setTimeStamp(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
         timeStamp_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>uint64 timeStamp = 1;</code>
+       * <code>string timeStamp = 1;</code>
        */
       public Builder clearTimeStamp() {
         
-        timeStamp_ = 0L;
+        timeStamp_ = getDefaultInstance().getTimeStamp();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string timeStamp = 1;</code>
+       */
+      public Builder setTimeStampBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        timeStamp_ = value;
         onChanged();
         return this;
       }
@@ -529,9 +602,14 @@ public final class Node {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>uint64 timeStamp = 1;</code>
+     * <code>string timeStamp = 1;</code>
      */
-    long getTimeStamp();
+    java.lang.String getTimeStamp();
+    /**
+     * <code>string timeStamp = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getTimeStampBytes();
 
     /**
      * <code>uint32 key = 2;</code>
@@ -561,7 +639,7 @@ public final class Node {
       super(builder);
     }
     private PutKeyFromCoordinator() {
-      timeStamp_ = 0L;
+      timeStamp_ = "";
       key_ = 0;
       value_ = "";
     }
@@ -594,9 +672,10 @@ public final class Node {
               }
               break;
             }
-            case 8: {
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              timeStamp_ = input.readUInt64();
+              timeStamp_ = s;
               break;
             }
             case 16: {
@@ -635,12 +714,37 @@ public final class Node {
     }
 
     public static final int TIMESTAMP_FIELD_NUMBER = 1;
-    private long timeStamp_;
+    private volatile java.lang.Object timeStamp_;
     /**
-     * <code>uint64 timeStamp = 1;</code>
+     * <code>string timeStamp = 1;</code>
      */
-    public long getTimeStamp() {
-      return timeStamp_;
+    public java.lang.String getTimeStamp() {
+      java.lang.Object ref = timeStamp_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        timeStamp_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string timeStamp = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getTimeStampBytes() {
+      java.lang.Object ref = timeStamp_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        timeStamp_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     public static final int KEY_FIELD_NUMBER = 2;
@@ -698,8 +802,8 @@ public final class Node {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (timeStamp_ != 0L) {
-        output.writeUInt64(1, timeStamp_);
+      if (!getTimeStampBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, timeStamp_);
       }
       if (key_ != 0) {
         output.writeUInt32(2, key_);
@@ -715,9 +819,8 @@ public final class Node {
       if (size != -1) return size;
 
       size = 0;
-      if (timeStamp_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, timeStamp_);
+      if (!getTimeStampBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, timeStamp_);
       }
       if (key_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -742,8 +845,8 @@ public final class Node {
       Node.PutKeyFromCoordinator other = (Node.PutKeyFromCoordinator) obj;
 
       boolean result = true;
-      result = result && (getTimeStamp()
-          == other.getTimeStamp());
+      result = result && getTimeStamp()
+          .equals(other.getTimeStamp());
       result = result && (getKey()
           == other.getKey());
       result = result && getValue()
@@ -760,8 +863,7 @@ public final class Node {
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getTimeStamp());
+      hash = (53 * hash) + getTimeStamp().hashCode();
       hash = (37 * hash) + KEY_FIELD_NUMBER;
       hash = (53 * hash) + getKey();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
@@ -895,7 +997,7 @@ public final class Node {
       }
       public Builder clear() {
         super.clear();
-        timeStamp_ = 0L;
+        timeStamp_ = "";
 
         key_ = 0;
 
@@ -967,8 +1069,9 @@ public final class Node {
 
       public Builder mergeFrom(Node.PutKeyFromCoordinator other) {
         if (other == Node.PutKeyFromCoordinator.getDefaultInstance()) return this;
-        if (other.getTimeStamp() != 0L) {
-          setTimeStamp(other.getTimeStamp());
+        if (!other.getTimeStamp().isEmpty()) {
+          timeStamp_ = other.timeStamp_;
+          onChanged();
         }
         if (other.getKey() != 0) {
           setKey(other.getKey());
@@ -1004,28 +1107,71 @@ public final class Node {
         return this;
       }
 
-      private long timeStamp_ ;
+      private java.lang.Object timeStamp_ = "";
       /**
-       * <code>uint64 timeStamp = 1;</code>
+       * <code>string timeStamp = 1;</code>
        */
-      public long getTimeStamp() {
-        return timeStamp_;
+      public java.lang.String getTimeStamp() {
+        java.lang.Object ref = timeStamp_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          timeStamp_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>uint64 timeStamp = 1;</code>
+       * <code>string timeStamp = 1;</code>
        */
-      public Builder setTimeStamp(long value) {
-        
+      public com.google.protobuf.ByteString
+          getTimeStampBytes() {
+        java.lang.Object ref = timeStamp_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          timeStamp_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string timeStamp = 1;</code>
+       */
+      public Builder setTimeStamp(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
         timeStamp_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>uint64 timeStamp = 1;</code>
+       * <code>string timeStamp = 1;</code>
        */
       public Builder clearTimeStamp() {
         
-        timeStamp_ = 0L;
+        timeStamp_ = getDefaultInstance().getTimeStamp();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string timeStamp = 1;</code>
+       */
+      public Builder setTimeStampBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        timeStamp_ = value;
         onChanged();
         return this;
       }
@@ -3318,9 +3464,14 @@ public final class Node {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>uint64 timeStamp = 1;</code>
+     * <code>string timeStamp = 1;</code>
      */
-    long getTimeStamp();
+    java.lang.String getTimeStamp();
+    /**
+     * <code>string timeStamp = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getTimeStampBytes();
 
     /**
      * <code>bool processCompleted = 2;</code>
@@ -3340,7 +3491,7 @@ public final class Node {
       super(builder);
     }
     private Acknowledgement() {
-      timeStamp_ = 0L;
+      timeStamp_ = "";
       processCompleted_ = false;
     }
 
@@ -3372,9 +3523,10 @@ public final class Node {
               }
               break;
             }
-            case 8: {
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              timeStamp_ = input.readUInt64();
+              timeStamp_ = s;
               break;
             }
             case 16: {
@@ -3407,12 +3559,37 @@ public final class Node {
     }
 
     public static final int TIMESTAMP_FIELD_NUMBER = 1;
-    private long timeStamp_;
+    private volatile java.lang.Object timeStamp_;
     /**
-     * <code>uint64 timeStamp = 1;</code>
+     * <code>string timeStamp = 1;</code>
      */
-    public long getTimeStamp() {
-      return timeStamp_;
+    public java.lang.String getTimeStamp() {
+      java.lang.Object ref = timeStamp_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        timeStamp_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string timeStamp = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getTimeStampBytes() {
+      java.lang.Object ref = timeStamp_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        timeStamp_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     public static final int PROCESSCOMPLETED_FIELD_NUMBER = 2;
@@ -3436,8 +3613,8 @@ public final class Node {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (timeStamp_ != 0L) {
-        output.writeUInt64(1, timeStamp_);
+      if (!getTimeStampBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, timeStamp_);
       }
       if (processCompleted_ != false) {
         output.writeBool(2, processCompleted_);
@@ -3450,9 +3627,8 @@ public final class Node {
       if (size != -1) return size;
 
       size = 0;
-      if (timeStamp_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, timeStamp_);
+      if (!getTimeStampBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, timeStamp_);
       }
       if (processCompleted_ != false) {
         size += com.google.protobuf.CodedOutputStream
@@ -3474,8 +3650,8 @@ public final class Node {
       Node.Acknowledgement other = (Node.Acknowledgement) obj;
 
       boolean result = true;
-      result = result && (getTimeStamp()
-          == other.getTimeStamp());
+      result = result && getTimeStamp()
+          .equals(other.getTimeStamp());
       result = result && (getProcessCompleted()
           == other.getProcessCompleted());
       result = result && unknownFields.equals(other.unknownFields);
@@ -3490,8 +3666,7 @@ public final class Node {
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getTimeStamp());
+      hash = (53 * hash) + getTimeStamp().hashCode();
       hash = (37 * hash) + PROCESSCOMPLETED_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getProcessCompleted());
@@ -3624,7 +3799,7 @@ public final class Node {
       }
       public Builder clear() {
         super.clear();
-        timeStamp_ = 0L;
+        timeStamp_ = "";
 
         processCompleted_ = false;
 
@@ -3693,8 +3868,9 @@ public final class Node {
 
       public Builder mergeFrom(Node.Acknowledgement other) {
         if (other == Node.Acknowledgement.getDefaultInstance()) return this;
-        if (other.getTimeStamp() != 0L) {
-          setTimeStamp(other.getTimeStamp());
+        if (!other.getTimeStamp().isEmpty()) {
+          timeStamp_ = other.timeStamp_;
+          onChanged();
         }
         if (other.getProcessCompleted() != false) {
           setProcessCompleted(other.getProcessCompleted());
@@ -3726,28 +3902,71 @@ public final class Node {
         return this;
       }
 
-      private long timeStamp_ ;
+      private java.lang.Object timeStamp_ = "";
       /**
-       * <code>uint64 timeStamp = 1;</code>
+       * <code>string timeStamp = 1;</code>
        */
-      public long getTimeStamp() {
-        return timeStamp_;
+      public java.lang.String getTimeStamp() {
+        java.lang.Object ref = timeStamp_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          timeStamp_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>uint64 timeStamp = 1;</code>
+       * <code>string timeStamp = 1;</code>
        */
-      public Builder setTimeStamp(long value) {
-        
+      public com.google.protobuf.ByteString
+          getTimeStampBytes() {
+        java.lang.Object ref = timeStamp_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          timeStamp_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string timeStamp = 1;</code>
+       */
+      public Builder setTimeStamp(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
         timeStamp_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>uint64 timeStamp = 1;</code>
+       * <code>string timeStamp = 1;</code>
        */
       public Builder clearTimeStamp() {
         
-        timeStamp_ = 0L;
+        timeStamp_ = getDefaultInstance().getTimeStamp();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string timeStamp = 1;</code>
+       */
+      public Builder setTimeStampBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        timeStamp_ = value;
         onChanged();
         return this;
       }
@@ -5850,14 +6069,14 @@ public final class Node {
   static {
     java.lang.String[] descriptorData = {
       "\n\nNode.proto\"7\n\025GetKeyFromCoordinator\022\021\n" +
-      "\ttimeStamp\030\001 \001(\004\022\013\n\003key\030\002 \001(\r\"F\n\025PutKeyF" +
-      "romCoordinator\022\021\n\ttimeStamp\030\001 \001(\004\022\013\n\003key" +
+      "\ttimeStamp\030\001 \001(\t\022\013\n\003key\030\002 \001(\r\"F\n\025PutKeyF" +
+      "romCoordinator\022\021\n\ttimeStamp\030\001 \001(\t\022\013\n\003key" +
       "\030\002 \001(\r\022\r\n\005value\030\003 \001(\t\" \n\021ClientReadReque" +
       "st\022\013\n\003key\030\001 \001(\r\"0\n\022ClientWriteRequest\022\013\n" +
       "\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\t\"(\n\nReadRepair\022" +
       "\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\t\"\030\n\005Error\022\017\n\007" +
       "message\030\001 \001(\t\">\n\017Acknowledgement\022\021\n\ttime" +
-      "Stamp\030\001 \001(\004\022\030\n\020processCompleted\030\002 \001(\010\"\361\002" +
+      "Stamp\030\001 \001(\t\022\030\n\020processCompleted\030\002 \001(\010\"\361\002" +
       "\n\016WrapperMessage\022:\n\030get_key_from_coordin",
       "ator\030\001 \001(\0132\026.GetKeyFromCoordinatorH\000\022:\n\030" +
       "put_key_from_coordinator\030\002 \001(\0132\026.PutKeyF" +
