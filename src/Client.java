@@ -26,19 +26,28 @@ public class Client {
                 nodeMap.put(nodeServerData.getName(), nodeServerData);
             }
             print(nodeMap);
-			sendPUTrequestToCoordinator("node1");
+
+
+            sendPUTrequestToCoordinator("node0", 1, "XYZ", Node.ConsistencyLevel.TWO);
 //			Thread.sleep(10000);
 //			sendGETrequestToCoordinator();
         }
     }
 
-    private static void sendPUTrequestToCoordinator(String node) throws UnknownHostException, IOException {
+    private static void sendPUTrequestToCoordinator(String node, int key, String value, Node.ConsistencyLevel consistencyLevel) throws UnknownHostException, IOException {
         System.out.println("IP: " + nodeMap.get(node).getIp() + " Port:" + nodeMap.get(node).getPort());
         Socket socket = new Socket(nodeMap.get(node).getIp(), nodeMap.get(node).getPort());
         Node.ClientWriteRequest.Builder putKeyVal = Node.ClientWriteRequest.newBuilder();
-		putKeyVal.setKey(1).setValue("XYZ").build();
+        putKeyVal.setKey(key).setValue(value).setConsistencyLevel(consistencyLevel).build();
         Node.WrapperMessage.Builder msg = Node.WrapperMessage.newBuilder();
         msg.setClientWriteRequest(putKeyVal).build().writeDelimitedTo(socket.getOutputStream());
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Node.WrapperMessage message = Node.WrapperMessage.parseFrom(socket.getInputStream());
+        System.out.println(message);
         socket.close();
     }
 

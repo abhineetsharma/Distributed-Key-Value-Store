@@ -30,6 +30,11 @@ enum ConsistencyLevel {
     TWO = 2;
 }
 
+enum RequestType {
+    READ = 0;
+    WRITE = 1;
+}
+
 message ReadRepair {
     uint32 key = 1;
     string value = 2;
@@ -38,16 +43,16 @@ message ReadRepair {
 message Error {
     string message = 1;
 }
-message LogMessage{
-	bool logStartFlag = 1;
-	uint32 key = 2;
-	string value = 3;
-	string timeStamp = 4;
-	bool logEndFlag =5;
+message LogMessage {
+    bool logStartFlag = 1;
+    uint32 key = 2;
+    string value = 3;
+    string timeStamp = 4;
+    bool logEndFlag = 5;
 }
 
-message LogBook{
-	repeated LogMessage log = 1;
+message LogBook {
+    repeated LogMessage log = 1;
 }
 
 message AcknowledgementToCoordinator {
@@ -55,7 +60,7 @@ message AcknowledgementToCoordinator {
     uint32 key = 2;
     string value = 3;
     string replicaName = 4;
-
+    RequestType request_type = 5;
 }
 message AcknowledgementToClient {
     uint32 key = 1;

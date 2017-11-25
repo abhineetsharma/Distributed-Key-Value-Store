@@ -119,6 +119,104 @@ public final class Node {
     // @@protoc_insertion_point(enum_scope:ConsistencyLevel)
   }
 
+  /**
+   * Protobuf enum {@code RequestType}
+   */
+  public enum RequestType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>READ = 0;</code>
+     */
+    READ(0),
+    /**
+     * <code>WRITE = 1;</code>
+     */
+    WRITE(1),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <code>READ = 0;</code>
+     */
+    public static final int READ_VALUE = 0;
+    /**
+     * <code>WRITE = 1;</code>
+     */
+    public static final int WRITE_VALUE = 1;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static RequestType valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static RequestType forNumber(int value) {
+      switch (value) {
+        case 0: return READ;
+        case 1: return WRITE;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<RequestType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        RequestType> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<RequestType>() {
+            public RequestType findValueByNumber(int number) {
+              return RequestType.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return Node.getDescriptor().getEnumTypes().get(1);
+    }
+
+    private static final RequestType[] VALUES = values();
+
+    public static RequestType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private RequestType(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:RequestType)
+  }
+
   public interface GetKeyFromCoordinatorOrBuilder extends
       // @@protoc_insertion_point(interface_extends:GetKeyFromCoordinator)
       com.google.protobuf.MessageOrBuilder {
@@ -176,9 +274,6 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -825,7 +920,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new GetKeyFromCoordinator(input, extensionRegistry);
+          return new GetKeyFromCoordinator(input, extensionRegistry);
       }
     };
 
@@ -912,9 +1007,6 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -1687,7 +1779,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new PutKeyFromCoordinator(input, extensionRegistry);
+          return new PutKeyFromCoordinator(input, extensionRegistry);
       }
     };
 
@@ -1751,9 +1843,6 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -2230,7 +2319,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ClientReadRequest(input, extensionRegistry);
+          return new ClientReadRequest(input, extensionRegistry);
       }
     };
 
@@ -2305,9 +2394,6 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -2910,7 +2996,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ClientWriteRequest(input, extensionRegistry);
+          return new ClientWriteRequest(input, extensionRegistry);
       }
     };
 
@@ -2975,9 +3061,6 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -3498,7 +3581,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ReadRepair(input, extensionRegistry);
+          return new ReadRepair(input, extensionRegistry);
       }
     };
 
@@ -3557,9 +3640,6 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -4023,7 +4103,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Error(input, extensionRegistry);
+          return new Error(input, extensionRegistry);
       }
     };
 
@@ -4111,9 +4191,6 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -4876,7 +4953,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new LogMessage(input, extensionRegistry);
+          return new LogMessage(input, extensionRegistry);
       }
     };
 
@@ -4949,9 +5026,6 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -5633,7 +5707,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new LogBook(input, extensionRegistry);
+          return new LogBook(input, extensionRegistry);
       }
     };
 
@@ -5690,6 +5764,15 @@ public final class Node {
      */
     com.google.protobuf.ByteString
         getReplicaNameBytes();
+
+    /**
+     * <code>.RequestType request_type = 5;</code>
+     */
+    int getRequestTypeValue();
+    /**
+     * <code>.RequestType request_type = 5;</code>
+     */
+    Node.RequestType getRequestType();
   }
   /**
    * Protobuf type {@code AcknowledgementToCoordinator}
@@ -5708,6 +5791,7 @@ public final class Node {
       key_ = 0;
       value_ = "";
       replicaName_ = "";
+      requestType_ = 0;
     }
 
     @java.lang.Override
@@ -5720,9 +5804,6 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -5762,6 +5843,12 @@ public final class Node {
               java.lang.String s = input.readStringRequireUtf8();
 
               replicaName_ = s;
+              break;
+            }
+            case 40: {
+              int rawValue = input.readEnum();
+
+              requestType_ = rawValue;
               break;
             }
           }
@@ -5899,6 +5986,22 @@ public final class Node {
       }
     }
 
+    public static final int REQUEST_TYPE_FIELD_NUMBER = 5;
+    private int requestType_;
+    /**
+     * <code>.RequestType request_type = 5;</code>
+     */
+    public int getRequestTypeValue() {
+      return requestType_;
+    }
+    /**
+     * <code>.RequestType request_type = 5;</code>
+     */
+    public Node.RequestType getRequestType() {
+      Node.RequestType result = Node.RequestType.valueOf(requestType_);
+      return result == null ? Node.RequestType.UNRECOGNIZED : result;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -5923,6 +6026,9 @@ public final class Node {
       if (!getReplicaNameBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, replicaName_);
       }
+      if (requestType_ != Node.RequestType.READ.getNumber()) {
+        output.writeEnum(5, requestType_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -5943,6 +6049,10 @@ public final class Node {
       }
       if (!getReplicaNameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, replicaName_);
+      }
+      if (requestType_ != Node.RequestType.READ.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(5, requestType_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -5968,6 +6078,7 @@ public final class Node {
           .equals(other.getValue());
       result = result && getReplicaName()
           .equals(other.getReplicaName());
+      result = result && requestType_ == other.requestType_;
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -5987,6 +6098,8 @@ public final class Node {
       hash = (53 * hash) + getValue().hashCode();
       hash = (37 * hash) + REPLICANAME_FIELD_NUMBER;
       hash = (53 * hash) + getReplicaName().hashCode();
+      hash = (37 * hash) + REQUEST_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + requestType_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -6124,6 +6237,8 @@ public final class Node {
 
         replicaName_ = "";
 
+        requestType_ = 0;
+
         return this;
       }
 
@@ -6150,6 +6265,7 @@ public final class Node {
         result.key_ = key_;
         result.value_ = value_;
         result.replicaName_ = replicaName_;
+        result.requestType_ = requestType_;
         onBuilt();
         return result;
       }
@@ -6205,6 +6321,9 @@ public final class Node {
         if (!other.getReplicaName().isEmpty()) {
           replicaName_ = other.replicaName_;
           onChanged();
+        }
+        if (other.requestType_ != 0) {
+          setRequestTypeValue(other.getRequestTypeValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -6465,6 +6584,50 @@ public final class Node {
         onChanged();
         return this;
       }
+
+      private int requestType_ = 0;
+      /**
+       * <code>.RequestType request_type = 5;</code>
+       */
+      public int getRequestTypeValue() {
+        return requestType_;
+      }
+      /**
+       * <code>.RequestType request_type = 5;</code>
+       */
+      public Builder setRequestTypeValue(int value) {
+        requestType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.RequestType request_type = 5;</code>
+       */
+      public Node.RequestType getRequestType() {
+        Node.RequestType result = Node.RequestType.valueOf(requestType_);
+        return result == null ? Node.RequestType.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.RequestType request_type = 5;</code>
+       */
+      public Builder setRequestType(Node.RequestType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        requestType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.RequestType request_type = 5;</code>
+       */
+      public Builder clearRequestType() {
+        
+        requestType_ = 0;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
@@ -6495,7 +6658,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new AcknowledgementToCoordinator(input, extensionRegistry);
+          return new AcknowledgementToCoordinator(input, extensionRegistry);
       }
     };
 
@@ -6560,9 +6723,6 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -7083,7 +7243,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new AcknowledgementToClient(input, extensionRegistry);
+          return new AcknowledgementToClient(input, extensionRegistry);
       }
     };
 
@@ -7237,9 +7397,6 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -9277,7 +9434,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new WrapperMessage(input, extensionRegistry);
+          return new WrapperMessage(input, extensionRegistry);
       }
     };
 
@@ -9369,29 +9526,31 @@ public final class Node {
       "Level\030\002 \001(\0162\021.ConsistencyLevel\"]\n\022Client" +
       "WriteRequest\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\t" +
       "\022+\n\020consistencyLevel\030\003 \001(\0162\021.Consistency" +
-      "Level\"(\n\nReadRepair\022\013\n\003key\030\001 \001(\r\022\r\n\005valu" +
+      "Level\"(\n\nReadRepair\022\013\n\003key\030\001 \001(\r\022\r\n\005valu",
       "e\030\002 \001(\t\"\030\n\005Error\022\017\n\007message\030\001 \001(\t\"e\n\nLog" +
       "Message\022\024\n\014logStartFlag\030\001 \001(\010\022\013\n\003key\030\002 \001" +
       "(\r\022\r\n\005value\030\003 \001(\t\022\021\n\ttimeStamp\030\004 \001(\t\022\022\n\n" +
       "logEndFlag\030\005 \001(\010\"#\n\007LogBook\022\030\n\003log\030\001 \003(\013" +
-      "2\013.LogMessage\"b\n\034AcknowledgementToCoordi" +
-      "nator\022\021\n\ttimeStamp\030\001 \001(\t\022\013\n\003key\030\002 \001(\r\022\r\n" +
-      "\005value\030\003 \001(\t\022\023\n\013replicaName\030\004 \001(\t\"5\n\027Ack" +
-      "nowledgementToClient\022\013\n\003key\030\001 \001(\r\022\r\n\005val" +
-      "ue\030\002 \001(\t\"\314\003\n\016WrapperMessage\022:\n\030get_key_f" +
-      "rom_coordinator\030\001 \001(\0132\026.GetKeyFromCoordi" +
-      "natorH\000\022:\n\030put_key_from_coordinator\030\002 \001(" +
-      "\0132\026.PutKeyFromCoordinatorH\000\0221\n\023client_re" +
-      "ad_request\030\003 \001(\0132\022.ClientReadRequestH\000\0223" +
-      "\n\024client_write_request\030\004 \001(\0132\023.ClientWri" +
-      "teRequestH\000\022\"\n\013read_repair\030\005 \001(\0132\013.ReadR" +
-      "epairH\000\022\037\n\rerror_message\030\006 \001(\0132\006.ErrorH\000" +
-      "\022G\n\036acknowledgement_to_coordinator\030\007 \001(\013" +
-      "2\035.AcknowledgementToCoordinatorH\000\022=\n\031ack" +
-      "nowledgement_to_client\030\010 \001(\0132\030.Acknowled" +
-      "gementToClientH\000B\r\n\013map_message*1\n\020Consi" +
-      "stencyLevel\022\013\n\007UNKNOWN\020\000\022\007\n\003ONE\020\001\022\007\n\003TWO" +
-      "\020\002b\006proto3"
+      "2\013.LogMessage\"\206\001\n\034AcknowledgementToCoord" +
+      "inator\022\021\n\ttimeStamp\030\001 \001(\t\022\013\n\003key\030\002 \001(\r\022\r" +
+      "\n\005value\030\003 \001(\t\022\023\n\013replicaName\030\004 \001(\t\022\"\n\014re" +
+      "quest_type\030\005 \001(\0162\014.RequestType\"5\n\027Acknow" +
+      "ledgementToClient\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030" +
+      "\002 \001(\t\"\314\003\n\016WrapperMessage\022:\n\030get_key_from",
+      "_coordinator\030\001 \001(\0132\026.GetKeyFromCoordinat" +
+      "orH\000\022:\n\030put_key_from_coordinator\030\002 \001(\0132\026" +
+      ".PutKeyFromCoordinatorH\000\0221\n\023client_read_" +
+      "request\030\003 \001(\0132\022.ClientReadRequestH\000\0223\n\024c" +
+      "lient_write_request\030\004 \001(\0132\023.ClientWriteR" +
+      "equestH\000\022\"\n\013read_repair\030\005 \001(\0132\013.ReadRepa" +
+      "irH\000\022\037\n\rerror_message\030\006 \001(\0132\006.ErrorH\000\022G\n" +
+      "\036acknowledgement_to_coordinator\030\007 \001(\0132\035." +
+      "AcknowledgementToCoordinatorH\000\022=\n\031acknow" +
+      "ledgement_to_client\030\010 \001(\0132\030.Acknowledgem",
+      "entToClientH\000B\r\n\013map_message*1\n\020Consiste" +
+      "ncyLevel\022\013\n\007UNKNOWN\020\000\022\007\n\003ONE\020\001\022\007\n\003TWO\020\002*" +
+      "\"\n\013RequestType\022\010\n\004READ\020\000\022\t\n\005WRITE\020\001b\006pro" +
+      "to3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -9458,7 +9617,7 @@ public final class Node {
     internal_static_AcknowledgementToCoordinator_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AcknowledgementToCoordinator_descriptor,
-        new java.lang.String[] { "TimeStamp", "Key", "Value", "ReplicaName", });
+        new java.lang.String[] { "TimeStamp", "Key", "Value", "ReplicaName", "RequestType", });
     internal_static_AcknowledgementToClient_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_AcknowledgementToClient_fieldAccessorTable = new
