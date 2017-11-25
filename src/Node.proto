@@ -19,6 +19,7 @@ message ClientReadRequest {
     ConsistencyLevel consistencyLevel = 2;
 }
 
+
 message ClientWriteRequest {
     uint32 key = 1;
     string value = 2;

@@ -347,6 +347,7 @@ public final class Node {
       if (key_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(2, key_);
+
       }
       if (!getCoordinatorNameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, coordinatorName_);

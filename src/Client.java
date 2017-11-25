@@ -27,6 +27,7 @@ public class Client {
             }
             print(nodeMap);
             sendPUTrequestToCoordinator("node1");
+
 //			Thread.sleep(10000);
 //			sendGETrequestToCoordinator();
         }

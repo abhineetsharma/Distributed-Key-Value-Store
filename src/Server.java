@@ -18,6 +18,7 @@ public class Server {
 
     private void initServer() {
         //server information read by the server read by server
+
         FileProcessor fPro = new FileProcessor(filePath);
         nodeMap = new TreeMap<>();
         keyValueMap = new ConcurrentSkipListMap<>();
