@@ -14,7 +14,6 @@ public class AcknowledgementToClientListener {
         replicaAcknowledgementMap = new ConcurrentSkipListMap<>();
         for (NodeServerData node : nodeServerDataList)
             replicaAcknowledgementMap.put(node.getName(), new AcknowledgementData(keyI, valueI));
-
     }
 
     public String getClientName() {
