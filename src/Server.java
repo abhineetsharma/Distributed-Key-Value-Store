@@ -56,6 +56,7 @@ public class Server {
         thread.start();
     }
 
+    //to get the replica server list
     private List<NodeServerData> getReplicaServersList(String keyNode) {
         String[] mapKeys = this.nodeMap.keySet().toArray(new String[nodeMap.size()]);
         int keyPosition = Arrays.asList(mapKeys).indexOf(keyNode);
@@ -74,8 +75,43 @@ public class Server {
         return nodeMap.get(nodeKeys[num]);
     }
 
-    //ClientWriteRequest
-    private void processingClientWriteRequest(Node.ClientWriteRequest clientWriteRequest, OutputStream clientOutputStream) {
+    //Client Read Request
+    private void processingClientReadRequest(Node.ClientReadRequest clientReadRequest, Socket clientSocket) {
+        int key = clientReadRequest.getKey();
+        //String value = clientReadRequest.getValue();
+        Node.ConsistencyLevel clientConsistencyLevel = clientReadRequest.getConsistencyLevel();
+
+        NodeServerData primaryReplica = getNodeByKey(key);
+
+        print(primaryReplica.toString());
+        List<NodeServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
+        print(replicaServerList);
+
+        String timeStamp = getCurrentTimeString();
+
+        acknowledgementLogCoordinatorMap.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, key, null, replicaServerList));
+
+        for (NodeServerData replica : replicaServerList) {
+
+            Node.GetKeyFromCoordinator.Builder getKeyFromCoordinatorBuilder = Node.GetKeyFromCoordinator.newBuilder();
+
+            getKeyFromCoordinatorBuilder.setKey(key);
+            getKeyFromCoordinatorBuilder.setTimeStamp(timeStamp);
+            getKeyFromCoordinatorBuilder.setCoordinatorName(name);
+
+            Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
+                    .setGetKeyFromCoordinator(getKeyFromCoordinatorBuilder).build();
+
+            try {
+                sendMessageToNodeSocket(replica, message);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //Client Write Request
+    private void processingClientWriteRequest(Node.ClientWriteRequest clientWriteRequest, Socket clientSocket) {
         int key = clientWriteRequest.getKey();
         String value = clientWriteRequest.getValue();
         Node.ConsistencyLevel clientConsistencyLevel = clientWriteRequest.getConsistencyLevel();
@@ -88,8 +124,8 @@ public class Server {
 
         String timeStamp = getCurrentTimeString();
 
-        //client name and client output stream is set to null for now.
-        acknowledgementLogCoordinatorMap.put(timeStamp, new AcknowledgementToClientListener(null, clientOutputStream, clientConsistencyLevel, key, value, replicaServerList));
+
+        acknowledgementLogCoordinatorMap.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, key, value, replicaServerList));
 
         for (NodeServerData replica : replicaServerList) {
 
@@ -111,7 +147,42 @@ public class Server {
         }
     }
 
-    //PutKeyFromCoordinatorRequest
+    //Get Key From Coordinator
+    private void processingGetKeyFromCoordinator(Node.GetKeyFromCoordinator getKeyFromCoordinator) {
+        int key = getKeyFromCoordinator.getKey();
+        String timeStamp = getKeyFromCoordinator.getTimeStamp();
+        String coordinatorName = getKeyFromCoordinator.getCoordinatorName();
+
+
+        if (keyValueMap.containsKey(key)) {
+            String value = keyValueMap.get(key).getValue();
+
+            print(keyValueMap.get(key));
+
+            Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator
+                    .newBuilder();
+            acknowledgementBuilder.setKey(key);
+            acknowledgementBuilder.setTimeStamp(timeStamp);
+            acknowledgementBuilder.setValue(value);
+            acknowledgementBuilder.setReplicaName(name);
+            acknowledgementBuilder.setRequestType(Node.RequestType.READ);
+
+            Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
+                    .setAcknowledgementToCoordinator(acknowledgementBuilder).build();
+
+            NodeServerData coordinator = nodeMap.get(coordinatorName);
+
+            // send acknowledgement to coordinator
+            try {
+                sendMessageToNodeSocket(coordinator, message);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Read Ack message sent to the Coordinator : " + coordinatorName + " .....");
+        }
+    }
+
+    //Put Key From Coordinator Request
     private void processingPutKeyFromCoordinatorRequest(Node.PutKeyFromCoordinator putKeyFromCoordinator)
             throws IOException {
         int key = putKeyFromCoordinator.getKey();
@@ -122,7 +193,7 @@ public class Server {
         // BEGINE : Nikhil's pre commite code
         // Writting to log file.
         StringBuilder builder = new StringBuilder();
-        this.logFileName = builder.append(this.name).append("LogFile").toString();
+        this.logFileName = builder.append(this.name).append("LogFile.txt").toString();
 
         Node.LogMessage logMessage = Node.LogMessage.newBuilder().setKey(putKeyFromCoordinator.getKey())
                 .setValue(putKeyFromCoordinator.getValue()).setTimeStamp(putKeyFromCoordinator.getTimeStamp())
@@ -205,7 +276,7 @@ public class Server {
 
                 // send acknowledgement to coordinator
                 sendMessageToNodeSocket(coordinator, message);
-                System.out.println("Ack message send to Coordinator : " + coordinatorName + ".....");
+                System.out.println("Write Ack message send to Coordinator : " + coordinatorName + " .....");
             }
 
             // Write updated logbook back to disk.
@@ -222,7 +293,7 @@ public class Server {
 
     }
 
-    //AcknowledgementToCoordinator
+    //Acknowledgement To Coordinator
     private synchronized void processingAcknowledgementToCoordinator(Node.AcknowledgementToCoordinator acknowledgementToCoordinator) {
         int key = acknowledgementToCoordinator.getKey();
         String value = acknowledgementToCoordinator.getValue();
@@ -234,40 +305,45 @@ public class Server {
         AcknowledgementToClientListener acknowledgement = acknowledgementLogCoordinatorMap.get(replicaTimeStamp);
         if (null != acknowledgement) {
             Node.ConsistencyLevel consistencyLevel = acknowledgement.getRequestConsistencyLevel();
-            OutputStream clientOutputStream = acknowledgement.getClientOutputStream();
-            boolean isSentToClient = acknowledgement.isSentToClinet();
+            Socket clientSocket = acknowledgement.getClientScoket();
+            boolean isSentToClient = acknowledgement.isSentToClient();
             AcknowledgementData acknowledgementData = acknowledgement.getAcknowledgementDataByServerName(replicaName);
-            if (null != acknowledgementData) {
-                String replicaValue = acknowledgementData.getValue();
-                int replicaKey = acknowledgementData.getKey();
-                if (key == replicaKey && replicaValue.equalsIgnoreCase(value)) {
-                    acknowledgementData.setAcknowledge(true);
-                } else {
-                    //inconsistency
-                }
-
-
-            }
             List<String> acknowledgementList = acknowledgement.getAcknowledgedListForTimeStamp();
 
-            if (requestType.equals(Node.RequestType.WRITE)) {
+            if (null != acknowledgementData) {
+                int replicaKey = acknowledgementData.getKey();
+                String replicaValue = acknowledgementData.getValue();
+
+                if (requestType.equals(Node.RequestType.WRITE)) {
+                    if (key == replicaKey && replicaValue.equalsIgnoreCase(value)) {
+                        acknowledgementData.setAcknowledge(true);
+                    } else {
+                        //inconsistency
+                    }
+
+
+                } else if (requestType.equals(Node.RequestType.READ)) {
+                    //Read request
+                    acknowledgementData.setAcknowledge(true);
+                }
                 int writeAcknowledgeCount = acknowledgementList.size();
                 if (writeAcknowledgeCount >= consistencyLevel.getNumber() && !isSentToClient) {
-                    acknowledgement.setSentToClinet(true);
-                    sentAcknowledgementToClient(key, value, clientOutputStream);
+                    acknowledgement.setSentToClient(true);
+                    sentAcknowledgementToClient(key, value, clientSocket);
                 }
             }
         }
-
-
     }
 
-    private void sentAcknowledgementToClient(int key, String value, OutputStream clientOutputStream) {
+    private void sentAcknowledgementToClient(int key, String value, Socket clientSocket) {
         Node.AcknowledgementToClient acknowledgementToClient = Node.AcknowledgementToClient.newBuilder().setKey(key).setValue(value).build();
+        Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setAcknowledgementToClient(acknowledgementToClient).build();
+        print("Send to client: " + message + " " + clientSocket.isClosed());
         try {
-            if (clientOutputStream != null) {
-                acknowledgementToClient.writeDelimitedTo(clientOutputStream);
-                //clientOutputStream.close();
+            if (clientSocket != null && !clientSocket.isClosed()) {
+                print(acknowledgementToClient);
+                message.writeDelimitedTo(clientSocket.getOutputStream());
+                clientSocket.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -322,28 +398,30 @@ public class Server {
                     if (message.hasClientReadRequest()) {
                         print("----ClientReadRequest Start----");
                         // call appropriate method from here
-                        receiver.close();
+                        server.processingClientReadRequest(message.getClientReadRequest(), receiver);
                         print("----ClientReadRequest End----");
                     } else if (message.hasClientWriteRequest()) {
                         print("----ClientWriteRequest Start----");
                         // call appropriate method from here
-                        server.processingClientWriteRequest(message.getClientWriteRequest(), receiver.getOutputStream());
-                        //receiver.close();
+                        server.processingClientWriteRequest(message.getClientWriteRequest(), receiver);
                         print("----ClientWriteRequest End----");
                     } else if (message.hasGetKeyFromCoordinator()) {
                         print("----GetKeyFromCoordinator Start----");
                         // call appropriate method from here
+                        server.processingGetKeyFromCoordinator(message.getGetKeyFromCoordinator());
                         receiver.close();
                         print("----GetKeyFromCoordinator End----");
                     } else if (message.hasPutKeyFromCoordinator()) {
                         print("----PutKeyFromCoordinator Start----");
                         // call appropriate method from here
                         server.processingPutKeyFromCoordinatorRequest(message.getPutKeyFromCoordinator());
-                        //receiver.close();
+                        receiver.close();
                         print("----PutKeyFromCoordinator End----");
                     } else if (message.hasAcknowledgementToCoordinator()) {
+                        print("----Acknowledgement To Coordinator Start----");
                         server.processingAcknowledgementToCoordinator(message.getAcknowledgementToCoordinator());
-                        //receiver.close();
+                        receiver.close();
+                        print("----Acknowledgement To Coordinator End----");
                     } else if (message.hasReadRepair()) {
                         print("----ReadRepair Start----");
                         // call appropriate method from here
@@ -357,11 +435,11 @@ public class Server {
                 System.exit(1);
             } finally {
                 if (receiver != null) {
-                    try {
-                        receiver.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        //receiver.close();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
                 }
             }
             print("\n\n---------------------------------------------");

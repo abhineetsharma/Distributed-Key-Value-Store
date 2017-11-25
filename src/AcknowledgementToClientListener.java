@@ -1,4 +1,5 @@
 import java.io.OutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -6,15 +7,15 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 public class AcknowledgementToClientListener {
     private String clientName;
-    private OutputStream clientOutputStream;
+    private Socket clientSocket;
     private Node.ConsistencyLevel requestConsistencyLevel;
-    private boolean isSentToClinet;
+    private boolean isSentToClient;
     private Map<String, AcknowledgementData> replicaAcknowledgementMap;
 
 
-    public AcknowledgementToClientListener(String clientNameI, OutputStream clientOutputStreamI, Node.ConsistencyLevel consistencyLevelI, int keyI, String valueI, List<NodeServerData> nodeServerDataList) {
+    public AcknowledgementToClientListener(String clientNameI, Socket clientSocketI, Node.ConsistencyLevel consistencyLevelI, int keyI, String valueI, List<NodeServerData> nodeServerDataList) {
         clientName = clientNameI;
-        clientOutputStream = clientOutputStreamI;
+        clientSocket = clientSocketI;
         requestConsistencyLevel = consistencyLevelI;
         replicaAcknowledgementMap = new ConcurrentSkipListMap<>();
         for (NodeServerData node : nodeServerDataList)
@@ -25,8 +26,8 @@ public class AcknowledgementToClientListener {
         return clientName;
     }
 
-    public OutputStream getClientOutputStream() {
-        return clientOutputStream;
+    public Socket getClientScoket() {
+        return clientSocket;
     }
 
     public Map<String, AcknowledgementData> getReplicaAcknowledgementMap() {
@@ -52,12 +53,12 @@ public class AcknowledgementToClientListener {
         return requestConsistencyLevel;
     }
 
-    public boolean isSentToClinet() {
-        return isSentToClinet;
+    public boolean isSentToClient() {
+        return isSentToClient;
     }
 
-    public void setSentToClinet(boolean sentToClinet) {
-        isSentToClinet = sentToClinet;
+    public void setSentToClient(boolean sentToClient) {
+        isSentToClient = sentToClient;
     }
 }
 

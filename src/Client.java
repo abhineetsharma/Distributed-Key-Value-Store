@@ -28,36 +28,39 @@ public class Client {
             print(nodeMap);
 
 
-            sendPUTrequestToCoordinator("node0", 1, "XYZ", Node.ConsistencyLevel.TWO);
-//			Thread.sleep(10000);
-//			sendGETrequestToCoordinator();
+            sendPUTRequestToCoordinator("node0", 1, "XYZO", Node.ConsistencyLevel.TWO);
+
+            //Thread.sleep(5000);
+            sendGETRequestToCoordinator("node2", 1, Node.ConsistencyLevel.TWO);
+
         }
     }
 
-    private static void sendPUTrequestToCoordinator(String node, int key, String value, Node.ConsistencyLevel consistencyLevel) throws UnknownHostException, IOException {
+    private static void sendPUTRequestToCoordinator(String node, int key, String value, Node.ConsistencyLevel consistencyLevel) throws UnknownHostException, IOException {
         System.out.println("IP: " + nodeMap.get(node).getIp() + " Port:" + nodeMap.get(node).getPort());
         Socket socket = new Socket(nodeMap.get(node).getIp(), nodeMap.get(node).getPort());
         Node.ClientWriteRequest.Builder putKeyVal = Node.ClientWriteRequest.newBuilder();
         putKeyVal.setKey(key).setValue(value).setConsistencyLevel(consistencyLevel).build();
         Node.WrapperMessage.Builder msg = Node.WrapperMessage.newBuilder();
         msg.setClientWriteRequest(putKeyVal).build().writeDelimitedTo(socket.getOutputStream());
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Node.WrapperMessage message = Node.WrapperMessage.parseFrom(socket.getInputStream());
-        System.out.println(message);
+
+
+        Node.WrapperMessage message = Node.WrapperMessage.parseDelimitedFrom(socket.getInputStream());
+        System.out.println("Message Received : " + message);
         socket.close();
     }
 
-    private static void sendGETrequestToCoordinator(String node) throws UnknownHostException, IOException {
+    private static void sendGETRequestToCoordinator(String node, int key, Node.ConsistencyLevel consistencyLevel) throws UnknownHostException, IOException {
         System.out.println("IP: " + nodeMap.get(node).getIp() + " Port:" + nodeMap.get(node).getPort());
         Socket socket = new Socket(nodeMap.get(node).getIp(), nodeMap.get(node).getPort());
-        Node.ClientReadRequest.Builder getKeyBuilder = Node.ClientReadRequest.newBuilder();
-        getKeyBuilder.setKey(1).build();
+        Node.ClientReadRequest.Builder getKeyVal = Node.ClientReadRequest.newBuilder();
+        getKeyVal.setKey(key).setConsistencyLevel(consistencyLevel).build();
         Node.WrapperMessage.Builder msg = Node.WrapperMessage.newBuilder();
-        msg.setClientReadRequest(getKeyBuilder).build().writeDelimitedTo(socket.getOutputStream());
+        msg.setClientReadRequest(getKeyVal).build().writeDelimitedTo(socket.getOutputStream());
+
+
+        Node.WrapperMessage message = Node.WrapperMessage.parseDelimitedFrom(socket.getInputStream());
+        System.out.println("Message Received : " + message);
         socket.close();
     }
 
