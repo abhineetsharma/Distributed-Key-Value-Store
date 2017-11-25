@@ -1,9 +1,15 @@
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public class Server {
@@ -14,11 +20,11 @@ public class Server {
     private String ip;
     private Map<String, NodeServerData> nodeMap;
     private Map<Integer, ValueMetaData> keyValueMap;
-    private static boolean printFlag = true;//flag to stop print
+    private String logFileName;
+    private static boolean printFlag = true;// flag to stop print
 
     private void initServer() {
-        //server information read by the server read by server
-
+        // server information read by the server read by server
         FileProcessor fPro = new FileProcessor(filePath);
         nodeMap = new TreeMap<>();
         keyValueMap = new ConcurrentSkipListMap<>();
@@ -42,7 +48,6 @@ public class Server {
                 System.out.println("null");
         }
     }
-
 
     private void processRequest(String nodeName, String key, String value) {
         String dateStr = getCurrentTimeString();
@@ -89,7 +94,8 @@ public class Server {
             putKeyFromCoordinatorBuilder.setValue(value);
             putKeyFromCoordinatorBuilder.setCoordinatorName(name);
 
-            Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setPutKeyFromCoordinator(putKeyFromCoordinatorBuilder).build();
+            Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
+                    .setPutKeyFromCoordinator(putKeyFromCoordinatorBuilder).build();
             try {
                 sendMessageToNodeSocket(replica, message);
             } catch (IOException e) {
@@ -98,37 +104,117 @@ public class Server {
         }
     }
 
-    private void processingPutKeyFromCoordinatorRequest(Node.PutKeyFromCoordinator putKeyFromCoordinator) {
+    private void processingPutKeyFromCoordinatorRequest(Node.PutKeyFromCoordinator putKeyFromCoordinator)
+            throws IOException {
         int key = putKeyFromCoordinator.getKey();
         String value = putKeyFromCoordinator.getValue();
         String timeStamp = putKeyFromCoordinator.getTimeStamp();
         String coordinatorName = putKeyFromCoordinator.getCoordinatorName();
 
-        //do pre-commit processing via log file and code
-        if (keyValueMap.containsKey(key)) {
-            keyValueMap.get(key).updateKeyWithValue(timeStamp, value);
-        } else {
-            keyValueMap.put(key, new ValueMetaData(timeStamp, value));
+        // BEGINE : Nikhil's pre commite code
+        // Writting to log file.
+        StringBuilder builder = new StringBuilder();
+        this.logFileName = builder.append(this.name).append("LogFile").toString();
+
+        Node.LogMessage logMessage = Node.LogMessage.newBuilder().setKey(putKeyFromCoordinator.getKey())
+                .setValue(putKeyFromCoordinator.getValue()).setTimeStamp(putKeyFromCoordinator.getTimeStamp())
+                .setLogEndFlag(false).build();
+        Node.LogBook.Builder logBook = Node.LogBook.newBuilder();
+
+        // Read the existing Log book.
+        try {
+            logBook.mergeFrom(new FileInputStream(logFileName));
+        } catch (FileNotFoundException e) {
+            System.out.println(": File not found.  Creating a new file.");
+        } catch (IOException ex) {
+            System.out.println("Error reading log file");
+            ex.printStackTrace();
         }
-        //do post commit processing via log file and code
-        print(keyValueMap.get(key));
 
+        // Add a logMessage.
+        logBook.addLog(logMessage);
 
-        Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator.newBuilder();
-        acknowledgementBuilder.setKey(key);
-        acknowledgementBuilder.setTimeStamp(timeStamp);
-        acknowledgementBuilder.setValue(value);
-        acknowledgementBuilder.setReplicaName(name);
+        // Write the new log book back to disk.
+        FileOutputStream output;
+        try {
+            output = new FileOutputStream(logFileName);
+            logBook.build().writeTo(output);
+            output.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setAcknowledgementToCoordinator(acknowledgementBuilder).build();
+        // Read the existing Log book.
+        logBook = Node.LogBook.newBuilder();
+        try {
+            logBook.mergeFrom(new FileInputStream(logFileName));
+        } catch (FileNotFoundException e) {
+            System.out.println(": File not found.  Creating a new file.");
+        } catch (IOException ex) {
+            System.out.println("Error reading log file");
+            ex.printStackTrace();
+        }
 
-        NodeServerData coordinator = nodeMap.get(coordinatorName);
+        // END: Nikhil's pre commite code
+        // DONE : do pre-commit processing via log file and code
 
-        //sendMessageToNodeSocket(coordinator,message);
+        Node.LogBook.Builder newLogBook = Node.LogBook.newBuilder();
+        for (Node.LogMessage log : logBook.getLogList()) {
+            if (log.getLogEndFlag()) {
+                newLogBook.addLog(log);
+            } else {
+
+                if (keyValueMap.containsKey(key)) {
+                    keyValueMap.get(key).updateKeyWithValue(timeStamp, value);
+                } else {
+                    // this.dataStore.put(log.getKey(), log.getValue());
+
+                    keyValueMap.put(key, new ValueMetaData(timeStamp, value));
+                }
+                // do post commit processing via log file and code
+                // update log message and add to newLogBook
+                Node.LogMessage newLogMessage = Node.LogMessage.newBuilder().setKey(log.getKey())
+                        .setValue(log.getValue()).setTimeStamp(log.getTimeStamp()).setLogEndFlag(true).build();
+                newLogBook.addLog(newLogMessage);
+
+                print(keyValueMap.get(key));
+                // Create acknowledgement and message to coordinator
+
+                Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator
+                        .newBuilder();
+                acknowledgementBuilder.setKey(key);
+                acknowledgementBuilder.setTimeStamp(timeStamp);
+                acknowledgementBuilder.setValue(value);
+                acknowledgementBuilder.setReplicaName(name);
+
+                Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
+                        .setAcknowledgementToCoordinator(acknowledgementBuilder).build();
+
+                NodeServerData coordinator = nodeMap.get(coordinatorName);
+
+                // send acknowledgement to coordinator
+                sendMessageToNodeSocket(coordinator, message);
+                System.out.println("Ack message send to Co-ordinator : " + coordinatorName + ".....");
+            }
+
+            // Write updated logbook back to disk.
+            try {
+                output = new FileOutputStream(logFileName);
+                newLogBook.build().writeTo(output);
+                output.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
-    private void sendMessageToNodeSocket(NodeServerData nodeServerData, Node.WrapperMessage message) throws IOException {
+    private void sendMessageToNodeSocket(NodeServerData nodeServerData, Node.WrapperMessage message)
+            throws IOException {
         Socket nodeServerSocket = null;
 
         nodeServerSocket = new Socket(nodeServerData.getIp(), nodeServerData.getPort());
@@ -174,29 +260,29 @@ public class Server {
                 if (message != null) {
                     if (message.hasClientReadRequest()) {
                         print("----ClientReadRequest Start----");
-                        //call appropriate method from here
+                        // call appropriate method from here
                         receiver.close();
                         print("----ClientReadRequest End----");
                     } else if (message.hasClientWriteRequest()) {
                         print("----ClientWriteRequest Start----");
-                        //call appropriate method from here
+                        // call appropriate method from here
                         server.processingClientWriteRequest(message.getClientWriteRequest());
                         receiver.close();
                         print("----ClientWriteRequest End----");
                     } else if (message.hasGetKeyFromCoordinator()) {
                         print("----GetKeyFromCoordinator Start----");
-                        //call appropriate method from here
+                        // call appropriate method from here
                         receiver.close();
                         print("----GetKeyFromCoordinator End----");
                     } else if (message.hasPutKeyFromCoordinator()) {
                         print("----PutKeyFromCoordinator Start----");
-                        //call appropriate method from here
+                        // call appropriate method from here
                         server.processingPutKeyFromCoordinatorRequest(message.getPutKeyFromCoordinator());
                         receiver.close();
                         print("----PutKeyFromCoordinator End----");
                     } else if (message.hasReadRepair()) {
                         print("----ReadRepair Start----");
-                        //call appropriate method from here
+                        // call appropriate method from here
                         receiver.close();
                         print("----ReadRepair End----");
                     }
@@ -220,10 +306,8 @@ public class Server {
         }
     }
 
-
     private String getCurrentTimeString() {
         return Long.toString(System.currentTimeMillis());
     }
-
 
 }

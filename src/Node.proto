@@ -19,7 +19,6 @@ message ClientReadRequest {
     ConsistencyLevel consistencyLevel = 2;
 }
 
-
 message ClientWriteRequest {
     uint32 key = 1;
     string value = 2;
@@ -38,6 +37,17 @@ message ReadRepair {
 
 message Error {
     string message = 1;
+}
+message LogMessage{
+	bool logStartFlag = 1;
+	uint32 key = 2;
+	string value = 3;
+	string timeStamp = 4;
+	bool logEndFlag =5;
+}
+
+message LogBook{
+	repeated LogMessage log = 1;
 }
 
 message AcknowledgementToCoordinator {
