@@ -89,7 +89,7 @@ public class Server {
 
         String timeStamp = getCurrentTimeString();
 
-        acknowledgementLogCoordinatorMap.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, key, null, replicaServerList));
+        acknowledgementLogCoordinatorMap.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, null, replicaServerList));
 
         for (NodeServerData replica : replicaServerList) {
 
@@ -125,7 +125,7 @@ public class Server {
         String timeStamp = getCurrentTimeString();
 
 
-        acknowledgementLogCoordinatorMap.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, key, value, replicaServerList));
+        acknowledgementLogCoordinatorMap.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, value, replicaServerList));
 
         for (NodeServerData replica : replicaServerList) {
 
@@ -308,7 +308,7 @@ public class Server {
             Socket clientSocket = acknowledgement.getClientScoket();
             boolean isSentToClient = acknowledgement.isSentToClient();
             AcknowledgementData acknowledgementData = acknowledgement.getAcknowledgementDataByServerName(replicaName);
-            List<String> acknowledgementList = acknowledgement.getAcknowledgedListForTimeStamp();
+            List<String> replicaAcknowledgementList = acknowledgement.getAcknowledgedListForTimeStamp();
 
             if (null != acknowledgementData) {
                 int replicaKey = acknowledgementData.getKey();
@@ -322,12 +322,15 @@ public class Server {
                     }
 
 
-                } else if (requestType.equals(Node.RequestType.READ)) {
-                    //Read request
+                }
+                //Read request
+                else if (requestType.equals(Node.RequestType.READ)) {
+                    acknowledgement.setValueFromReplicaAcknowledgement(replicaName, replicaValue);
                     acknowledgementData.setAcknowledge(true);
                 }
-                int writeAcknowledgeCount = acknowledgementList.size();
-                if (writeAcknowledgeCount >= consistencyLevel.getNumber() && !isSentToClient) {
+
+                int acknowledgeCount = replicaAcknowledgementList.size();
+                if (acknowledgeCount >= consistencyLevel.getNumber() && !isSentToClient) {
                     acknowledgement.setSentToClient(true);
                     sentAcknowledgementToClient(key, value, clientSocket);
                 }
