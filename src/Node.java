@@ -12,6 +12,113 @@ public final class Node {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
+  /**
+   * Protobuf enum {@code ConsistencyLevel}
+   */
+  public enum ConsistencyLevel
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>UNKNOWN = 0;</code>
+     */
+    UNKNOWN(0),
+    /**
+     * <code>ONE = 1;</code>
+     */
+    ONE(1),
+    /**
+     * <code>TWO = 2;</code>
+     */
+    TWO(2),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <code>UNKNOWN = 0;</code>
+     */
+    public static final int UNKNOWN_VALUE = 0;
+    /**
+     * <code>ONE = 1;</code>
+     */
+    public static final int ONE_VALUE = 1;
+    /**
+     * <code>TWO = 2;</code>
+     */
+    public static final int TWO_VALUE = 2;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static ConsistencyLevel valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static ConsistencyLevel forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN;
+        case 1: return ONE;
+        case 2: return TWO;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<ConsistencyLevel>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        ConsistencyLevel> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<ConsistencyLevel>() {
+            public ConsistencyLevel findValueByNumber(int number) {
+              return ConsistencyLevel.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return Node.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final ConsistencyLevel[] VALUES = values();
+
+    public static ConsistencyLevel valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private ConsistencyLevel(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:ConsistencyLevel)
+  }
+
   public interface GetKeyFromCoordinatorOrBuilder extends
       // @@protoc_insertion_point(interface_extends:GetKeyFromCoordinator)
       com.google.protobuf.MessageOrBuilder {
@@ -30,6 +137,16 @@ public final class Node {
      * <code>uint32 key = 2;</code>
      */
     int getKey();
+
+    /**
+     * <code>string coordinatorName = 3;</code>
+     */
+    java.lang.String getCoordinatorName();
+    /**
+     * <code>string coordinatorName = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getCoordinatorNameBytes();
   }
   /**
    * Protobuf type {@code GetKeyFromCoordinator}
@@ -46,6 +163,7 @@ public final class Node {
     private GetKeyFromCoordinator() {
       timeStamp_ = "";
       key_ = 0;
+      coordinatorName_ = "";
     }
 
     @java.lang.Override
@@ -58,6 +176,9 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -85,6 +206,12 @@ public final class Node {
             case 16: {
 
               key_ = input.readUInt32();
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              coordinatorName_ = s;
               break;
             }
           }
@@ -154,6 +281,40 @@ public final class Node {
       return key_;
     }
 
+    public static final int COORDINATORNAME_FIELD_NUMBER = 3;
+    private volatile java.lang.Object coordinatorName_;
+    /**
+     * <code>string coordinatorName = 3;</code>
+     */
+    public java.lang.String getCoordinatorName() {
+      java.lang.Object ref = coordinatorName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        coordinatorName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string coordinatorName = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getCoordinatorNameBytes() {
+      java.lang.Object ref = coordinatorName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        coordinatorName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -172,6 +333,9 @@ public final class Node {
       if (key_ != 0) {
         output.writeUInt32(2, key_);
       }
+      if (!getCoordinatorNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, coordinatorName_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -186,6 +350,9 @@ public final class Node {
       if (key_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(2, key_);
+      }
+      if (!getCoordinatorNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, coordinatorName_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -207,6 +374,8 @@ public final class Node {
           .equals(other.getTimeStamp());
       result = result && (getKey()
           == other.getKey());
+      result = result && getCoordinatorName()
+          .equals(other.getCoordinatorName());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -222,6 +391,8 @@ public final class Node {
       hash = (53 * hash) + getTimeStamp().hashCode();
       hash = (37 * hash) + KEY_FIELD_NUMBER;
       hash = (53 * hash) + getKey();
+      hash = (37 * hash) + COORDINATORNAME_FIELD_NUMBER;
+      hash = (53 * hash) + getCoordinatorName().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -355,6 +526,8 @@ public final class Node {
 
         key_ = 0;
 
+        coordinatorName_ = "";
+
         return this;
       }
 
@@ -379,6 +552,7 @@ public final class Node {
         Node.GetKeyFromCoordinator result = new Node.GetKeyFromCoordinator(this);
         result.timeStamp_ = timeStamp_;
         result.key_ = key_;
+        result.coordinatorName_ = coordinatorName_;
         onBuilt();
         return result;
       }
@@ -426,6 +600,10 @@ public final class Node {
         }
         if (other.getKey() != 0) {
           setKey(other.getKey());
+        }
+        if (!other.getCoordinatorName().isEmpty()) {
+          coordinatorName_ = other.coordinatorName_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -548,6 +726,75 @@ public final class Node {
         onChanged();
         return this;
       }
+
+      private java.lang.Object coordinatorName_ = "";
+      /**
+       * <code>string coordinatorName = 3;</code>
+       */
+      public java.lang.String getCoordinatorName() {
+        java.lang.Object ref = coordinatorName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          coordinatorName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string coordinatorName = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getCoordinatorNameBytes() {
+        java.lang.Object ref = coordinatorName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          coordinatorName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string coordinatorName = 3;</code>
+       */
+      public Builder setCoordinatorName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        coordinatorName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string coordinatorName = 3;</code>
+       */
+      public Builder clearCoordinatorName() {
+        
+        coordinatorName_ = getDefaultInstance().getCoordinatorName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string coordinatorName = 3;</code>
+       */
+      public Builder setCoordinatorNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        coordinatorName_ = value;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
@@ -578,7 +825,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new GetKeyFromCoordinator(input, extensionRegistry);
+        return new GetKeyFromCoordinator(input, extensionRegistry);
       }
     };
 
@@ -625,6 +872,16 @@ public final class Node {
      */
     com.google.protobuf.ByteString
         getValueBytes();
+
+    /**
+     * <code>string coordinatorName = 4;</code>
+     */
+    java.lang.String getCoordinatorName();
+    /**
+     * <code>string coordinatorName = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getCoordinatorNameBytes();
   }
   /**
    * Protobuf type {@code PutKeyFromCoordinator}
@@ -642,6 +899,7 @@ public final class Node {
       timeStamp_ = "";
       key_ = 0;
       value_ = "";
+      coordinatorName_ = "";
     }
 
     @java.lang.Override
@@ -654,6 +912,9 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -687,6 +948,12 @@ public final class Node {
               java.lang.String s = input.readStringRequireUtf8();
 
               value_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              coordinatorName_ = s;
               break;
             }
           }
@@ -790,6 +1057,40 @@ public final class Node {
       }
     }
 
+    public static final int COORDINATORNAME_FIELD_NUMBER = 4;
+    private volatile java.lang.Object coordinatorName_;
+    /**
+     * <code>string coordinatorName = 4;</code>
+     */
+    public java.lang.String getCoordinatorName() {
+      java.lang.Object ref = coordinatorName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        coordinatorName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string coordinatorName = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getCoordinatorNameBytes() {
+      java.lang.Object ref = coordinatorName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        coordinatorName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -811,6 +1112,9 @@ public final class Node {
       if (!getValueBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, value_);
       }
+      if (!getCoordinatorNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, coordinatorName_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -828,6 +1132,9 @@ public final class Node {
       }
       if (!getValueBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, value_);
+      }
+      if (!getCoordinatorNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, coordinatorName_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -851,6 +1158,8 @@ public final class Node {
           == other.getKey());
       result = result && getValue()
           .equals(other.getValue());
+      result = result && getCoordinatorName()
+          .equals(other.getCoordinatorName());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -868,6 +1177,8 @@ public final class Node {
       hash = (53 * hash) + getKey();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
       hash = (53 * hash) + getValue().hashCode();
+      hash = (37 * hash) + COORDINATORNAME_FIELD_NUMBER;
+      hash = (53 * hash) + getCoordinatorName().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1003,6 +1314,8 @@ public final class Node {
 
         value_ = "";
 
+        coordinatorName_ = "";
+
         return this;
       }
 
@@ -1028,6 +1341,7 @@ public final class Node {
         result.timeStamp_ = timeStamp_;
         result.key_ = key_;
         result.value_ = value_;
+        result.coordinatorName_ = coordinatorName_;
         onBuilt();
         return result;
       }
@@ -1078,6 +1392,10 @@ public final class Node {
         }
         if (!other.getValue().isEmpty()) {
           value_ = other.value_;
+          onChanged();
+        }
+        if (!other.getCoordinatorName().isEmpty()) {
+          coordinatorName_ = other.coordinatorName_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -1270,6 +1588,75 @@ public final class Node {
         onChanged();
         return this;
       }
+
+      private java.lang.Object coordinatorName_ = "";
+      /**
+       * <code>string coordinatorName = 4;</code>
+       */
+      public java.lang.String getCoordinatorName() {
+        java.lang.Object ref = coordinatorName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          coordinatorName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string coordinatorName = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getCoordinatorNameBytes() {
+        java.lang.Object ref = coordinatorName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          coordinatorName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string coordinatorName = 4;</code>
+       */
+      public Builder setCoordinatorName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        coordinatorName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string coordinatorName = 4;</code>
+       */
+      public Builder clearCoordinatorName() {
+        
+        coordinatorName_ = getDefaultInstance().getCoordinatorName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string coordinatorName = 4;</code>
+       */
+      public Builder setCoordinatorNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        coordinatorName_ = value;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
@@ -1300,7 +1687,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new PutKeyFromCoordinator(input, extensionRegistry);
+        return new PutKeyFromCoordinator(input, extensionRegistry);
       }
     };
 
@@ -1327,6 +1714,15 @@ public final class Node {
      * <code>uint32 key = 1;</code>
      */
     int getKey();
+
+    /**
+     * <code>.ConsistencyLevel consistencyLevel = 2;</code>
+     */
+    int getConsistencyLevelValue();
+    /**
+     * <code>.ConsistencyLevel consistencyLevel = 2;</code>
+     */
+    Node.ConsistencyLevel getConsistencyLevel();
   }
   /**
    * Protobuf type {@code ClientReadRequest}
@@ -1342,6 +1738,7 @@ public final class Node {
     }
     private ClientReadRequest() {
       key_ = 0;
+      consistencyLevel_ = 0;
     }
 
     @java.lang.Override
@@ -1354,6 +1751,9 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -1375,6 +1775,12 @@ public final class Node {
             case 8: {
 
               key_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              int rawValue = input.readEnum();
+
+              consistencyLevel_ = rawValue;
               break;
             }
           }
@@ -1410,6 +1816,22 @@ public final class Node {
       return key_;
     }
 
+    public static final int CONSISTENCYLEVEL_FIELD_NUMBER = 2;
+    private int consistencyLevel_;
+    /**
+     * <code>.ConsistencyLevel consistencyLevel = 2;</code>
+     */
+    public int getConsistencyLevelValue() {
+      return consistencyLevel_;
+    }
+    /**
+     * <code>.ConsistencyLevel consistencyLevel = 2;</code>
+     */
+    public Node.ConsistencyLevel getConsistencyLevel() {
+      Node.ConsistencyLevel result = Node.ConsistencyLevel.valueOf(consistencyLevel_);
+      return result == null ? Node.ConsistencyLevel.UNRECOGNIZED : result;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -1425,6 +1847,9 @@ public final class Node {
       if (key_ != 0) {
         output.writeUInt32(1, key_);
       }
+      if (consistencyLevel_ != Node.ConsistencyLevel.UNKNOWN.getNumber()) {
+        output.writeEnum(2, consistencyLevel_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1436,6 +1861,10 @@ public final class Node {
       if (key_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(1, key_);
+      }
+      if (consistencyLevel_ != Node.ConsistencyLevel.UNKNOWN.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, consistencyLevel_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1455,6 +1884,7 @@ public final class Node {
       boolean result = true;
       result = result && (getKey()
           == other.getKey());
+      result = result && consistencyLevel_ == other.consistencyLevel_;
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1468,6 +1898,8 @@ public final class Node {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + KEY_FIELD_NUMBER;
       hash = (53 * hash) + getKey();
+      hash = (37 * hash) + CONSISTENCYLEVEL_FIELD_NUMBER;
+      hash = (53 * hash) + consistencyLevel_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1599,6 +2031,8 @@ public final class Node {
         super.clear();
         key_ = 0;
 
+        consistencyLevel_ = 0;
+
         return this;
       }
 
@@ -1622,6 +2056,7 @@ public final class Node {
       public Node.ClientReadRequest buildPartial() {
         Node.ClientReadRequest result = new Node.ClientReadRequest(this);
         result.key_ = key_;
+        result.consistencyLevel_ = consistencyLevel_;
         onBuilt();
         return result;
       }
@@ -1665,6 +2100,9 @@ public final class Node {
         if (other == Node.ClientReadRequest.getDefaultInstance()) return this;
         if (other.getKey() != 0) {
           setKey(other.getKey());
+        }
+        if (other.consistencyLevel_ != 0) {
+          setConsistencyLevelValue(other.getConsistencyLevelValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1718,6 +2156,50 @@ public final class Node {
         onChanged();
         return this;
       }
+
+      private int consistencyLevel_ = 0;
+      /**
+       * <code>.ConsistencyLevel consistencyLevel = 2;</code>
+       */
+      public int getConsistencyLevelValue() {
+        return consistencyLevel_;
+      }
+      /**
+       * <code>.ConsistencyLevel consistencyLevel = 2;</code>
+       */
+      public Builder setConsistencyLevelValue(int value) {
+        consistencyLevel_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.ConsistencyLevel consistencyLevel = 2;</code>
+       */
+      public Node.ConsistencyLevel getConsistencyLevel() {
+        Node.ConsistencyLevel result = Node.ConsistencyLevel.valueOf(consistencyLevel_);
+        return result == null ? Node.ConsistencyLevel.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.ConsistencyLevel consistencyLevel = 2;</code>
+       */
+      public Builder setConsistencyLevel(Node.ConsistencyLevel value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        consistencyLevel_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.ConsistencyLevel consistencyLevel = 2;</code>
+       */
+      public Builder clearConsistencyLevel() {
+        
+        consistencyLevel_ = 0;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
@@ -1748,7 +2230,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ClientReadRequest(input, extensionRegistry);
+        return new ClientReadRequest(input, extensionRegistry);
       }
     };
 
@@ -1785,6 +2267,15 @@ public final class Node {
      */
     com.google.protobuf.ByteString
         getValueBytes();
+
+    /**
+     * <code>.ConsistencyLevel consistencyLevel = 3;</code>
+     */
+    int getConsistencyLevelValue();
+    /**
+     * <code>.ConsistencyLevel consistencyLevel = 3;</code>
+     */
+    Node.ConsistencyLevel getConsistencyLevel();
   }
   /**
    * Protobuf type {@code ClientWriteRequest}
@@ -1801,6 +2292,7 @@ public final class Node {
     private ClientWriteRequest() {
       key_ = 0;
       value_ = "";
+      consistencyLevel_ = 0;
     }
 
     @java.lang.Override
@@ -1813,6 +2305,9 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -1840,6 +2335,12 @@ public final class Node {
               java.lang.String s = input.readStringRequireUtf8();
 
               value_ = s;
+              break;
+            }
+            case 24: {
+              int rawValue = input.readEnum();
+
+              consistencyLevel_ = rawValue;
               break;
             }
           }
@@ -1909,6 +2410,22 @@ public final class Node {
       }
     }
 
+    public static final int CONSISTENCYLEVEL_FIELD_NUMBER = 3;
+    private int consistencyLevel_;
+    /**
+     * <code>.ConsistencyLevel consistencyLevel = 3;</code>
+     */
+    public int getConsistencyLevelValue() {
+      return consistencyLevel_;
+    }
+    /**
+     * <code>.ConsistencyLevel consistencyLevel = 3;</code>
+     */
+    public Node.ConsistencyLevel getConsistencyLevel() {
+      Node.ConsistencyLevel result = Node.ConsistencyLevel.valueOf(consistencyLevel_);
+      return result == null ? Node.ConsistencyLevel.UNRECOGNIZED : result;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -1927,6 +2444,9 @@ public final class Node {
       if (!getValueBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, value_);
       }
+      if (consistencyLevel_ != Node.ConsistencyLevel.UNKNOWN.getNumber()) {
+        output.writeEnum(3, consistencyLevel_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1941,6 +2461,10 @@ public final class Node {
       }
       if (!getValueBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, value_);
+      }
+      if (consistencyLevel_ != Node.ConsistencyLevel.UNKNOWN.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(3, consistencyLevel_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1962,6 +2486,7 @@ public final class Node {
           == other.getKey());
       result = result && getValue()
           .equals(other.getValue());
+      result = result && consistencyLevel_ == other.consistencyLevel_;
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1977,6 +2502,8 @@ public final class Node {
       hash = (53 * hash) + getKey();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
       hash = (53 * hash) + getValue().hashCode();
+      hash = (37 * hash) + CONSISTENCYLEVEL_FIELD_NUMBER;
+      hash = (53 * hash) + consistencyLevel_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2110,6 +2637,8 @@ public final class Node {
 
         value_ = "";
 
+        consistencyLevel_ = 0;
+
         return this;
       }
 
@@ -2134,6 +2663,7 @@ public final class Node {
         Node.ClientWriteRequest result = new Node.ClientWriteRequest(this);
         result.key_ = key_;
         result.value_ = value_;
+        result.consistencyLevel_ = consistencyLevel_;
         onBuilt();
         return result;
       }
@@ -2181,6 +2711,9 @@ public final class Node {
         if (!other.getValue().isEmpty()) {
           value_ = other.value_;
           onChanged();
+        }
+        if (other.consistencyLevel_ != 0) {
+          setConsistencyLevelValue(other.getConsistencyLevelValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2303,6 +2836,50 @@ public final class Node {
         onChanged();
         return this;
       }
+
+      private int consistencyLevel_ = 0;
+      /**
+       * <code>.ConsistencyLevel consistencyLevel = 3;</code>
+       */
+      public int getConsistencyLevelValue() {
+        return consistencyLevel_;
+      }
+      /**
+       * <code>.ConsistencyLevel consistencyLevel = 3;</code>
+       */
+      public Builder setConsistencyLevelValue(int value) {
+        consistencyLevel_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.ConsistencyLevel consistencyLevel = 3;</code>
+       */
+      public Node.ConsistencyLevel getConsistencyLevel() {
+        Node.ConsistencyLevel result = Node.ConsistencyLevel.valueOf(consistencyLevel_);
+        return result == null ? Node.ConsistencyLevel.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.ConsistencyLevel consistencyLevel = 3;</code>
+       */
+      public Builder setConsistencyLevel(Node.ConsistencyLevel value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        consistencyLevel_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.ConsistencyLevel consistencyLevel = 3;</code>
+       */
+      public Builder clearConsistencyLevel() {
+        
+        consistencyLevel_ = 0;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
@@ -2333,7 +2910,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ClientWriteRequest(input, extensionRegistry);
+        return new ClientWriteRequest(input, extensionRegistry);
       }
     };
 
@@ -2398,6 +2975,9 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -2918,7 +3498,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ReadRepair(input, extensionRegistry);
+        return new ReadRepair(input, extensionRegistry);
       }
     };
 
@@ -2977,6 +3557,9 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -3440,7 +4023,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Error(input, extensionRegistry);
+        return new Error(input, extensionRegistry);
       }
     };
 
@@ -3459,8 +4042,1618 @@ public final class Node {
 
   }
 
-  public interface AcknowledgementOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:Acknowledgement)
+  public interface LogMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:LogMessage)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>bool logStartFlag = 1;</code>
+     */
+    boolean getLogStartFlag();
+
+    /**
+     * <code>uint32 key = 2;</code>
+     */
+    int getKey();
+
+    /**
+     * <code>string value = 3;</code>
+     */
+    java.lang.String getValue();
+    /**
+     * <code>string value = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getValueBytes();
+
+    /**
+     * <code>string timeStamp = 4;</code>
+     */
+    java.lang.String getTimeStamp();
+    /**
+     * <code>string timeStamp = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getTimeStampBytes();
+
+    /**
+     * <code>bool logEndFlag = 5;</code>
+     */
+    boolean getLogEndFlag();
+  }
+  /**
+   * Protobuf type {@code LogMessage}
+   */
+  public  static final class LogMessage extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:LogMessage)
+      LogMessageOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use LogMessage.newBuilder() to construct.
+    private LogMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private LogMessage() {
+      logStartFlag_ = false;
+      key_ = 0;
+      value_ = "";
+      timeStamp_ = "";
+      logEndFlag_ = false;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private LogMessage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+
+              logStartFlag_ = input.readBool();
+              break;
+            }
+            case 16: {
+
+              key_ = input.readUInt32();
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              value_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              timeStamp_ = s;
+              break;
+            }
+            case 40: {
+
+              logEndFlag_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return Node.internal_static_LogMessage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return Node.internal_static_LogMessage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              Node.LogMessage.class, Node.LogMessage.Builder.class);
+    }
+
+    public static final int LOGSTARTFLAG_FIELD_NUMBER = 1;
+    private boolean logStartFlag_;
+    /**
+     * <code>bool logStartFlag = 1;</code>
+     */
+    public boolean getLogStartFlag() {
+      return logStartFlag_;
+    }
+
+    public static final int KEY_FIELD_NUMBER = 2;
+    private int key_;
+    /**
+     * <code>uint32 key = 2;</code>
+     */
+    public int getKey() {
+      return key_;
+    }
+
+    public static final int VALUE_FIELD_NUMBER = 3;
+    private volatile java.lang.Object value_;
+    /**
+     * <code>string value = 3;</code>
+     */
+    public java.lang.String getValue() {
+      java.lang.Object ref = value_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        value_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string value = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getValueBytes() {
+      java.lang.Object ref = value_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        value_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TIMESTAMP_FIELD_NUMBER = 4;
+    private volatile java.lang.Object timeStamp_;
+    /**
+     * <code>string timeStamp = 4;</code>
+     */
+    public java.lang.String getTimeStamp() {
+      java.lang.Object ref = timeStamp_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        timeStamp_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string timeStamp = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getTimeStampBytes() {
+      java.lang.Object ref = timeStamp_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        timeStamp_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int LOGENDFLAG_FIELD_NUMBER = 5;
+    private boolean logEndFlag_;
+    /**
+     * <code>bool logEndFlag = 5;</code>
+     */
+    public boolean getLogEndFlag() {
+      return logEndFlag_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (logStartFlag_ != false) {
+        output.writeBool(1, logStartFlag_);
+      }
+      if (key_ != 0) {
+        output.writeUInt32(2, key_);
+      }
+      if (!getValueBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, value_);
+      }
+      if (!getTimeStampBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, timeStamp_);
+      }
+      if (logEndFlag_ != false) {
+        output.writeBool(5, logEndFlag_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (logStartFlag_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, logStartFlag_);
+      }
+      if (key_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, key_);
+      }
+      if (!getValueBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, value_);
+      }
+      if (!getTimeStampBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, timeStamp_);
+      }
+      if (logEndFlag_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, logEndFlag_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof Node.LogMessage)) {
+        return super.equals(obj);
+      }
+      Node.LogMessage other = (Node.LogMessage) obj;
+
+      boolean result = true;
+      result = result && (getLogStartFlag()
+          == other.getLogStartFlag());
+      result = result && (getKey()
+          == other.getKey());
+      result = result && getValue()
+          .equals(other.getValue());
+      result = result && getTimeStamp()
+          .equals(other.getTimeStamp());
+      result = result && (getLogEndFlag()
+          == other.getLogEndFlag());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + LOGSTARTFLAG_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getLogStartFlag());
+      hash = (37 * hash) + KEY_FIELD_NUMBER;
+      hash = (53 * hash) + getKey();
+      hash = (37 * hash) + VALUE_FIELD_NUMBER;
+      hash = (53 * hash) + getValue().hashCode();
+      hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
+      hash = (53 * hash) + getTimeStamp().hashCode();
+      hash = (37 * hash) + LOGENDFLAG_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getLogEndFlag());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static Node.LogMessage parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Node.LogMessage parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Node.LogMessage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Node.LogMessage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Node.LogMessage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Node.LogMessage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Node.LogMessage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static Node.LogMessage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static Node.LogMessage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static Node.LogMessage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static Node.LogMessage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static Node.LogMessage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(Node.LogMessage prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code LogMessage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:LogMessage)
+        Node.LogMessageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return Node.internal_static_LogMessage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return Node.internal_static_LogMessage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                Node.LogMessage.class, Node.LogMessage.Builder.class);
+      }
+
+      // Construct using Node.LogMessage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        logStartFlag_ = false;
+
+        key_ = 0;
+
+        value_ = "";
+
+        timeStamp_ = "";
+
+        logEndFlag_ = false;
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return Node.internal_static_LogMessage_descriptor;
+      }
+
+      public Node.LogMessage getDefaultInstanceForType() {
+        return Node.LogMessage.getDefaultInstance();
+      }
+
+      public Node.LogMessage build() {
+        Node.LogMessage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public Node.LogMessage buildPartial() {
+        Node.LogMessage result = new Node.LogMessage(this);
+        result.logStartFlag_ = logStartFlag_;
+        result.key_ = key_;
+        result.value_ = value_;
+        result.timeStamp_ = timeStamp_;
+        result.logEndFlag_ = logEndFlag_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof Node.LogMessage) {
+          return mergeFrom((Node.LogMessage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(Node.LogMessage other) {
+        if (other == Node.LogMessage.getDefaultInstance()) return this;
+        if (other.getLogStartFlag() != false) {
+          setLogStartFlag(other.getLogStartFlag());
+        }
+        if (other.getKey() != 0) {
+          setKey(other.getKey());
+        }
+        if (!other.getValue().isEmpty()) {
+          value_ = other.value_;
+          onChanged();
+        }
+        if (!other.getTimeStamp().isEmpty()) {
+          timeStamp_ = other.timeStamp_;
+          onChanged();
+        }
+        if (other.getLogEndFlag() != false) {
+          setLogEndFlag(other.getLogEndFlag());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        Node.LogMessage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (Node.LogMessage) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private boolean logStartFlag_ ;
+      /**
+       * <code>bool logStartFlag = 1;</code>
+       */
+      public boolean getLogStartFlag() {
+        return logStartFlag_;
+      }
+      /**
+       * <code>bool logStartFlag = 1;</code>
+       */
+      public Builder setLogStartFlag(boolean value) {
+        
+        logStartFlag_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool logStartFlag = 1;</code>
+       */
+      public Builder clearLogStartFlag() {
+        
+        logStartFlag_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int key_ ;
+      /**
+       * <code>uint32 key = 2;</code>
+       */
+      public int getKey() {
+        return key_;
+      }
+      /**
+       * <code>uint32 key = 2;</code>
+       */
+      public Builder setKey(int value) {
+        
+        key_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint32 key = 2;</code>
+       */
+      public Builder clearKey() {
+        
+        key_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object value_ = "";
+      /**
+       * <code>string value = 3;</code>
+       */
+      public java.lang.String getValue() {
+        java.lang.Object ref = value_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          value_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string value = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getValueBytes() {
+        java.lang.Object ref = value_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          value_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string value = 3;</code>
+       */
+      public Builder setValue(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        value_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string value = 3;</code>
+       */
+      public Builder clearValue() {
+        
+        value_ = getDefaultInstance().getValue();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string value = 3;</code>
+       */
+      public Builder setValueBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        value_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object timeStamp_ = "";
+      /**
+       * <code>string timeStamp = 4;</code>
+       */
+      public java.lang.String getTimeStamp() {
+        java.lang.Object ref = timeStamp_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          timeStamp_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string timeStamp = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getTimeStampBytes() {
+        java.lang.Object ref = timeStamp_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          timeStamp_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string timeStamp = 4;</code>
+       */
+      public Builder setTimeStamp(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        timeStamp_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string timeStamp = 4;</code>
+       */
+      public Builder clearTimeStamp() {
+        
+        timeStamp_ = getDefaultInstance().getTimeStamp();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string timeStamp = 4;</code>
+       */
+      public Builder setTimeStampBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        timeStamp_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean logEndFlag_ ;
+      /**
+       * <code>bool logEndFlag = 5;</code>
+       */
+      public boolean getLogEndFlag() {
+        return logEndFlag_;
+      }
+      /**
+       * <code>bool logEndFlag = 5;</code>
+       */
+      public Builder setLogEndFlag(boolean value) {
+        
+        logEndFlag_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool logEndFlag = 5;</code>
+       */
+      public Builder clearLogEndFlag() {
+        
+        logEndFlag_ = false;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:LogMessage)
+    }
+
+    // @@protoc_insertion_point(class_scope:LogMessage)
+    private static final Node.LogMessage DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new Node.LogMessage();
+    }
+
+    public static Node.LogMessage getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<LogMessage>
+        PARSER = new com.google.protobuf.AbstractParser<LogMessage>() {
+      public LogMessage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new LogMessage(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<LogMessage> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<LogMessage> getParserForType() {
+      return PARSER;
+    }
+
+    public Node.LogMessage getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface LogBookOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:LogBook)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .LogMessage log = 1;</code>
+     */
+    java.util.List<Node.LogMessage> 
+        getLogList();
+    /**
+     * <code>repeated .LogMessage log = 1;</code>
+     */
+    Node.LogMessage getLog(int index);
+    /**
+     * <code>repeated .LogMessage log = 1;</code>
+     */
+    int getLogCount();
+    /**
+     * <code>repeated .LogMessage log = 1;</code>
+     */
+    java.util.List<? extends Node.LogMessageOrBuilder> 
+        getLogOrBuilderList();
+    /**
+     * <code>repeated .LogMessage log = 1;</code>
+     */
+    Node.LogMessageOrBuilder getLogOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code LogBook}
+   */
+  public  static final class LogBook extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:LogBook)
+      LogBookOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use LogBook.newBuilder() to construct.
+    private LogBook(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private LogBook() {
+      log_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private LogBook(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                log_ = new java.util.ArrayList<Node.LogMessage>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              log_.add(
+                  input.readMessage(Node.LogMessage.parser(), extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          log_ = java.util.Collections.unmodifiableList(log_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return Node.internal_static_LogBook_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return Node.internal_static_LogBook_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              Node.LogBook.class, Node.LogBook.Builder.class);
+    }
+
+    public static final int LOG_FIELD_NUMBER = 1;
+    private java.util.List<Node.LogMessage> log_;
+    /**
+     * <code>repeated .LogMessage log = 1;</code>
+     */
+    public java.util.List<Node.LogMessage> getLogList() {
+      return log_;
+    }
+    /**
+     * <code>repeated .LogMessage log = 1;</code>
+     */
+    public java.util.List<? extends Node.LogMessageOrBuilder> 
+        getLogOrBuilderList() {
+      return log_;
+    }
+    /**
+     * <code>repeated .LogMessage log = 1;</code>
+     */
+    public int getLogCount() {
+      return log_.size();
+    }
+    /**
+     * <code>repeated .LogMessage log = 1;</code>
+     */
+    public Node.LogMessage getLog(int index) {
+      return log_.get(index);
+    }
+    /**
+     * <code>repeated .LogMessage log = 1;</code>
+     */
+    public Node.LogMessageOrBuilder getLogOrBuilder(
+        int index) {
+      return log_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      for (int i = 0; i < log_.size(); i++) {
+        output.writeMessage(1, log_.get(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < log_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, log_.get(i));
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof Node.LogBook)) {
+        return super.equals(obj);
+      }
+      Node.LogBook other = (Node.LogBook) obj;
+
+      boolean result = true;
+      result = result && getLogList()
+          .equals(other.getLogList());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (getLogCount() > 0) {
+        hash = (37 * hash) + LOG_FIELD_NUMBER;
+        hash = (53 * hash) + getLogList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static Node.LogBook parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Node.LogBook parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Node.LogBook parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Node.LogBook parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Node.LogBook parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Node.LogBook parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Node.LogBook parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static Node.LogBook parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static Node.LogBook parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static Node.LogBook parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static Node.LogBook parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static Node.LogBook parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(Node.LogBook prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code LogBook}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:LogBook)
+        Node.LogBookOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return Node.internal_static_LogBook_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return Node.internal_static_LogBook_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                Node.LogBook.class, Node.LogBook.Builder.class);
+      }
+
+      // Construct using Node.LogBook.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getLogFieldBuilder();
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        if (logBuilder_ == null) {
+          log_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          logBuilder_.clear();
+        }
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return Node.internal_static_LogBook_descriptor;
+      }
+
+      public Node.LogBook getDefaultInstanceForType() {
+        return Node.LogBook.getDefaultInstance();
+      }
+
+      public Node.LogBook build() {
+        Node.LogBook result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public Node.LogBook buildPartial() {
+        Node.LogBook result = new Node.LogBook(this);
+        int from_bitField0_ = bitField0_;
+        if (logBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            log_ = java.util.Collections.unmodifiableList(log_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.log_ = log_;
+        } else {
+          result.log_ = logBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof Node.LogBook) {
+          return mergeFrom((Node.LogBook)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(Node.LogBook other) {
+        if (other == Node.LogBook.getDefaultInstance()) return this;
+        if (logBuilder_ == null) {
+          if (!other.log_.isEmpty()) {
+            if (log_.isEmpty()) {
+              log_ = other.log_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureLogIsMutable();
+              log_.addAll(other.log_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.log_.isEmpty()) {
+            if (logBuilder_.isEmpty()) {
+              logBuilder_.dispose();
+              logBuilder_ = null;
+              log_ = other.log_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              logBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getLogFieldBuilder() : null;
+            } else {
+              logBuilder_.addAllMessages(other.log_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        Node.LogBook parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (Node.LogBook) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<Node.LogMessage> log_ =
+        java.util.Collections.emptyList();
+      private void ensureLogIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          log_ = new java.util.ArrayList<Node.LogMessage>(log_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          Node.LogMessage, Node.LogMessage.Builder, Node.LogMessageOrBuilder> logBuilder_;
+
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public java.util.List<Node.LogMessage> getLogList() {
+        if (logBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(log_);
+        } else {
+          return logBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public int getLogCount() {
+        if (logBuilder_ == null) {
+          return log_.size();
+        } else {
+          return logBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public Node.LogMessage getLog(int index) {
+        if (logBuilder_ == null) {
+          return log_.get(index);
+        } else {
+          return logBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public Builder setLog(
+          int index, Node.LogMessage value) {
+        if (logBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLogIsMutable();
+          log_.set(index, value);
+          onChanged();
+        } else {
+          logBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public Builder setLog(
+          int index, Node.LogMessage.Builder builderForValue) {
+        if (logBuilder_ == null) {
+          ensureLogIsMutable();
+          log_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          logBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public Builder addLog(Node.LogMessage value) {
+        if (logBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLogIsMutable();
+          log_.add(value);
+          onChanged();
+        } else {
+          logBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public Builder addLog(
+          int index, Node.LogMessage value) {
+        if (logBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLogIsMutable();
+          log_.add(index, value);
+          onChanged();
+        } else {
+          logBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public Builder addLog(
+          Node.LogMessage.Builder builderForValue) {
+        if (logBuilder_ == null) {
+          ensureLogIsMutable();
+          log_.add(builderForValue.build());
+          onChanged();
+        } else {
+          logBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public Builder addLog(
+          int index, Node.LogMessage.Builder builderForValue) {
+        if (logBuilder_ == null) {
+          ensureLogIsMutable();
+          log_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          logBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public Builder addAllLog(
+          java.lang.Iterable<? extends Node.LogMessage> values) {
+        if (logBuilder_ == null) {
+          ensureLogIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, log_);
+          onChanged();
+        } else {
+          logBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public Builder clearLog() {
+        if (logBuilder_ == null) {
+          log_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          logBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public Builder removeLog(int index) {
+        if (logBuilder_ == null) {
+          ensureLogIsMutable();
+          log_.remove(index);
+          onChanged();
+        } else {
+          logBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public Node.LogMessage.Builder getLogBuilder(
+          int index) {
+        return getLogFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public Node.LogMessageOrBuilder getLogOrBuilder(
+          int index) {
+        if (logBuilder_ == null) {
+          return log_.get(index);  } else {
+          return logBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public java.util.List<? extends Node.LogMessageOrBuilder> 
+           getLogOrBuilderList() {
+        if (logBuilder_ != null) {
+          return logBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(log_);
+        }
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public Node.LogMessage.Builder addLogBuilder() {
+        return getLogFieldBuilder().addBuilder(
+            Node.LogMessage.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public Node.LogMessage.Builder addLogBuilder(
+          int index) {
+        return getLogFieldBuilder().addBuilder(
+            index, Node.LogMessage.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .LogMessage log = 1;</code>
+       */
+      public java.util.List<Node.LogMessage.Builder> 
+           getLogBuilderList() {
+        return getLogFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          Node.LogMessage, Node.LogMessage.Builder, Node.LogMessageOrBuilder> 
+          getLogFieldBuilder() {
+        if (logBuilder_ == null) {
+          logBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              Node.LogMessage, Node.LogMessage.Builder, Node.LogMessageOrBuilder>(
+                  log_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          log_ = null;
+        }
+        return logBuilder_;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:LogBook)
+    }
+
+    // @@protoc_insertion_point(class_scope:LogBook)
+    private static final Node.LogBook DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new Node.LogBook();
+    }
+
+    public static Node.LogBook getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<LogBook>
+        PARSER = new com.google.protobuf.AbstractParser<LogBook>() {
+      public LogBook parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new LogBook(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<LogBook> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<LogBook> getParserForType() {
+      return PARSER;
+    }
+
+    public Node.LogBook getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface AcknowledgementToCoordinatorOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:AcknowledgementToCoordinator)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -3474,25 +5667,47 @@ public final class Node {
         getTimeStampBytes();
 
     /**
-     * <code>bool processCompleted = 2;</code>
+     * <code>uint32 key = 2;</code>
      */
-    boolean getProcessCompleted();
+    int getKey();
+
+    /**
+     * <code>string value = 3;</code>
+     */
+    java.lang.String getValue();
+    /**
+     * <code>string value = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getValueBytes();
+
+    /**
+     * <code>string replicaName = 4;</code>
+     */
+    java.lang.String getReplicaName();
+    /**
+     * <code>string replicaName = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getReplicaNameBytes();
   }
   /**
-   * Protobuf type {@code Acknowledgement}
+   * Protobuf type {@code AcknowledgementToCoordinator}
    */
-  public  static final class Acknowledgement extends
+  public  static final class AcknowledgementToCoordinator extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:Acknowledgement)
-      AcknowledgementOrBuilder {
+      // @@protoc_insertion_point(message_implements:AcknowledgementToCoordinator)
+      AcknowledgementToCoordinatorOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use Acknowledgement.newBuilder() to construct.
-    private Acknowledgement(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use AcknowledgementToCoordinator.newBuilder() to construct.
+    private AcknowledgementToCoordinator(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private Acknowledgement() {
+    private AcknowledgementToCoordinator() {
       timeStamp_ = "";
-      processCompleted_ = false;
+      key_ = 0;
+      value_ = "";
+      replicaName_ = "";
     }
 
     @java.lang.Override
@@ -3500,11 +5715,14 @@ public final class Node {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private Acknowledgement(
+    private AcknowledgementToCoordinator(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -3531,7 +5749,19 @@ public final class Node {
             }
             case 16: {
 
-              processCompleted_ = input.readBool();
+              key_ = input.readUInt32();
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              value_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              replicaName_ = s;
               break;
             }
           }
@@ -3548,14 +5778,14 @@ public final class Node {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return Node.internal_static_Acknowledgement_descriptor;
+      return Node.internal_static_AcknowledgementToCoordinator_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return Node.internal_static_Acknowledgement_fieldAccessorTable
+      return Node.internal_static_AcknowledgementToCoordinator_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              Node.Acknowledgement.class, Node.Acknowledgement.Builder.class);
+              Node.AcknowledgementToCoordinator.class, Node.AcknowledgementToCoordinator.Builder.class);
     }
 
     public static final int TIMESTAMP_FIELD_NUMBER = 1;
@@ -3592,13 +5822,81 @@ public final class Node {
       }
     }
 
-    public static final int PROCESSCOMPLETED_FIELD_NUMBER = 2;
-    private boolean processCompleted_;
+    public static final int KEY_FIELD_NUMBER = 2;
+    private int key_;
     /**
-     * <code>bool processCompleted = 2;</code>
+     * <code>uint32 key = 2;</code>
      */
-    public boolean getProcessCompleted() {
-      return processCompleted_;
+    public int getKey() {
+      return key_;
+    }
+
+    public static final int VALUE_FIELD_NUMBER = 3;
+    private volatile java.lang.Object value_;
+    /**
+     * <code>string value = 3;</code>
+     */
+    public java.lang.String getValue() {
+      java.lang.Object ref = value_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        value_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string value = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getValueBytes() {
+      java.lang.Object ref = value_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        value_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int REPLICANAME_FIELD_NUMBER = 4;
+    private volatile java.lang.Object replicaName_;
+    /**
+     * <code>string replicaName = 4;</code>
+     */
+    public java.lang.String getReplicaName() {
+      java.lang.Object ref = replicaName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        replicaName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string replicaName = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getReplicaNameBytes() {
+      java.lang.Object ref = replicaName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        replicaName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -3616,8 +5914,14 @@ public final class Node {
       if (!getTimeStampBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, timeStamp_);
       }
-      if (processCompleted_ != false) {
-        output.writeBool(2, processCompleted_);
+      if (key_ != 0) {
+        output.writeUInt32(2, key_);
+      }
+      if (!getValueBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, value_);
+      }
+      if (!getReplicaNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, replicaName_);
       }
       unknownFields.writeTo(output);
     }
@@ -3630,9 +5934,15 @@ public final class Node {
       if (!getTimeStampBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, timeStamp_);
       }
-      if (processCompleted_ != false) {
+      if (key_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(2, processCompleted_);
+          .computeUInt32Size(2, key_);
+      }
+      if (!getValueBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, value_);
+      }
+      if (!getReplicaNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, replicaName_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3644,16 +5954,20 @@ public final class Node {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof Node.Acknowledgement)) {
+      if (!(obj instanceof Node.AcknowledgementToCoordinator)) {
         return super.equals(obj);
       }
-      Node.Acknowledgement other = (Node.Acknowledgement) obj;
+      Node.AcknowledgementToCoordinator other = (Node.AcknowledgementToCoordinator) obj;
 
       boolean result = true;
       result = result && getTimeStamp()
           .equals(other.getTimeStamp());
-      result = result && (getProcessCompleted()
-          == other.getProcessCompleted());
+      result = result && (getKey()
+          == other.getKey());
+      result = result && getValue()
+          .equals(other.getValue());
+      result = result && getReplicaName()
+          .equals(other.getReplicaName());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -3667,77 +5981,80 @@ public final class Node {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
       hash = (53 * hash) + getTimeStamp().hashCode();
-      hash = (37 * hash) + PROCESSCOMPLETED_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getProcessCompleted());
+      hash = (37 * hash) + KEY_FIELD_NUMBER;
+      hash = (53 * hash) + getKey();
+      hash = (37 * hash) + VALUE_FIELD_NUMBER;
+      hash = (53 * hash) + getValue().hashCode();
+      hash = (37 * hash) + REPLICANAME_FIELD_NUMBER;
+      hash = (53 * hash) + getReplicaName().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static Node.Acknowledgement parseFrom(
+    public static Node.AcknowledgementToCoordinator parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Node.Acknowledgement parseFrom(
+    public static Node.AcknowledgementToCoordinator parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Node.Acknowledgement parseFrom(
+    public static Node.AcknowledgementToCoordinator parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Node.Acknowledgement parseFrom(
+    public static Node.AcknowledgementToCoordinator parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Node.Acknowledgement parseFrom(byte[] data)
+    public static Node.AcknowledgementToCoordinator parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static Node.Acknowledgement parseFrom(
+    public static Node.AcknowledgementToCoordinator parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static Node.Acknowledgement parseFrom(java.io.InputStream input)
+    public static Node.AcknowledgementToCoordinator parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Node.Acknowledgement parseFrom(
+    public static Node.AcknowledgementToCoordinator parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Node.Acknowledgement parseDelimitedFrom(java.io.InputStream input)
+    public static Node.AcknowledgementToCoordinator parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static Node.Acknowledgement parseDelimitedFrom(
+    public static Node.AcknowledgementToCoordinator parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static Node.Acknowledgement parseFrom(
+    public static Node.AcknowledgementToCoordinator parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static Node.Acknowledgement parseFrom(
+    public static Node.AcknowledgementToCoordinator parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -3749,7 +6066,7 @@ public final class Node {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(Node.Acknowledgement prototype) {
+    public static Builder newBuilder(Node.AcknowledgementToCoordinator prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() {
@@ -3764,25 +6081,25 @@ public final class Node {
       return builder;
     }
     /**
-     * Protobuf type {@code Acknowledgement}
+     * Protobuf type {@code AcknowledgementToCoordinator}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:Acknowledgement)
-        Node.AcknowledgementOrBuilder {
+        // @@protoc_insertion_point(builder_implements:AcknowledgementToCoordinator)
+        Node.AcknowledgementToCoordinatorOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return Node.internal_static_Acknowledgement_descriptor;
+        return Node.internal_static_AcknowledgementToCoordinator_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return Node.internal_static_Acknowledgement_fieldAccessorTable
+        return Node.internal_static_AcknowledgementToCoordinator_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                Node.Acknowledgement.class, Node.Acknowledgement.Builder.class);
+                Node.AcknowledgementToCoordinator.class, Node.AcknowledgementToCoordinator.Builder.class);
       }
 
-      // Construct using Node.Acknowledgement.newBuilder()
+      // Construct using Node.AcknowledgementToCoordinator.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -3801,32 +6118,38 @@ public final class Node {
         super.clear();
         timeStamp_ = "";
 
-        processCompleted_ = false;
+        key_ = 0;
+
+        value_ = "";
+
+        replicaName_ = "";
 
         return this;
       }
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return Node.internal_static_Acknowledgement_descriptor;
+        return Node.internal_static_AcknowledgementToCoordinator_descriptor;
       }
 
-      public Node.Acknowledgement getDefaultInstanceForType() {
-        return Node.Acknowledgement.getDefaultInstance();
+      public Node.AcknowledgementToCoordinator getDefaultInstanceForType() {
+        return Node.AcknowledgementToCoordinator.getDefaultInstance();
       }
 
-      public Node.Acknowledgement build() {
-        Node.Acknowledgement result = buildPartial();
+      public Node.AcknowledgementToCoordinator build() {
+        Node.AcknowledgementToCoordinator result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public Node.Acknowledgement buildPartial() {
-        Node.Acknowledgement result = new Node.Acknowledgement(this);
+      public Node.AcknowledgementToCoordinator buildPartial() {
+        Node.AcknowledgementToCoordinator result = new Node.AcknowledgementToCoordinator(this);
         result.timeStamp_ = timeStamp_;
-        result.processCompleted_ = processCompleted_;
+        result.key_ = key_;
+        result.value_ = value_;
+        result.replicaName_ = replicaName_;
         onBuilt();
         return result;
       }
@@ -3858,22 +6181,30 @@ public final class Node {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof Node.Acknowledgement) {
-          return mergeFrom((Node.Acknowledgement)other);
+        if (other instanceof Node.AcknowledgementToCoordinator) {
+          return mergeFrom((Node.AcknowledgementToCoordinator)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(Node.Acknowledgement other) {
-        if (other == Node.Acknowledgement.getDefaultInstance()) return this;
+      public Builder mergeFrom(Node.AcknowledgementToCoordinator other) {
+        if (other == Node.AcknowledgementToCoordinator.getDefaultInstance()) return this;
         if (!other.getTimeStamp().isEmpty()) {
           timeStamp_ = other.timeStamp_;
           onChanged();
         }
-        if (other.getProcessCompleted() != false) {
-          setProcessCompleted(other.getProcessCompleted());
+        if (other.getKey() != 0) {
+          setKey(other.getKey());
+        }
+        if (!other.getValue().isEmpty()) {
+          value_ = other.value_;
+          onChanged();
+        }
+        if (!other.getReplicaName().isEmpty()) {
+          replicaName_ = other.replicaName_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3888,11 +6219,11 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        Node.Acknowledgement parsedMessage = null;
+        Node.AcknowledgementToCoordinator parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (Node.Acknowledgement) e.getUnfinishedMessage();
+          parsedMessage = (Node.AcknowledgementToCoordinator) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -3971,28 +6302,166 @@ public final class Node {
         return this;
       }
 
-      private boolean processCompleted_ ;
+      private int key_ ;
       /**
-       * <code>bool processCompleted = 2;</code>
+       * <code>uint32 key = 2;</code>
        */
-      public boolean getProcessCompleted() {
-        return processCompleted_;
+      public int getKey() {
+        return key_;
       }
       /**
-       * <code>bool processCompleted = 2;</code>
+       * <code>uint32 key = 2;</code>
        */
-      public Builder setProcessCompleted(boolean value) {
+      public Builder setKey(int value) {
         
-        processCompleted_ = value;
+        key_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>bool processCompleted = 2;</code>
+       * <code>uint32 key = 2;</code>
        */
-      public Builder clearProcessCompleted() {
+      public Builder clearKey() {
         
-        processCompleted_ = false;
+        key_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object value_ = "";
+      /**
+       * <code>string value = 3;</code>
+       */
+      public java.lang.String getValue() {
+        java.lang.Object ref = value_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          value_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string value = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getValueBytes() {
+        java.lang.Object ref = value_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          value_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string value = 3;</code>
+       */
+      public Builder setValue(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        value_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string value = 3;</code>
+       */
+      public Builder clearValue() {
+        
+        value_ = getDefaultInstance().getValue();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string value = 3;</code>
+       */
+      public Builder setValueBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        value_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object replicaName_ = "";
+      /**
+       * <code>string replicaName = 4;</code>
+       */
+      public java.lang.String getReplicaName() {
+        java.lang.Object ref = replicaName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          replicaName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string replicaName = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getReplicaNameBytes() {
+        java.lang.Object ref = replicaName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          replicaName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string replicaName = 4;</code>
+       */
+      public Builder setReplicaName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        replicaName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string replicaName = 4;</code>
+       */
+      public Builder clearReplicaName() {
+        
+        replicaName_ = getDefaultInstance().getReplicaName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string replicaName = 4;</code>
+       */
+      public Builder setReplicaNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        replicaName_ = value;
         onChanged();
         return this;
       }
@@ -4007,39 +6476,627 @@ public final class Node {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:Acknowledgement)
+      // @@protoc_insertion_point(builder_scope:AcknowledgementToCoordinator)
     }
 
-    // @@protoc_insertion_point(class_scope:Acknowledgement)
-    private static final Node.Acknowledgement DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:AcknowledgementToCoordinator)
+    private static final Node.AcknowledgementToCoordinator DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new Node.Acknowledgement();
+      DEFAULT_INSTANCE = new Node.AcknowledgementToCoordinator();
     }
 
-    public static Node.Acknowledgement getDefaultInstance() {
+    public static Node.AcknowledgementToCoordinator getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<Acknowledgement>
-        PARSER = new com.google.protobuf.AbstractParser<Acknowledgement>() {
-      public Acknowledgement parsePartialFrom(
+    private static final com.google.protobuf.Parser<AcknowledgementToCoordinator>
+        PARSER = new com.google.protobuf.AbstractParser<AcknowledgementToCoordinator>() {
+      public AcknowledgementToCoordinator parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Acknowledgement(input, extensionRegistry);
+        return new AcknowledgementToCoordinator(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<Acknowledgement> parser() {
+    public static com.google.protobuf.Parser<AcknowledgementToCoordinator> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<Acknowledgement> getParserForType() {
+    public com.google.protobuf.Parser<AcknowledgementToCoordinator> getParserForType() {
       return PARSER;
     }
 
-    public Node.Acknowledgement getDefaultInstanceForType() {
+    public Node.AcknowledgementToCoordinator getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface AcknowledgementToClientOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:AcknowledgementToClient)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>uint32 key = 1;</code>
+     */
+    int getKey();
+
+    /**
+     * <code>string value = 2;</code>
+     */
+    java.lang.String getValue();
+    /**
+     * <code>string value = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getValueBytes();
+  }
+  /**
+   * Protobuf type {@code AcknowledgementToClient}
+   */
+  public  static final class AcknowledgementToClient extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:AcknowledgementToClient)
+      AcknowledgementToClientOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use AcknowledgementToClient.newBuilder() to construct.
+    private AcknowledgementToClient(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private AcknowledgementToClient() {
+      key_ = 0;
+      value_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private AcknowledgementToClient(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+
+              key_ = input.readUInt32();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              value_ = s;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return Node.internal_static_AcknowledgementToClient_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return Node.internal_static_AcknowledgementToClient_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              Node.AcknowledgementToClient.class, Node.AcknowledgementToClient.Builder.class);
+    }
+
+    public static final int KEY_FIELD_NUMBER = 1;
+    private int key_;
+    /**
+     * <code>uint32 key = 1;</code>
+     */
+    public int getKey() {
+      return key_;
+    }
+
+    public static final int VALUE_FIELD_NUMBER = 2;
+    private volatile java.lang.Object value_;
+    /**
+     * <code>string value = 2;</code>
+     */
+    public java.lang.String getValue() {
+      java.lang.Object ref = value_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        value_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string value = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getValueBytes() {
+      java.lang.Object ref = value_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        value_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (key_ != 0) {
+        output.writeUInt32(1, key_);
+      }
+      if (!getValueBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, value_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (key_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, key_);
+      }
+      if (!getValueBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, value_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof Node.AcknowledgementToClient)) {
+        return super.equals(obj);
+      }
+      Node.AcknowledgementToClient other = (Node.AcknowledgementToClient) obj;
+
+      boolean result = true;
+      result = result && (getKey()
+          == other.getKey());
+      result = result && getValue()
+          .equals(other.getValue());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + KEY_FIELD_NUMBER;
+      hash = (53 * hash) + getKey();
+      hash = (37 * hash) + VALUE_FIELD_NUMBER;
+      hash = (53 * hash) + getValue().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static Node.AcknowledgementToClient parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Node.AcknowledgementToClient parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Node.AcknowledgementToClient parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Node.AcknowledgementToClient parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Node.AcknowledgementToClient parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Node.AcknowledgementToClient parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Node.AcknowledgementToClient parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static Node.AcknowledgementToClient parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static Node.AcknowledgementToClient parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static Node.AcknowledgementToClient parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static Node.AcknowledgementToClient parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static Node.AcknowledgementToClient parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(Node.AcknowledgementToClient prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code AcknowledgementToClient}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:AcknowledgementToClient)
+        Node.AcknowledgementToClientOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return Node.internal_static_AcknowledgementToClient_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return Node.internal_static_AcknowledgementToClient_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                Node.AcknowledgementToClient.class, Node.AcknowledgementToClient.Builder.class);
+      }
+
+      // Construct using Node.AcknowledgementToClient.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        key_ = 0;
+
+        value_ = "";
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return Node.internal_static_AcknowledgementToClient_descriptor;
+      }
+
+      public Node.AcknowledgementToClient getDefaultInstanceForType() {
+        return Node.AcknowledgementToClient.getDefaultInstance();
+      }
+
+      public Node.AcknowledgementToClient build() {
+        Node.AcknowledgementToClient result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public Node.AcknowledgementToClient buildPartial() {
+        Node.AcknowledgementToClient result = new Node.AcknowledgementToClient(this);
+        result.key_ = key_;
+        result.value_ = value_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof Node.AcknowledgementToClient) {
+          return mergeFrom((Node.AcknowledgementToClient)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(Node.AcknowledgementToClient other) {
+        if (other == Node.AcknowledgementToClient.getDefaultInstance()) return this;
+        if (other.getKey() != 0) {
+          setKey(other.getKey());
+        }
+        if (!other.getValue().isEmpty()) {
+          value_ = other.value_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        Node.AcknowledgementToClient parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (Node.AcknowledgementToClient) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int key_ ;
+      /**
+       * <code>uint32 key = 1;</code>
+       */
+      public int getKey() {
+        return key_;
+      }
+      /**
+       * <code>uint32 key = 1;</code>
+       */
+      public Builder setKey(int value) {
+        
+        key_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint32 key = 1;</code>
+       */
+      public Builder clearKey() {
+        
+        key_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object value_ = "";
+      /**
+       * <code>string value = 2;</code>
+       */
+      public java.lang.String getValue() {
+        java.lang.Object ref = value_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          value_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string value = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getValueBytes() {
+        java.lang.Object ref = value_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          value_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string value = 2;</code>
+       */
+      public Builder setValue(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        value_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string value = 2;</code>
+       */
+      public Builder clearValue() {
+        
+        value_ = getDefaultInstance().getValue();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string value = 2;</code>
+       */
+      public Builder setValueBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        value_ = value;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:AcknowledgementToClient)
+    }
+
+    // @@protoc_insertion_point(class_scope:AcknowledgementToClient)
+    private static final Node.AcknowledgementToClient DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new Node.AcknowledgementToClient();
+    }
+
+    public static Node.AcknowledgementToClient getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<AcknowledgementToClient>
+        PARSER = new com.google.protobuf.AbstractParser<AcknowledgementToClient>() {
+      public AcknowledgementToClient parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new AcknowledgementToClient(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<AcknowledgementToClient> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<AcknowledgementToClient> getParserForType() {
+      return PARSER;
+    }
+
+    public Node.AcknowledgementToClient getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -4128,17 +7185,30 @@ public final class Node {
     Node.ErrorOrBuilder getErrorMessageOrBuilder();
 
     /**
-     * <code>.Acknowledgement acknowledgement = 7;</code>
+     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
      */
-    boolean hasAcknowledgement();
+    boolean hasAcknowledgementToCoordinator();
     /**
-     * <code>.Acknowledgement acknowledgement = 7;</code>
+     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
      */
-    Node.Acknowledgement getAcknowledgement();
+    Node.AcknowledgementToCoordinator getAcknowledgementToCoordinator();
     /**
-     * <code>.Acknowledgement acknowledgement = 7;</code>
+     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
      */
-    Node.AcknowledgementOrBuilder getAcknowledgementOrBuilder();
+    Node.AcknowledgementToCoordinatorOrBuilder getAcknowledgementToCoordinatorOrBuilder();
+
+    /**
+     * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+     */
+    boolean hasAcknowledgementToClient();
+    /**
+     * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+     */
+    Node.AcknowledgementToClient getAcknowledgementToClient();
+    /**
+     * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+     */
+    Node.AcknowledgementToClientOrBuilder getAcknowledgementToClientOrBuilder();
 
     public Node.WrapperMessage.MapMessageCase getMapMessageCase();
   }
@@ -4167,6 +7237,9 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -4270,17 +7343,31 @@ public final class Node {
               break;
             }
             case 58: {
-              Node.Acknowledgement.Builder subBuilder = null;
+              Node.AcknowledgementToCoordinator.Builder subBuilder = null;
               if (mapMessageCase_ == 7) {
-                subBuilder = ((Node.Acknowledgement) mapMessage_).toBuilder();
+                subBuilder = ((Node.AcknowledgementToCoordinator) mapMessage_).toBuilder();
               }
               mapMessage_ =
-                  input.readMessage(Node.Acknowledgement.parser(), extensionRegistry);
+                  input.readMessage(Node.AcknowledgementToCoordinator.parser(), extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom((Node.Acknowledgement) mapMessage_);
+                subBuilder.mergeFrom((Node.AcknowledgementToCoordinator) mapMessage_);
                 mapMessage_ = subBuilder.buildPartial();
               }
               mapMessageCase_ = 7;
+              break;
+            }
+            case 66: {
+              Node.AcknowledgementToClient.Builder subBuilder = null;
+              if (mapMessageCase_ == 8) {
+                subBuilder = ((Node.AcknowledgementToClient) mapMessage_).toBuilder();
+              }
+              mapMessage_ =
+                  input.readMessage(Node.AcknowledgementToClient.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((Node.AcknowledgementToClient) mapMessage_);
+                mapMessage_ = subBuilder.buildPartial();
+              }
+              mapMessageCase_ = 8;
               break;
             }
           }
@@ -4317,7 +7404,8 @@ public final class Node {
       CLIENT_WRITE_REQUEST(4),
       READ_REPAIR(5),
       ERROR_MESSAGE(6),
-      ACKNOWLEDGEMENT(7),
+      ACKNOWLEDGEMENT_TO_COORDINATOR(7),
+      ACKNOWLEDGEMENT_TO_CLIENT(8),
       MAPMESSAGE_NOT_SET(0);
       private final int value;
       private MapMessageCase(int value) {
@@ -4339,7 +7427,8 @@ public final class Node {
           case 4: return CLIENT_WRITE_REQUEST;
           case 5: return READ_REPAIR;
           case 6: return ERROR_MESSAGE;
-          case 7: return ACKNOWLEDGEMENT;
+          case 7: return ACKNOWLEDGEMENT_TO_COORDINATOR;
+          case 8: return ACKNOWLEDGEMENT_TO_CLIENT;
           case 0: return MAPMESSAGE_NOT_SET;
           default: return null;
         }
@@ -4511,30 +7600,56 @@ public final class Node {
       return Node.Error.getDefaultInstance();
     }
 
-    public static final int ACKNOWLEDGEMENT_FIELD_NUMBER = 7;
+    public static final int ACKNOWLEDGEMENT_TO_COORDINATOR_FIELD_NUMBER = 7;
     /**
-     * <code>.Acknowledgement acknowledgement = 7;</code>
+     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
      */
-    public boolean hasAcknowledgement() {
+    public boolean hasAcknowledgementToCoordinator() {
       return mapMessageCase_ == 7;
     }
     /**
-     * <code>.Acknowledgement acknowledgement = 7;</code>
+     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
      */
-    public Node.Acknowledgement getAcknowledgement() {
+    public Node.AcknowledgementToCoordinator getAcknowledgementToCoordinator() {
       if (mapMessageCase_ == 7) {
-         return (Node.Acknowledgement) mapMessage_;
+         return (Node.AcknowledgementToCoordinator) mapMessage_;
       }
-      return Node.Acknowledgement.getDefaultInstance();
+      return Node.AcknowledgementToCoordinator.getDefaultInstance();
     }
     /**
-     * <code>.Acknowledgement acknowledgement = 7;</code>
+     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
      */
-    public Node.AcknowledgementOrBuilder getAcknowledgementOrBuilder() {
+    public Node.AcknowledgementToCoordinatorOrBuilder getAcknowledgementToCoordinatorOrBuilder() {
       if (mapMessageCase_ == 7) {
-         return (Node.Acknowledgement) mapMessage_;
+         return (Node.AcknowledgementToCoordinator) mapMessage_;
       }
-      return Node.Acknowledgement.getDefaultInstance();
+      return Node.AcknowledgementToCoordinator.getDefaultInstance();
+    }
+
+    public static final int ACKNOWLEDGEMENT_TO_CLIENT_FIELD_NUMBER = 8;
+    /**
+     * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+     */
+    public boolean hasAcknowledgementToClient() {
+      return mapMessageCase_ == 8;
+    }
+    /**
+     * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+     */
+    public Node.AcknowledgementToClient getAcknowledgementToClient() {
+      if (mapMessageCase_ == 8) {
+         return (Node.AcknowledgementToClient) mapMessage_;
+      }
+      return Node.AcknowledgementToClient.getDefaultInstance();
+    }
+    /**
+     * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+     */
+    public Node.AcknowledgementToClientOrBuilder getAcknowledgementToClientOrBuilder() {
+      if (mapMessageCase_ == 8) {
+         return (Node.AcknowledgementToClient) mapMessage_;
+      }
+      return Node.AcknowledgementToClient.getDefaultInstance();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -4568,7 +7683,10 @@ public final class Node {
         output.writeMessage(6, (Node.Error) mapMessage_);
       }
       if (mapMessageCase_ == 7) {
-        output.writeMessage(7, (Node.Acknowledgement) mapMessage_);
+        output.writeMessage(7, (Node.AcknowledgementToCoordinator) mapMessage_);
+      }
+      if (mapMessageCase_ == 8) {
+        output.writeMessage(8, (Node.AcknowledgementToClient) mapMessage_);
       }
       unknownFields.writeTo(output);
     }
@@ -4604,7 +7722,11 @@ public final class Node {
       }
       if (mapMessageCase_ == 7) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, (Node.Acknowledgement) mapMessage_);
+          .computeMessageSize(7, (Node.AcknowledgementToCoordinator) mapMessage_);
+      }
+      if (mapMessageCase_ == 8) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, (Node.AcknowledgementToClient) mapMessage_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -4651,8 +7773,12 @@ public final class Node {
               .equals(other.getErrorMessage());
           break;
         case 7:
-          result = result && getAcknowledgement()
-              .equals(other.getAcknowledgement());
+          result = result && getAcknowledgementToCoordinator()
+              .equals(other.getAcknowledgementToCoordinator());
+          break;
+        case 8:
+          result = result && getAcknowledgementToClient()
+              .equals(other.getAcknowledgementToClient());
           break;
         case 0:
         default:
@@ -4694,8 +7820,12 @@ public final class Node {
           hash = (53 * hash) + getErrorMessage().hashCode();
           break;
         case 7:
-          hash = (37 * hash) + ACKNOWLEDGEMENT_FIELD_NUMBER;
-          hash = (53 * hash) + getAcknowledgement().hashCode();
+          hash = (37 * hash) + ACKNOWLEDGEMENT_TO_COORDINATOR_FIELD_NUMBER;
+          hash = (53 * hash) + getAcknowledgementToCoordinator().hashCode();
+          break;
+        case 8:
+          hash = (37 * hash) + ACKNOWLEDGEMENT_TO_CLIENT_FIELD_NUMBER;
+          hash = (53 * hash) + getAcknowledgementToClient().hashCode();
           break;
         case 0:
         default:
@@ -4896,10 +8026,17 @@ public final class Node {
           }
         }
         if (mapMessageCase_ == 7) {
-          if (acknowledgementBuilder_ == null) {
+          if (acknowledgementToCoordinatorBuilder_ == null) {
             result.mapMessage_ = mapMessage_;
           } else {
-            result.mapMessage_ = acknowledgementBuilder_.build();
+            result.mapMessage_ = acknowledgementToCoordinatorBuilder_.build();
+          }
+        }
+        if (mapMessageCase_ == 8) {
+          if (acknowledgementToClientBuilder_ == null) {
+            result.mapMessage_ = mapMessage_;
+          } else {
+            result.mapMessage_ = acknowledgementToClientBuilder_.build();
           }
         }
         result.mapMessageCase_ = mapMessageCase_;
@@ -4969,8 +8106,12 @@ public final class Node {
             mergeErrorMessage(other.getErrorMessage());
             break;
           }
-          case ACKNOWLEDGEMENT: {
-            mergeAcknowledgement(other.getAcknowledgement());
+          case ACKNOWLEDGEMENT_TO_COORDINATOR: {
+            mergeAcknowledgementToCoordinator(other.getAcknowledgementToCoordinator());
+            break;
+          }
+          case ACKNOWLEDGEMENT_TO_CLIENT: {
+            mergeAcknowledgementToClient(other.getAcknowledgementToClient());
             break;
           }
           case MAPMESSAGE_NOT_SET: {
@@ -5836,67 +8977,67 @@ public final class Node {
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
-          Node.Acknowledgement, Node.Acknowledgement.Builder, Node.AcknowledgementOrBuilder> acknowledgementBuilder_;
+          Node.AcknowledgementToCoordinator, Node.AcknowledgementToCoordinator.Builder, Node.AcknowledgementToCoordinatorOrBuilder> acknowledgementToCoordinatorBuilder_;
       /**
-       * <code>.Acknowledgement acknowledgement = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
        */
-      public boolean hasAcknowledgement() {
+      public boolean hasAcknowledgementToCoordinator() {
         return mapMessageCase_ == 7;
       }
       /**
-       * <code>.Acknowledgement acknowledgement = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
        */
-      public Node.Acknowledgement getAcknowledgement() {
-        if (acknowledgementBuilder_ == null) {
+      public Node.AcknowledgementToCoordinator getAcknowledgementToCoordinator() {
+        if (acknowledgementToCoordinatorBuilder_ == null) {
           if (mapMessageCase_ == 7) {
-            return (Node.Acknowledgement) mapMessage_;
+            return (Node.AcknowledgementToCoordinator) mapMessage_;
           }
-          return Node.Acknowledgement.getDefaultInstance();
+          return Node.AcknowledgementToCoordinator.getDefaultInstance();
         } else {
           if (mapMessageCase_ == 7) {
-            return acknowledgementBuilder_.getMessage();
+            return acknowledgementToCoordinatorBuilder_.getMessage();
           }
-          return Node.Acknowledgement.getDefaultInstance();
+          return Node.AcknowledgementToCoordinator.getDefaultInstance();
         }
       }
       /**
-       * <code>.Acknowledgement acknowledgement = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
        */
-      public Builder setAcknowledgement(Node.Acknowledgement value) {
-        if (acknowledgementBuilder_ == null) {
+      public Builder setAcknowledgementToCoordinator(Node.AcknowledgementToCoordinator value) {
+        if (acknowledgementToCoordinatorBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
           mapMessage_ = value;
           onChanged();
         } else {
-          acknowledgementBuilder_.setMessage(value);
+          acknowledgementToCoordinatorBuilder_.setMessage(value);
         }
         mapMessageCase_ = 7;
         return this;
       }
       /**
-       * <code>.Acknowledgement acknowledgement = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
        */
-      public Builder setAcknowledgement(
-          Node.Acknowledgement.Builder builderForValue) {
-        if (acknowledgementBuilder_ == null) {
+      public Builder setAcknowledgementToCoordinator(
+          Node.AcknowledgementToCoordinator.Builder builderForValue) {
+        if (acknowledgementToCoordinatorBuilder_ == null) {
           mapMessage_ = builderForValue.build();
           onChanged();
         } else {
-          acknowledgementBuilder_.setMessage(builderForValue.build());
+          acknowledgementToCoordinatorBuilder_.setMessage(builderForValue.build());
         }
         mapMessageCase_ = 7;
         return this;
       }
       /**
-       * <code>.Acknowledgement acknowledgement = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
        */
-      public Builder mergeAcknowledgement(Node.Acknowledgement value) {
-        if (acknowledgementBuilder_ == null) {
+      public Builder mergeAcknowledgementToCoordinator(Node.AcknowledgementToCoordinator value) {
+        if (acknowledgementToCoordinatorBuilder_ == null) {
           if (mapMessageCase_ == 7 &&
-              mapMessage_ != Node.Acknowledgement.getDefaultInstance()) {
-            mapMessage_ = Node.Acknowledgement.newBuilder((Node.Acknowledgement) mapMessage_)
+              mapMessage_ != Node.AcknowledgementToCoordinator.getDefaultInstance()) {
+            mapMessage_ = Node.AcknowledgementToCoordinator.newBuilder((Node.AcknowledgementToCoordinator) mapMessage_)
                 .mergeFrom(value).buildPartial();
           } else {
             mapMessage_ = value;
@@ -5904,18 +9045,18 @@ public final class Node {
           onChanged();
         } else {
           if (mapMessageCase_ == 7) {
-            acknowledgementBuilder_.mergeFrom(value);
+            acknowledgementToCoordinatorBuilder_.mergeFrom(value);
           }
-          acknowledgementBuilder_.setMessage(value);
+          acknowledgementToCoordinatorBuilder_.setMessage(value);
         }
         mapMessageCase_ = 7;
         return this;
       }
       /**
-       * <code>.Acknowledgement acknowledgement = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
        */
-      public Builder clearAcknowledgement() {
-        if (acknowledgementBuilder_ == null) {
+      public Builder clearAcknowledgementToCoordinator() {
+        if (acknowledgementToCoordinatorBuilder_ == null) {
           if (mapMessageCase_ == 7) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
@@ -5926,49 +9067,185 @@ public final class Node {
             mapMessageCase_ = 0;
             mapMessage_ = null;
           }
-          acknowledgementBuilder_.clear();
+          acknowledgementToCoordinatorBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>.Acknowledgement acknowledgement = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
        */
-      public Node.Acknowledgement.Builder getAcknowledgementBuilder() {
-        return getAcknowledgementFieldBuilder().getBuilder();
+      public Node.AcknowledgementToCoordinator.Builder getAcknowledgementToCoordinatorBuilder() {
+        return getAcknowledgementToCoordinatorFieldBuilder().getBuilder();
       }
       /**
-       * <code>.Acknowledgement acknowledgement = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
        */
-      public Node.AcknowledgementOrBuilder getAcknowledgementOrBuilder() {
-        if ((mapMessageCase_ == 7) && (acknowledgementBuilder_ != null)) {
-          return acknowledgementBuilder_.getMessageOrBuilder();
+      public Node.AcknowledgementToCoordinatorOrBuilder getAcknowledgementToCoordinatorOrBuilder() {
+        if ((mapMessageCase_ == 7) && (acknowledgementToCoordinatorBuilder_ != null)) {
+          return acknowledgementToCoordinatorBuilder_.getMessageOrBuilder();
         } else {
           if (mapMessageCase_ == 7) {
-            return (Node.Acknowledgement) mapMessage_;
+            return (Node.AcknowledgementToCoordinator) mapMessage_;
           }
-          return Node.Acknowledgement.getDefaultInstance();
+          return Node.AcknowledgementToCoordinator.getDefaultInstance();
         }
       }
       /**
-       * <code>.Acknowledgement acknowledgement = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          Node.Acknowledgement, Node.Acknowledgement.Builder, Node.AcknowledgementOrBuilder> 
-          getAcknowledgementFieldBuilder() {
-        if (acknowledgementBuilder_ == null) {
+          Node.AcknowledgementToCoordinator, Node.AcknowledgementToCoordinator.Builder, Node.AcknowledgementToCoordinatorOrBuilder> 
+          getAcknowledgementToCoordinatorFieldBuilder() {
+        if (acknowledgementToCoordinatorBuilder_ == null) {
           if (!(mapMessageCase_ == 7)) {
-            mapMessage_ = Node.Acknowledgement.getDefaultInstance();
+            mapMessage_ = Node.AcknowledgementToCoordinator.getDefaultInstance();
           }
-          acknowledgementBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              Node.Acknowledgement, Node.Acknowledgement.Builder, Node.AcknowledgementOrBuilder>(
-                  (Node.Acknowledgement) mapMessage_,
+          acknowledgementToCoordinatorBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              Node.AcknowledgementToCoordinator, Node.AcknowledgementToCoordinator.Builder, Node.AcknowledgementToCoordinatorOrBuilder>(
+                  (Node.AcknowledgementToCoordinator) mapMessage_,
                   getParentForChildren(),
                   isClean());
           mapMessage_ = null;
         }
         mapMessageCase_ = 7;
         onChanged();;
-        return acknowledgementBuilder_;
+        return acknowledgementToCoordinatorBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          Node.AcknowledgementToClient, Node.AcknowledgementToClient.Builder, Node.AcknowledgementToClientOrBuilder> acknowledgementToClientBuilder_;
+      /**
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       */
+      public boolean hasAcknowledgementToClient() {
+        return mapMessageCase_ == 8;
+      }
+      /**
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       */
+      public Node.AcknowledgementToClient getAcknowledgementToClient() {
+        if (acknowledgementToClientBuilder_ == null) {
+          if (mapMessageCase_ == 8) {
+            return (Node.AcknowledgementToClient) mapMessage_;
+          }
+          return Node.AcknowledgementToClient.getDefaultInstance();
+        } else {
+          if (mapMessageCase_ == 8) {
+            return acknowledgementToClientBuilder_.getMessage();
+          }
+          return Node.AcknowledgementToClient.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       */
+      public Builder setAcknowledgementToClient(Node.AcknowledgementToClient value) {
+        if (acknowledgementToClientBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          mapMessage_ = value;
+          onChanged();
+        } else {
+          acknowledgementToClientBuilder_.setMessage(value);
+        }
+        mapMessageCase_ = 8;
+        return this;
+      }
+      /**
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       */
+      public Builder setAcknowledgementToClient(
+          Node.AcknowledgementToClient.Builder builderForValue) {
+        if (acknowledgementToClientBuilder_ == null) {
+          mapMessage_ = builderForValue.build();
+          onChanged();
+        } else {
+          acknowledgementToClientBuilder_.setMessage(builderForValue.build());
+        }
+        mapMessageCase_ = 8;
+        return this;
+      }
+      /**
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       */
+      public Builder mergeAcknowledgementToClient(Node.AcknowledgementToClient value) {
+        if (acknowledgementToClientBuilder_ == null) {
+          if (mapMessageCase_ == 8 &&
+              mapMessage_ != Node.AcknowledgementToClient.getDefaultInstance()) {
+            mapMessage_ = Node.AcknowledgementToClient.newBuilder((Node.AcknowledgementToClient) mapMessage_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            mapMessage_ = value;
+          }
+          onChanged();
+        } else {
+          if (mapMessageCase_ == 8) {
+            acknowledgementToClientBuilder_.mergeFrom(value);
+          }
+          acknowledgementToClientBuilder_.setMessage(value);
+        }
+        mapMessageCase_ = 8;
+        return this;
+      }
+      /**
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       */
+      public Builder clearAcknowledgementToClient() {
+        if (acknowledgementToClientBuilder_ == null) {
+          if (mapMessageCase_ == 8) {
+            mapMessageCase_ = 0;
+            mapMessage_ = null;
+            onChanged();
+          }
+        } else {
+          if (mapMessageCase_ == 8) {
+            mapMessageCase_ = 0;
+            mapMessage_ = null;
+          }
+          acknowledgementToClientBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       */
+      public Node.AcknowledgementToClient.Builder getAcknowledgementToClientBuilder() {
+        return getAcknowledgementToClientFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       */
+      public Node.AcknowledgementToClientOrBuilder getAcknowledgementToClientOrBuilder() {
+        if ((mapMessageCase_ == 8) && (acknowledgementToClientBuilder_ != null)) {
+          return acknowledgementToClientBuilder_.getMessageOrBuilder();
+        } else {
+          if (mapMessageCase_ == 8) {
+            return (Node.AcknowledgementToClient) mapMessage_;
+          }
+          return Node.AcknowledgementToClient.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          Node.AcknowledgementToClient, Node.AcknowledgementToClient.Builder, Node.AcknowledgementToClientOrBuilder> 
+          getAcknowledgementToClientFieldBuilder() {
+        if (acknowledgementToClientBuilder_ == null) {
+          if (!(mapMessageCase_ == 8)) {
+            mapMessage_ = Node.AcknowledgementToClient.getDefaultInstance();
+          }
+          acknowledgementToClientBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              Node.AcknowledgementToClient, Node.AcknowledgementToClient.Builder, Node.AcknowledgementToClientOrBuilder>(
+                  (Node.AcknowledgementToClient) mapMessage_,
+                  getParentForChildren(),
+                  isClean());
+          mapMessage_ = null;
+        }
+        mapMessageCase_ = 8;
+        onChanged();;
+        return acknowledgementToClientBuilder_;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -6000,7 +9277,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new WrapperMessage(input, extensionRegistry);
+        return new WrapperMessage(input, extensionRegistry);
       }
     };
 
@@ -6050,10 +9327,25 @@ public final class Node {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_Error_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_Acknowledgement_descriptor;
+    internal_static_LogMessage_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_Acknowledgement_fieldAccessorTable;
+      internal_static_LogMessage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_LogBook_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_LogBook_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_AcknowledgementToCoordinator_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_AcknowledgementToCoordinator_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_AcknowledgementToClient_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_AcknowledgementToClient_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_WrapperMessage_descriptor;
   private static final 
@@ -6068,25 +9360,38 @@ public final class Node {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\nNode.proto\"7\n\025GetKeyFromCoordinator\022\021\n" +
-      "\ttimeStamp\030\001 \001(\t\022\013\n\003key\030\002 \001(\r\"F\n\025PutKeyF" +
-      "romCoordinator\022\021\n\ttimeStamp\030\001 \001(\t\022\013\n\003key" +
-      "\030\002 \001(\r\022\r\n\005value\030\003 \001(\t\" \n\021ClientReadReque" +
-      "st\022\013\n\003key\030\001 \001(\r\"0\n\022ClientWriteRequest\022\013\n" +
-      "\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\t\"(\n\nReadRepair\022" +
-      "\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\t\"\030\n\005Error\022\017\n\007" +
-      "message\030\001 \001(\t\">\n\017Acknowledgement\022\021\n\ttime" +
-      "Stamp\030\001 \001(\t\022\030\n\020processCompleted\030\002 \001(\010\"\361\002" +
-      "\n\016WrapperMessage\022:\n\030get_key_from_coordin",
-      "ator\030\001 \001(\0132\026.GetKeyFromCoordinatorH\000\022:\n\030" +
-      "put_key_from_coordinator\030\002 \001(\0132\026.PutKeyF" +
-      "romCoordinatorH\000\0221\n\023client_read_request\030" +
-      "\003 \001(\0132\022.ClientReadRequestH\000\0223\n\024client_wr" +
-      "ite_request\030\004 \001(\0132\023.ClientWriteRequestH\000" +
-      "\022\"\n\013read_repair\030\005 \001(\0132\013.ReadRepairH\000\022\037\n\r" +
-      "error_message\030\006 \001(\0132\006.ErrorH\000\022+\n\017acknowl" +
-      "edgement\030\007 \001(\0132\020.AcknowledgementH\000B\r\n\013ma" +
-      "p_messageb\006proto3"
+      "\n\nNode.proto\"P\n\025GetKeyFromCoordinator\022\021\n" +
+      "\ttimeStamp\030\001 \001(\t\022\013\n\003key\030\002 \001(\r\022\027\n\017coordin" +
+      "atorName\030\003 \001(\t\"_\n\025PutKeyFromCoordinator\022" +
+      "\021\n\ttimeStamp\030\001 \001(\t\022\013\n\003key\030\002 \001(\r\022\r\n\005value" +
+      "\030\003 \001(\t\022\027\n\017coordinatorName\030\004 \001(\t\"M\n\021Clien" +
+      "tReadRequest\022\013\n\003key\030\001 \001(\r\022+\n\020consistency" +
+      "Level\030\002 \001(\0162\021.ConsistencyLevel\"]\n\022Client" +
+      "WriteRequest\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\t" +
+      "\022+\n\020consistencyLevel\030\003 \001(\0162\021.Consistency" +
+      "Level\"(\n\nReadRepair\022\013\n\003key\030\001 \001(\r\022\r\n\005valu" +
+      "e\030\002 \001(\t\"\030\n\005Error\022\017\n\007message\030\001 \001(\t\"e\n\nLog" +
+      "Message\022\024\n\014logStartFlag\030\001 \001(\010\022\013\n\003key\030\002 \001" +
+      "(\r\022\r\n\005value\030\003 \001(\t\022\021\n\ttimeStamp\030\004 \001(\t\022\022\n\n" +
+      "logEndFlag\030\005 \001(\010\"#\n\007LogBook\022\030\n\003log\030\001 \003(\013" +
+      "2\013.LogMessage\"b\n\034AcknowledgementToCoordi" +
+      "nator\022\021\n\ttimeStamp\030\001 \001(\t\022\013\n\003key\030\002 \001(\r\022\r\n" +
+      "\005value\030\003 \001(\t\022\023\n\013replicaName\030\004 \001(\t\"5\n\027Ack" +
+      "nowledgementToClient\022\013\n\003key\030\001 \001(\r\022\r\n\005val" +
+      "ue\030\002 \001(\t\"\314\003\n\016WrapperMessage\022:\n\030get_key_f" +
+      "rom_coordinator\030\001 \001(\0132\026.GetKeyFromCoordi" +
+      "natorH\000\022:\n\030put_key_from_coordinator\030\002 \001(" +
+      "\0132\026.PutKeyFromCoordinatorH\000\0221\n\023client_re" +
+      "ad_request\030\003 \001(\0132\022.ClientReadRequestH\000\0223" +
+      "\n\024client_write_request\030\004 \001(\0132\023.ClientWri" +
+      "teRequestH\000\022\"\n\013read_repair\030\005 \001(\0132\013.ReadR" +
+      "epairH\000\022\037\n\rerror_message\030\006 \001(\0132\006.ErrorH\000" +
+      "\022G\n\036acknowledgement_to_coordinator\030\007 \001(\013" +
+      "2\035.AcknowledgementToCoordinatorH\000\022=\n\031ack" +
+      "nowledgement_to_client\030\010 \001(\0132\030.Acknowled" +
+      "gementToClientH\000B\r\n\013map_message*1\n\020Consi" +
+      "stencyLevel\022\013\n\007UNKNOWN\020\000\022\007\n\003ONE\020\001\022\007\n\003TWO" +
+      "\020\002b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -6105,25 +9410,25 @@ public final class Node {
     internal_static_GetKeyFromCoordinator_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetKeyFromCoordinator_descriptor,
-        new java.lang.String[] { "TimeStamp", "Key", });
+        new java.lang.String[] { "TimeStamp", "Key", "CoordinatorName", });
     internal_static_PutKeyFromCoordinator_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_PutKeyFromCoordinator_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_PutKeyFromCoordinator_descriptor,
-        new java.lang.String[] { "TimeStamp", "Key", "Value", });
+        new java.lang.String[] { "TimeStamp", "Key", "Value", "CoordinatorName", });
     internal_static_ClientReadRequest_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_ClientReadRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ClientReadRequest_descriptor,
-        new java.lang.String[] { "Key", });
+        new java.lang.String[] { "Key", "ConsistencyLevel", });
     internal_static_ClientWriteRequest_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_ClientWriteRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ClientWriteRequest_descriptor,
-        new java.lang.String[] { "Key", "Value", });
+        new java.lang.String[] { "Key", "Value", "ConsistencyLevel", });
     internal_static_ReadRepair_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_ReadRepair_fieldAccessorTable = new
@@ -6136,18 +9441,36 @@ public final class Node {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Error_descriptor,
         new java.lang.String[] { "Message", });
-    internal_static_Acknowledgement_descriptor =
+    internal_static_LogMessage_descriptor =
       getDescriptor().getMessageTypes().get(6);
-    internal_static_Acknowledgement_fieldAccessorTable = new
+    internal_static_LogMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_Acknowledgement_descriptor,
-        new java.lang.String[] { "TimeStamp", "ProcessCompleted", });
-    internal_static_WrapperMessage_descriptor =
+        internal_static_LogMessage_descriptor,
+        new java.lang.String[] { "LogStartFlag", "Key", "Value", "TimeStamp", "LogEndFlag", });
+    internal_static_LogBook_descriptor =
       getDescriptor().getMessageTypes().get(7);
+    internal_static_LogBook_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_LogBook_descriptor,
+        new java.lang.String[] { "Log", });
+    internal_static_AcknowledgementToCoordinator_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_AcknowledgementToCoordinator_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_AcknowledgementToCoordinator_descriptor,
+        new java.lang.String[] { "TimeStamp", "Key", "Value", "ReplicaName", });
+    internal_static_AcknowledgementToClient_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_AcknowledgementToClient_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_AcknowledgementToClient_descriptor,
+        new java.lang.String[] { "Key", "Value", });
+    internal_static_WrapperMessage_descriptor =
+      getDescriptor().getMessageTypes().get(10);
     internal_static_WrapperMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_WrapperMessage_descriptor,
-        new java.lang.String[] { "GetKeyFromCoordinator", "PutKeyFromCoordinator", "ClientReadRequest", "ClientWriteRequest", "ReadRepair", "ErrorMessage", "Acknowledgement", "MapMessage", });
+        new java.lang.String[] { "GetKeyFromCoordinator", "PutKeyFromCoordinator", "ClientReadRequest", "ClientWriteRequest", "ReadRepair", "ErrorMessage", "AcknowledgementToCoordinator", "AcknowledgementToClient", "MapMessage", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
