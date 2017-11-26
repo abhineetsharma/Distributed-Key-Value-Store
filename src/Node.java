@@ -5783,6 +5783,16 @@ public final class Node {
      */
     com.google.protobuf.ByteString
         getReplicaTimeStampBytes();
+
+    /**
+     * <code>string errorMessage = 7;</code>
+     */
+    java.lang.String getErrorMessage();
+    /**
+     * <code>string errorMessage = 7;</code>
+     */
+    com.google.protobuf.ByteString
+        getErrorMessageBytes();
   }
   /**
    * Protobuf type {@code AcknowledgementToCoordinator}
@@ -5803,6 +5813,7 @@ public final class Node {
       replicaName_ = "";
       requestType_ = 0;
       replicaTimeStamp_ = "";
+      errorMessage_ = "";
     }
 
     @java.lang.Override
@@ -5866,6 +5877,12 @@ public final class Node {
               java.lang.String s = input.readStringRequireUtf8();
 
               replicaTimeStamp_ = s;
+              break;
+            }
+            case 58: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              errorMessage_ = s;
               break;
             }
           }
@@ -6053,6 +6070,40 @@ public final class Node {
       }
     }
 
+    public static final int ERRORMESSAGE_FIELD_NUMBER = 7;
+    private volatile java.lang.Object errorMessage_;
+    /**
+     * <code>string errorMessage = 7;</code>
+     */
+    public java.lang.String getErrorMessage() {
+      java.lang.Object ref = errorMessage_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        errorMessage_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string errorMessage = 7;</code>
+     */
+    public com.google.protobuf.ByteString
+        getErrorMessageBytes() {
+      java.lang.Object ref = errorMessage_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        errorMessage_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -6083,6 +6134,9 @@ public final class Node {
       if (!getReplicaTimeStampBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 6, replicaTimeStamp_);
       }
+      if (!getErrorMessageBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, errorMessage_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -6111,6 +6165,9 @@ public final class Node {
       if (!getReplicaTimeStampBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, replicaTimeStamp_);
       }
+      if (!getErrorMessageBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, errorMessage_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -6138,6 +6195,8 @@ public final class Node {
       result = result && requestType_ == other.requestType_;
       result = result && getReplicaTimeStamp()
           .equals(other.getReplicaTimeStamp());
+      result = result && getErrorMessage()
+          .equals(other.getErrorMessage());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -6161,6 +6220,8 @@ public final class Node {
       hash = (53 * hash) + requestType_;
       hash = (37 * hash) + REPLICATIMESTAMP_FIELD_NUMBER;
       hash = (53 * hash) + getReplicaTimeStamp().hashCode();
+      hash = (37 * hash) + ERRORMESSAGE_FIELD_NUMBER;
+      hash = (53 * hash) + getErrorMessage().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -6302,6 +6363,8 @@ public final class Node {
 
         replicaTimeStamp_ = "";
 
+        errorMessage_ = "";
+
         return this;
       }
 
@@ -6330,6 +6393,7 @@ public final class Node {
         result.replicaName_ = replicaName_;
         result.requestType_ = requestType_;
         result.replicaTimeStamp_ = replicaTimeStamp_;
+        result.errorMessage_ = errorMessage_;
         onBuilt();
         return result;
       }
@@ -6391,6 +6455,10 @@ public final class Node {
         }
         if (!other.getReplicaTimeStamp().isEmpty()) {
           replicaTimeStamp_ = other.replicaTimeStamp_;
+          onChanged();
+        }
+        if (!other.getErrorMessage().isEmpty()) {
+          errorMessage_ = other.errorMessage_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -6765,6 +6833,75 @@ public final class Node {
         onChanged();
         return this;
       }
+
+      private java.lang.Object errorMessage_ = "";
+      /**
+       * <code>string errorMessage = 7;</code>
+       */
+      public java.lang.String getErrorMessage() {
+        java.lang.Object ref = errorMessage_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          errorMessage_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string errorMessage = 7;</code>
+       */
+      public com.google.protobuf.ByteString
+          getErrorMessageBytes() {
+        java.lang.Object ref = errorMessage_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          errorMessage_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string errorMessage = 7;</code>
+       */
+      public Builder setErrorMessage(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        errorMessage_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string errorMessage = 7;</code>
+       */
+      public Builder clearErrorMessage() {
+        
+        errorMessage_ = getDefaultInstance().getErrorMessage();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string errorMessage = 7;</code>
+       */
+      public Builder setErrorMessageBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        errorMessage_ = value;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
@@ -6832,6 +6969,16 @@ public final class Node {
      */
     com.google.protobuf.ByteString
         getValueBytes();
+
+    /**
+     * <code>string errorMessage = 3;</code>
+     */
+    java.lang.String getErrorMessage();
+    /**
+     * <code>string errorMessage = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getErrorMessageBytes();
   }
   /**
    * Protobuf type {@code AcknowledgementToClient}
@@ -6848,6 +6995,7 @@ public final class Node {
     private AcknowledgementToClient() {
       key_ = 0;
       value_ = "";
+      errorMessage_ = "";
     }
 
     @java.lang.Override
@@ -6887,6 +7035,12 @@ public final class Node {
               java.lang.String s = input.readStringRequireUtf8();
 
               value_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              errorMessage_ = s;
               break;
             }
           }
@@ -6956,6 +7110,40 @@ public final class Node {
       }
     }
 
+    public static final int ERRORMESSAGE_FIELD_NUMBER = 3;
+    private volatile java.lang.Object errorMessage_;
+    /**
+     * <code>string errorMessage = 3;</code>
+     */
+    public java.lang.String getErrorMessage() {
+      java.lang.Object ref = errorMessage_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        errorMessage_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string errorMessage = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getErrorMessageBytes() {
+      java.lang.Object ref = errorMessage_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        errorMessage_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -6974,6 +7162,9 @@ public final class Node {
       if (!getValueBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, value_);
       }
+      if (!getErrorMessageBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, errorMessage_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -6988,6 +7179,9 @@ public final class Node {
       }
       if (!getValueBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, value_);
+      }
+      if (!getErrorMessageBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, errorMessage_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -7009,6 +7203,8 @@ public final class Node {
           == other.getKey());
       result = result && getValue()
           .equals(other.getValue());
+      result = result && getErrorMessage()
+          .equals(other.getErrorMessage());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -7024,6 +7220,8 @@ public final class Node {
       hash = (53 * hash) + getKey();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
       hash = (53 * hash) + getValue().hashCode();
+      hash = (37 * hash) + ERRORMESSAGE_FIELD_NUMBER;
+      hash = (53 * hash) + getErrorMessage().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -7157,6 +7355,8 @@ public final class Node {
 
         value_ = "";
 
+        errorMessage_ = "";
+
         return this;
       }
 
@@ -7181,6 +7381,7 @@ public final class Node {
         Node.AcknowledgementToClient result = new Node.AcknowledgementToClient(this);
         result.key_ = key_;
         result.value_ = value_;
+        result.errorMessage_ = errorMessage_;
         onBuilt();
         return result;
       }
@@ -7227,6 +7428,10 @@ public final class Node {
         }
         if (!other.getValue().isEmpty()) {
           value_ = other.value_;
+          onChanged();
+        }
+        if (!other.getErrorMessage().isEmpty()) {
+          errorMessage_ = other.errorMessage_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -7347,6 +7552,75 @@ public final class Node {
   checkByteStringIsUtf8(value);
         
         value_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object errorMessage_ = "";
+      /**
+       * <code>string errorMessage = 3;</code>
+       */
+      public java.lang.String getErrorMessage() {
+        java.lang.Object ref = errorMessage_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          errorMessage_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string errorMessage = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getErrorMessageBytes() {
+        java.lang.Object ref = errorMessage_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          errorMessage_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string errorMessage = 3;</code>
+       */
+      public Builder setErrorMessage(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        errorMessage_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string errorMessage = 3;</code>
+       */
+      public Builder clearErrorMessage() {
+        
+        errorMessage_ = getDefaultInstance().getErrorMessage();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string errorMessage = 3;</code>
+       */
+      public Builder setErrorMessageBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        errorMessage_ = value;
         onChanged();
         return this;
       }
@@ -9668,26 +9942,28 @@ public final class Node {
       "Message\022\024\n\014logStartFlag\030\001 \001(\010\022\013\n\003key\030\002 \001" +
       "(\r\022\r\n\005value\030\003 \001(\t\022\021\n\ttimeStamp\030\004 \001(\t\022\022\n\n" +
       "logEndFlag\030\005 \001(\010\"#\n\007LogBook\022\030\n\003log\030\001 \003(\013" +
-      "2\013.LogMessage\"\253\001\n\034AcknowledgementToCoord" +
+      "2\013.LogMessage\"\301\001\n\034AcknowledgementToCoord" +
       "inator\022\034\n\024coordinatorTimeStamp\030\001 \001(\t\022\013\n\003" +
       "key\030\002 \001(\r\022\r\n\005value\030\003 \001(\t\022\023\n\013replicaName\030" +
       "\004 \001(\t\022\"\n\014request_type\030\005 \001(\0162\014.RequestTyp" +
-      "e\022\030\n\020replicaTimeStamp\030\006 \001(\t\"5\n\027Acknowled" +
-      "gementToClient\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001",
-      "(\t\"\314\003\n\016WrapperMessage\022:\n\030get_key_from_co" +
-      "ordinator\030\001 \001(\0132\026.GetKeyFromCoordinatorH" +
-      "\000\022:\n\030put_key_from_coordinator\030\002 \001(\0132\026.Pu" +
-      "tKeyFromCoordinatorH\000\0221\n\023client_read_req" +
-      "uest\030\003 \001(\0132\022.ClientReadRequestH\000\0223\n\024clie" +
-      "nt_write_request\030\004 \001(\0132\023.ClientWriteRequ" +
-      "estH\000\022\"\n\013read_repair\030\005 \001(\0132\013.ReadRepairH" +
-      "\000\022\037\n\rerror_message\030\006 \001(\0132\006.ErrorH\000\022G\n\036ac" +
-      "knowledgement_to_coordinator\030\007 \001(\0132\035.Ack" +
-      "nowledgementToCoordinatorH\000\022=\n\031acknowled",
-      "gement_to_client\030\010 \001(\0132\030.Acknowledgement" +
-      "ToClientH\000B\r\n\013map_message*1\n\020Consistency" +
-      "Level\022\013\n\007UNKNOWN\020\000\022\007\n\003ONE\020\001\022\007\n\003TWO\020\002*\"\n\013" +
-      "RequestType\022\010\n\004READ\020\000\022\t\n\005WRITE\020\001b\006proto3"
+      "e\022\030\n\020replicaTimeStamp\030\006 \001(\t\022\024\n\014errorMess" +
+      "age\030\007 \001(\t\"K\n\027AcknowledgementToClient\022\013\n\003",
+      "key\030\001 \001(\r\022\r\n\005value\030\002 \001(\t\022\024\n\014errorMessage" +
+      "\030\003 \001(\t\"\314\003\n\016WrapperMessage\022:\n\030get_key_fro" +
+      "m_coordinator\030\001 \001(\0132\026.GetKeyFromCoordina" +
+      "torH\000\022:\n\030put_key_from_coordinator\030\002 \001(\0132" +
+      "\026.PutKeyFromCoordinatorH\000\0221\n\023client_read" +
+      "_request\030\003 \001(\0132\022.ClientReadRequestH\000\0223\n\024" +
+      "client_write_request\030\004 \001(\0132\023.ClientWrite" +
+      "RequestH\000\022\"\n\013read_repair\030\005 \001(\0132\013.ReadRep" +
+      "airH\000\022\037\n\rerror_message\030\006 \001(\0132\006.ErrorH\000\022G" +
+      "\n\036acknowledgement_to_coordinator\030\007 \001(\0132\035",
+      ".AcknowledgementToCoordinatorH\000\022=\n\031ackno" +
+      "wledgement_to_client\030\010 \001(\0132\030.Acknowledge" +
+      "mentToClientH\000B\r\n\013map_message*1\n\020Consist" +
+      "encyLevel\022\013\n\007UNKNOWN\020\000\022\007\n\003ONE\020\001\022\007\n\003TWO\020\002" +
+      "*\"\n\013RequestType\022\010\n\004READ\020\000\022\t\n\005WRITE\020\001b\006pr" +
+      "oto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -9754,13 +10030,13 @@ public final class Node {
     internal_static_AcknowledgementToCoordinator_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AcknowledgementToCoordinator_descriptor,
-        new java.lang.String[] { "CoordinatorTimeStamp", "Key", "Value", "ReplicaName", "RequestType", "ReplicaTimeStamp", });
+        new java.lang.String[] { "CoordinatorTimeStamp", "Key", "Value", "ReplicaName", "RequestType", "ReplicaTimeStamp", "ErrorMessage", });
     internal_static_AcknowledgementToClient_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_AcknowledgementToClient_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AcknowledgementToClient_descriptor,
-        new java.lang.String[] { "Key", "Value", });
+        new java.lang.String[] { "Key", "Value", "ErrorMessage", });
     internal_static_WrapperMessage_descriptor =
       getDescriptor().getMessageTypes().get(10);
     internal_static_WrapperMessage_fieldAccessorTable = new

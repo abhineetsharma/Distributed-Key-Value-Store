@@ -150,35 +150,40 @@ public class Server {
     //Get Key From Coordinator
     private void processingGetKeyFromCoordinator(Node.GetKeyFromCoordinator getKeyFromCoordinator) {
         int key = getKeyFromCoordinator.getKey();
-        //String timeStamp = getKeyFromCoordinator.getTimeStamp();
+        String timeStamp = getKeyFromCoordinator.getTimeStamp();
         String coordinatorName = getKeyFromCoordinator.getCoordinatorName();
 
 
+        Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator.newBuilder();
+        acknowledgementBuilder.setKey(key);
+        acknowledgementBuilder.setReplicaName(name);
+        acknowledgementBuilder.setRequestType(Node.RequestType.READ);
+        acknowledgementBuilder.setCoordinatorTimeStamp(timeStamp);
         if (keyValueMap.containsKey(key)) {
             String value = keyValueMap.get(key).getValue();
-            String timeStamp = keyValueMap.get(key).getTimeStamp();
+            String replicaTimeStamp = keyValueMap.get(key).getTimeStamp();
 
             print(keyValueMap.get(key));
 
-            Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator.newBuilder();
-            acknowledgementBuilder.setKey(key);
-            acknowledgementBuilder.setCoordinatorTimeStamp(timeStamp);
+
+            acknowledgementBuilder.setReplicaTimeStamp(replicaTimeStamp);
             acknowledgementBuilder.setValue(value);
-            acknowledgementBuilder.setReplicaName(name);
-            acknowledgementBuilder.setRequestType(Node.RequestType.READ);
 
-            Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
-                    .setAcknowledgementToCoordinator(acknowledgementBuilder).build();
 
-            NodeServerData coordinator = nodeMap.get(coordinatorName);
-
-            // send acknowledgement to coordinator
-            try {
-                sendMessageToNodeSocket(coordinator, message);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             System.out.println("Read Ack message sent to the Coordinator : " + coordinatorName + " .....");
+        } else {
+            acknowledgementBuilder.setErrorMessage("Key " + key + " not found ");
+        }
+
+        Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setAcknowledgementToCoordinator(acknowledgementBuilder).build();
+
+        NodeServerData coordinator = nodeMap.get(coordinatorName);
+
+        // send acknowledgement to coordinator
+        try {
+            sendMessageToNodeSocket(coordinator, message);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -304,13 +309,15 @@ public class Server {
         String replicasCoordinatorTimeStamp = acknowledgementToCoordinator.getCoordinatorTimeStamp();
         String replicaTimeStamp = acknowledgementToCoordinator.getReplicaTimeStamp();
         AcknowledgementToClientListener acknowledgement = acknowledgementLogCoordinatorMap.get(replicasCoordinatorTimeStamp);
+
         if (null != acknowledgement) {
             Node.ConsistencyLevel consistencyLevel = acknowledgement.getRequestConsistencyLevel();
             Socket clientSocket = acknowledgement.getClientSocket();
             boolean isSentToClient = acknowledgement.isSentToClient();
             AcknowledgementData acknowledgementData = acknowledgement.getAcknowledgementDataByServerName(replicaName);
             List<String> replicaAcknowledgementList = acknowledgement.getAcknowledgedListForTimeStamp();
-
+            String errorMessage = acknowledgementToCoordinator.getErrorMessage();
+            if (errorMessage == null) errorMessage = "";
             if (null != acknowledgementData) {
                 int replicaKey = acknowledgementData.getKey();
                 String replicaValue = acknowledgementData.getValue();
@@ -321,28 +328,31 @@ public class Server {
                     } else {
                         //inconsistency
                     }
-
-
                 }
                 //Read request
                 else if (requestType.equals(Node.RequestType.READ)) {
-                    acknowledgement.setValueFromReplicaAcknowledgement(replicaName, replicaValue);
-                    acknowledgement.setTimeStampFromReplica(replicaName, replicaTimeStamp);
-                    //set the time stamp of last write operation into Acknowledgement log
-                    acknowledgementData.setAcknowledge(true);
+                    if (value == null && errorMessage.trim().length() > 0) {
+                        //value is null because key does not exist
+                    } else {
+                        acknowledgement.setValueFromReplicaAcknowledgement(replicaName, value);
+                        acknowledgement.setTimeStampFromReplica(replicaName, replicaTimeStamp);
+                        //set the time stamp of last write operation into Acknowledgement log
+                        acknowledgementData.setAcknowledge(true);
+                    }
                 }
 
                 int acknowledgeCount = replicaAcknowledgementList.size();
+                //check
                 if (acknowledgeCount >= consistencyLevel.getNumber() && !isSentToClient) {
                     acknowledgement.setSentToClient(true);
-                    sentAcknowledgementToClient(key, value, clientSocket);
+                    sentAcknowledgementToClient(key, value, errorMessage, clientSocket);
                 }
             }
         }
     }
 
-    private void sentAcknowledgementToClient(int key, String value, Socket clientSocket) {
-        Node.AcknowledgementToClient acknowledgementToClient = Node.AcknowledgementToClient.newBuilder().setKey(key).setValue(value).build();
+    private void sentAcknowledgementToClient(int key, String value, String errorMessage, Socket clientSocket) {
+        Node.AcknowledgementToClient acknowledgementToClient = Node.AcknowledgementToClient.newBuilder().setKey(key).setValue(value).setErrorMessage(errorMessage).build();
         Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setAcknowledgementToClient(acknowledgementToClient).build();
         print("Send to client: " + message + " " + clientSocket.isClosed());
         try {
@@ -368,6 +378,7 @@ public class Server {
     public static void main(String[] args) {
 
         Server server = new Server();
+
 
         if (args.length > 1) {
             server.portNumber = Integer.parseInt(args[0]);

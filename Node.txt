@@ -3,3 +3,4 @@ node1 localhost 9091
 node2 localhost 9092
 node3 localhost 9093
 node4 localhost 9094
+node5 localhost 9095

@@ -32,6 +32,7 @@ public class Client {
 
             //Thread.sleep(5000);
             sendGETRequestToCoordinator("node2", 1, Node.ConsistencyLevel.TWO);
+            sendGETRequestToCoordinator("node5", 5, Node.ConsistencyLevel.TWO);
 
         }
     }
