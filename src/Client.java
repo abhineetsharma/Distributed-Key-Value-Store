@@ -31,8 +31,8 @@ public class Client {
             sendPUTRequestToCoordinator("node0", 1, "XYZO", Node.ConsistencyLevel.TWO);
 
             //Thread.sleep(5000);
-            sendGETRequestToCoordinator("node2", 1, Node.ConsistencyLevel.TWO);
-            sendGETRequestToCoordinator("node5", 5, Node.ConsistencyLevel.TWO);
+            sendGETRequestToCoordinator("node0", 1, Node.ConsistencyLevel.TWO);
+            //sendGETRequestToCoordinator("node5", 5, Node.ConsistencyLevel.TWO);
 
         }
     }
@@ -51,7 +51,7 @@ public class Client {
         socket.close();
     }
 
-    private static void sendGETRequestToCoordinator(String node, int key, Node.ConsistencyLevel consistencyLevel) throws UnknownHostException, IOException {
+    private static void sendGETRequestToCoordinator(String node, int key, Node.ConsistencyLevel consistencyLevel) throws IOException {
         System.out.println("IP: " + nodeMap.get(node).getIp() + " Port:" + nodeMap.get(node).getPort());
         Socket socket = new Socket(nodeMap.get(node).getIp(), nodeMap.get(node).getPort());
         Node.ClientReadRequest.Builder getKeyVal = Node.ClientReadRequest.newBuilder();

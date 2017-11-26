@@ -16,7 +16,7 @@ public class AcknowledgementToClientListener {
         requestConsistencyLevel = consistencyLevelI;
         replicaAcknowledgementMap = new ConcurrentSkipListMap<>();
         for (NodeServerData node : nodeServerDataList)
-            replicaAcknowledgementMap.put(node.getName(), new AcknowledgementData(keyI, valueI, timeStampI));
+            replicaAcknowledgementMap.put(node.getName(), new AcknowledgementData(keyI, valueI, timeStampI,node.getName()));
     }
 
     public String getClientName() {
@@ -35,13 +35,20 @@ public class AcknowledgementToClientListener {
         return replicaAcknowledgementMap.get(nodeName);
     }
 
-    public List<String> getAcknowledgedListForTimeStamp() {
-        List<String> list = new ArrayList<>();
+    public synchronized List<String> getAcknowledgedListForTimeStamp() {
+        List<AcknowledgementData> AcknowledgementDataList = new ArrayList<>();
         for (String name : replicaAcknowledgementMap.keySet()) {
             AcknowledgementData data = replicaAcknowledgementMap.get(name);
             if (data.isAcknowledge())
-                list.add(name);
+                AcknowledgementDataList.add(data);
         }
+        Collections.sort(AcknowledgementDataList);
+
+        List<String> list = new ArrayList<>();
+        for (AcknowledgementData acknowledgementData : AcknowledgementDataList) {
+            list.add(acknowledgementData.getReplicaName());
+        }
+        //Collections.reverse(list);
         return list;
     }
 

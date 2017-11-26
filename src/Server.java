@@ -333,6 +333,7 @@ public class Server {
                 else if (requestType.equals(Node.RequestType.READ)) {
                     if (value == null && errorMessage.trim().length() > 0) {
                         //value is null because key does not exist
+
                     } else {
                         acknowledgement.setValueFromReplicaAcknowledgement(replicaName, value);
                         acknowledgement.setTimeStampFromReplica(replicaName, replicaTimeStamp);
@@ -342,11 +343,32 @@ public class Server {
                 }
 
                 int acknowledgeCount = replicaAcknowledgementList.size();
+
                 //check
-                if (acknowledgeCount >= consistencyLevel.getNumber() && !isSentToClient) {
-                    acknowledgement.setSentToClient(true);
-                    sentAcknowledgementToClient(key, value, errorMessage, clientSocket);
+                if (requestType.equals(Node.RequestType.WRITE)) {
+                    if (acknowledgeCount >= consistencyLevel.getNumber() && !isSentToClient) {
+                        acknowledgement.setSentToClient(true);
+                        sentAcknowledgementToClient(key, value, errorMessage, clientSocket);
+                    }
+
+                } else if (requestType.equals(Node.RequestType.READ)) {
+                    //un-comment to change time stamp of particular replica
+                    //                    if (replicaName.equalsIgnoreCase("node2")) {
+                    //                        acknowledgement.setValueFromReplicaAcknowledgement(replicaName, value + "abhineet");
+                    //                        acknowledgement.setTimeStampFromReplica(replicaName, Long.toString(Long.parseLong(replicaTimeStamp) + 1));
+                    //                    }
+                    if (acknowledgeCount >= consistencyLevel.getNumber() && !isSentToClient) {
+                        AcknowledgementData acknowledgeData = acknowledgement.getAcknowledgementDataByServerName(replicaAcknowledgementList.get(0));
+                        System.out.println(">>>>>>>>>Replica with latest data : "+acknowledgeData.getReplicaName()+" Time stamp : "+acknowledgeData.getTimeStamp()+" Value : " +acknowledgeData.getValue() );
+                        acknowledgement.setSentToClient(true);
+
+                        sentAcknowledgementToClient(key, acknowledgeData.getValue(), errorMessage, clientSocket);
+                    } else {
+                        System.out.println("err");
+                    }
+
                 }
+
             }
         }
     }
@@ -401,6 +423,7 @@ public class Server {
             System.exit(1);
         }
         int msgCount = 0;
+
         while (true) {
             Socket receiver = null;
             try {
