@@ -150,19 +150,19 @@ public class Server {
     //Get Key From Coordinator
     private void processingGetKeyFromCoordinator(Node.GetKeyFromCoordinator getKeyFromCoordinator) {
         int key = getKeyFromCoordinator.getKey();
-        String timeStamp = getKeyFromCoordinator.getTimeStamp();
+        //String timeStamp = getKeyFromCoordinator.getTimeStamp();
         String coordinatorName = getKeyFromCoordinator.getCoordinatorName();
 
 
         if (keyValueMap.containsKey(key)) {
             String value = keyValueMap.get(key).getValue();
+            String timeStamp = keyValueMap.get(key).getTimeStamp();
 
             print(keyValueMap.get(key));
 
-            Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator
-                    .newBuilder();
+            Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator.newBuilder();
             acknowledgementBuilder.setKey(key);
-            acknowledgementBuilder.setTimeStamp(timeStamp);
+            acknowledgementBuilder.setCoordinatorTimeStamp(timeStamp);
             acknowledgementBuilder.setValue(value);
             acknowledgementBuilder.setReplicaName(name);
             acknowledgementBuilder.setRequestType(Node.RequestType.READ);
@@ -264,7 +264,8 @@ public class Server {
                 Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator
                         .newBuilder();
                 acknowledgementBuilder.setKey(key);
-                acknowledgementBuilder.setTimeStamp(timeStamp);
+                acknowledgementBuilder.setReplicaTimeStamp(timeStamp);
+                acknowledgementBuilder.setCoordinatorTimeStamp(timeStamp);
                 acknowledgementBuilder.setValue(value);
                 acknowledgementBuilder.setReplicaName(name);
                 acknowledgementBuilder.setRequestType(Node.RequestType.WRITE);
@@ -300,12 +301,12 @@ public class Server {
 
         Node.RequestType requestType = acknowledgementToCoordinator.getRequestType();
         String replicaName = acknowledgementToCoordinator.getReplicaName();
-        String replicaTimeStamp = acknowledgementToCoordinator.getTimeStamp();
-
-        AcknowledgementToClientListener acknowledgement = acknowledgementLogCoordinatorMap.get(replicaTimeStamp);
+        String replicasCoordinatorTimeStamp = acknowledgementToCoordinator.getCoordinatorTimeStamp();
+        String replicaTimeStamp = acknowledgementToCoordinator.getReplicaTimeStamp();
+        AcknowledgementToClientListener acknowledgement = acknowledgementLogCoordinatorMap.get(replicasCoordinatorTimeStamp);
         if (null != acknowledgement) {
             Node.ConsistencyLevel consistencyLevel = acknowledgement.getRequestConsistencyLevel();
-            Socket clientSocket = acknowledgement.getClientScoket();
+            Socket clientSocket = acknowledgement.getClientSocket();
             boolean isSentToClient = acknowledgement.isSentToClient();
             AcknowledgementData acknowledgementData = acknowledgement.getAcknowledgementDataByServerName(replicaName);
             List<String> replicaAcknowledgementList = acknowledgement.getAcknowledgedListForTimeStamp();
@@ -326,6 +327,8 @@ public class Server {
                 //Read request
                 else if (requestType.equals(Node.RequestType.READ)) {
                     acknowledgement.setValueFromReplicaAcknowledgement(replicaName, replicaValue);
+                    acknowledgement.setTimeStampFromReplica(replicaName, replicaTimeStamp);
+                    //set the time stamp of last write operation into Acknowledgement log
                     acknowledgementData.setAcknowledge(true);
                 }
 

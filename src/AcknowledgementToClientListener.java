@@ -23,7 +23,7 @@ public class AcknowledgementToClientListener {
         return clientName;
     }
 
-    public Socket getClientScoket() {
+    public Socket getClientSocket() {
         return clientSocket;
     }
 
@@ -61,6 +61,11 @@ public class AcknowledgementToClientListener {
     public synchronized void setValueFromReplicaAcknowledgement(String replicaName, String value) {
         AcknowledgementData acknowledgementData = getAcknowledgementDataByServerName(replicaName);
         acknowledgementData.setValue(value);
+    }
+
+    public synchronized void setTimeStampFromReplica(String replicaName, String timeStamp) {
+        AcknowledgementData acknowledgementData = getAcknowledgementDataByServerName(replicaName);
+        acknowledgementData.setTimeStamp(timeStamp);
     }
 
     public boolean isInconsistent() {

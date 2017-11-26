@@ -5731,14 +5731,14 @@ public final class Node {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>string timeStamp = 1;</code>
+     * <code>string coordinatorTimeStamp = 1;</code>
      */
-    java.lang.String getTimeStamp();
+    java.lang.String getCoordinatorTimeStamp();
     /**
-     * <code>string timeStamp = 1;</code>
+     * <code>string coordinatorTimeStamp = 1;</code>
      */
     com.google.protobuf.ByteString
-        getTimeStampBytes();
+        getCoordinatorTimeStampBytes();
 
     /**
      * <code>uint32 key = 2;</code>
@@ -5773,6 +5773,16 @@ public final class Node {
      * <code>.RequestType request_type = 5;</code>
      */
     Node.RequestType getRequestType();
+
+    /**
+     * <code>string replicaTimeStamp = 6;</code>
+     */
+    java.lang.String getReplicaTimeStamp();
+    /**
+     * <code>string replicaTimeStamp = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getReplicaTimeStampBytes();
   }
   /**
    * Protobuf type {@code AcknowledgementToCoordinator}
@@ -5787,11 +5797,12 @@ public final class Node {
       super(builder);
     }
     private AcknowledgementToCoordinator() {
-      timeStamp_ = "";
+      coordinatorTimeStamp_ = "";
       key_ = 0;
       value_ = "";
       replicaName_ = "";
       requestType_ = 0;
+      replicaTimeStamp_ = "";
     }
 
     @java.lang.Override
@@ -5825,7 +5836,7 @@ public final class Node {
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              timeStamp_ = s;
+              coordinatorTimeStamp_ = s;
               break;
             }
             case 16: {
@@ -5849,6 +5860,12 @@ public final class Node {
               int rawValue = input.readEnum();
 
               requestType_ = rawValue;
+              break;
+            }
+            case 50: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              replicaTimeStamp_ = s;
               break;
             }
           }
@@ -5875,34 +5892,34 @@ public final class Node {
               Node.AcknowledgementToCoordinator.class, Node.AcknowledgementToCoordinator.Builder.class);
     }
 
-    public static final int TIMESTAMP_FIELD_NUMBER = 1;
-    private volatile java.lang.Object timeStamp_;
+    public static final int COORDINATORTIMESTAMP_FIELD_NUMBER = 1;
+    private volatile java.lang.Object coordinatorTimeStamp_;
     /**
-     * <code>string timeStamp = 1;</code>
+     * <code>string coordinatorTimeStamp = 1;</code>
      */
-    public java.lang.String getTimeStamp() {
-      java.lang.Object ref = timeStamp_;
+    public java.lang.String getCoordinatorTimeStamp() {
+      java.lang.Object ref = coordinatorTimeStamp_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        timeStamp_ = s;
+        coordinatorTimeStamp_ = s;
         return s;
       }
     }
     /**
-     * <code>string timeStamp = 1;</code>
+     * <code>string coordinatorTimeStamp = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getTimeStampBytes() {
-      java.lang.Object ref = timeStamp_;
+        getCoordinatorTimeStampBytes() {
+      java.lang.Object ref = coordinatorTimeStamp_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        timeStamp_ = b;
+        coordinatorTimeStamp_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -6002,6 +6019,40 @@ public final class Node {
       return result == null ? Node.RequestType.UNRECOGNIZED : result;
     }
 
+    public static final int REPLICATIMESTAMP_FIELD_NUMBER = 6;
+    private volatile java.lang.Object replicaTimeStamp_;
+    /**
+     * <code>string replicaTimeStamp = 6;</code>
+     */
+    public java.lang.String getReplicaTimeStamp() {
+      java.lang.Object ref = replicaTimeStamp_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        replicaTimeStamp_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string replicaTimeStamp = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getReplicaTimeStampBytes() {
+      java.lang.Object ref = replicaTimeStamp_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        replicaTimeStamp_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -6014,8 +6065,8 @@ public final class Node {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getTimeStampBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, timeStamp_);
+      if (!getCoordinatorTimeStampBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, coordinatorTimeStamp_);
       }
       if (key_ != 0) {
         output.writeUInt32(2, key_);
@@ -6029,6 +6080,9 @@ public final class Node {
       if (requestType_ != Node.RequestType.READ.getNumber()) {
         output.writeEnum(5, requestType_);
       }
+      if (!getReplicaTimeStampBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, replicaTimeStamp_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -6037,8 +6091,8 @@ public final class Node {
       if (size != -1) return size;
 
       size = 0;
-      if (!getTimeStampBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, timeStamp_);
+      if (!getCoordinatorTimeStampBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, coordinatorTimeStamp_);
       }
       if (key_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -6053,6 +6107,9 @@ public final class Node {
       if (requestType_ != Node.RequestType.READ.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(5, requestType_);
+      }
+      if (!getReplicaTimeStampBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, replicaTimeStamp_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -6070,8 +6127,8 @@ public final class Node {
       Node.AcknowledgementToCoordinator other = (Node.AcknowledgementToCoordinator) obj;
 
       boolean result = true;
-      result = result && getTimeStamp()
-          .equals(other.getTimeStamp());
+      result = result && getCoordinatorTimeStamp()
+          .equals(other.getCoordinatorTimeStamp());
       result = result && (getKey()
           == other.getKey());
       result = result && getValue()
@@ -6079,6 +6136,8 @@ public final class Node {
       result = result && getReplicaName()
           .equals(other.getReplicaName());
       result = result && requestType_ == other.requestType_;
+      result = result && getReplicaTimeStamp()
+          .equals(other.getReplicaTimeStamp());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -6090,8 +6149,8 @@ public final class Node {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
-      hash = (53 * hash) + getTimeStamp().hashCode();
+      hash = (37 * hash) + COORDINATORTIMESTAMP_FIELD_NUMBER;
+      hash = (53 * hash) + getCoordinatorTimeStamp().hashCode();
       hash = (37 * hash) + KEY_FIELD_NUMBER;
       hash = (53 * hash) + getKey();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
@@ -6100,6 +6159,8 @@ public final class Node {
       hash = (53 * hash) + getReplicaName().hashCode();
       hash = (37 * hash) + REQUEST_TYPE_FIELD_NUMBER;
       hash = (53 * hash) + requestType_;
+      hash = (37 * hash) + REPLICATIMESTAMP_FIELD_NUMBER;
+      hash = (53 * hash) + getReplicaTimeStamp().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -6229,7 +6290,7 @@ public final class Node {
       }
       public Builder clear() {
         super.clear();
-        timeStamp_ = "";
+        coordinatorTimeStamp_ = "";
 
         key_ = 0;
 
@@ -6238,6 +6299,8 @@ public final class Node {
         replicaName_ = "";
 
         requestType_ = 0;
+
+        replicaTimeStamp_ = "";
 
         return this;
       }
@@ -6261,11 +6324,12 @@ public final class Node {
 
       public Node.AcknowledgementToCoordinator buildPartial() {
         Node.AcknowledgementToCoordinator result = new Node.AcknowledgementToCoordinator(this);
-        result.timeStamp_ = timeStamp_;
+        result.coordinatorTimeStamp_ = coordinatorTimeStamp_;
         result.key_ = key_;
         result.value_ = value_;
         result.replicaName_ = replicaName_;
         result.requestType_ = requestType_;
+        result.replicaTimeStamp_ = replicaTimeStamp_;
         onBuilt();
         return result;
       }
@@ -6307,8 +6371,8 @@ public final class Node {
 
       public Builder mergeFrom(Node.AcknowledgementToCoordinator other) {
         if (other == Node.AcknowledgementToCoordinator.getDefaultInstance()) return this;
-        if (!other.getTimeStamp().isEmpty()) {
-          timeStamp_ = other.timeStamp_;
+        if (!other.getCoordinatorTimeStamp().isEmpty()) {
+          coordinatorTimeStamp_ = other.coordinatorTimeStamp_;
           onChanged();
         }
         if (other.getKey() != 0) {
@@ -6324,6 +6388,10 @@ public final class Node {
         }
         if (other.requestType_ != 0) {
           setRequestTypeValue(other.getRequestTypeValue());
+        }
+        if (!other.getReplicaTimeStamp().isEmpty()) {
+          replicaTimeStamp_ = other.replicaTimeStamp_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -6352,71 +6420,71 @@ public final class Node {
         return this;
       }
 
-      private java.lang.Object timeStamp_ = "";
+      private java.lang.Object coordinatorTimeStamp_ = "";
       /**
-       * <code>string timeStamp = 1;</code>
+       * <code>string coordinatorTimeStamp = 1;</code>
        */
-      public java.lang.String getTimeStamp() {
-        java.lang.Object ref = timeStamp_;
+      public java.lang.String getCoordinatorTimeStamp() {
+        java.lang.Object ref = coordinatorTimeStamp_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          timeStamp_ = s;
+          coordinatorTimeStamp_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>string timeStamp = 1;</code>
+       * <code>string coordinatorTimeStamp = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getTimeStampBytes() {
-        java.lang.Object ref = timeStamp_;
+          getCoordinatorTimeStampBytes() {
+        java.lang.Object ref = coordinatorTimeStamp_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          timeStamp_ = b;
+          coordinatorTimeStamp_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>string timeStamp = 1;</code>
+       * <code>string coordinatorTimeStamp = 1;</code>
        */
-      public Builder setTimeStamp(
+      public Builder setCoordinatorTimeStamp(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        timeStamp_ = value;
+        coordinatorTimeStamp_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>string timeStamp = 1;</code>
+       * <code>string coordinatorTimeStamp = 1;</code>
        */
-      public Builder clearTimeStamp() {
+      public Builder clearCoordinatorTimeStamp() {
         
-        timeStamp_ = getDefaultInstance().getTimeStamp();
+        coordinatorTimeStamp_ = getDefaultInstance().getCoordinatorTimeStamp();
         onChanged();
         return this;
       }
       /**
-       * <code>string timeStamp = 1;</code>
+       * <code>string coordinatorTimeStamp = 1;</code>
        */
-      public Builder setTimeStampBytes(
+      public Builder setCoordinatorTimeStampBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        timeStamp_ = value;
+        coordinatorTimeStamp_ = value;
         onChanged();
         return this;
       }
@@ -6625,6 +6693,75 @@ public final class Node {
       public Builder clearRequestType() {
         
         requestType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object replicaTimeStamp_ = "";
+      /**
+       * <code>string replicaTimeStamp = 6;</code>
+       */
+      public java.lang.String getReplicaTimeStamp() {
+        java.lang.Object ref = replicaTimeStamp_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          replicaTimeStamp_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string replicaTimeStamp = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getReplicaTimeStampBytes() {
+        java.lang.Object ref = replicaTimeStamp_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          replicaTimeStamp_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string replicaTimeStamp = 6;</code>
+       */
+      public Builder setReplicaTimeStamp(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        replicaTimeStamp_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string replicaTimeStamp = 6;</code>
+       */
+      public Builder clearReplicaTimeStamp() {
+        
+        replicaTimeStamp_ = getDefaultInstance().getReplicaTimeStamp();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string replicaTimeStamp = 6;</code>
+       */
+      public Builder setReplicaTimeStampBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        replicaTimeStamp_ = value;
         onChanged();
         return this;
       }
@@ -9531,26 +9668,26 @@ public final class Node {
       "Message\022\024\n\014logStartFlag\030\001 \001(\010\022\013\n\003key\030\002 \001" +
       "(\r\022\r\n\005value\030\003 \001(\t\022\021\n\ttimeStamp\030\004 \001(\t\022\022\n\n" +
       "logEndFlag\030\005 \001(\010\"#\n\007LogBook\022\030\n\003log\030\001 \003(\013" +
-      "2\013.LogMessage\"\206\001\n\034AcknowledgementToCoord" +
-      "inator\022\021\n\ttimeStamp\030\001 \001(\t\022\013\n\003key\030\002 \001(\r\022\r" +
-      "\n\005value\030\003 \001(\t\022\023\n\013replicaName\030\004 \001(\t\022\"\n\014re" +
-      "quest_type\030\005 \001(\0162\014.RequestType\"5\n\027Acknow" +
-      "ledgementToClient\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030" +
-      "\002 \001(\t\"\314\003\n\016WrapperMessage\022:\n\030get_key_from",
-      "_coordinator\030\001 \001(\0132\026.GetKeyFromCoordinat" +
-      "orH\000\022:\n\030put_key_from_coordinator\030\002 \001(\0132\026" +
-      ".PutKeyFromCoordinatorH\000\0221\n\023client_read_" +
-      "request\030\003 \001(\0132\022.ClientReadRequestH\000\0223\n\024c" +
-      "lient_write_request\030\004 \001(\0132\023.ClientWriteR" +
-      "equestH\000\022\"\n\013read_repair\030\005 \001(\0132\013.ReadRepa" +
-      "irH\000\022\037\n\rerror_message\030\006 \001(\0132\006.ErrorH\000\022G\n" +
-      "\036acknowledgement_to_coordinator\030\007 \001(\0132\035." +
-      "AcknowledgementToCoordinatorH\000\022=\n\031acknow" +
-      "ledgement_to_client\030\010 \001(\0132\030.Acknowledgem",
-      "entToClientH\000B\r\n\013map_message*1\n\020Consiste" +
-      "ncyLevel\022\013\n\007UNKNOWN\020\000\022\007\n\003ONE\020\001\022\007\n\003TWO\020\002*" +
-      "\"\n\013RequestType\022\010\n\004READ\020\000\022\t\n\005WRITE\020\001b\006pro" +
-      "to3"
+      "2\013.LogMessage\"\253\001\n\034AcknowledgementToCoord" +
+      "inator\022\034\n\024coordinatorTimeStamp\030\001 \001(\t\022\013\n\003" +
+      "key\030\002 \001(\r\022\r\n\005value\030\003 \001(\t\022\023\n\013replicaName\030" +
+      "\004 \001(\t\022\"\n\014request_type\030\005 \001(\0162\014.RequestTyp" +
+      "e\022\030\n\020replicaTimeStamp\030\006 \001(\t\"5\n\027Acknowled" +
+      "gementToClient\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001",
+      "(\t\"\314\003\n\016WrapperMessage\022:\n\030get_key_from_co" +
+      "ordinator\030\001 \001(\0132\026.GetKeyFromCoordinatorH" +
+      "\000\022:\n\030put_key_from_coordinator\030\002 \001(\0132\026.Pu" +
+      "tKeyFromCoordinatorH\000\0221\n\023client_read_req" +
+      "uest\030\003 \001(\0132\022.ClientReadRequestH\000\0223\n\024clie" +
+      "nt_write_request\030\004 \001(\0132\023.ClientWriteRequ" +
+      "estH\000\022\"\n\013read_repair\030\005 \001(\0132\013.ReadRepairH" +
+      "\000\022\037\n\rerror_message\030\006 \001(\0132\006.ErrorH\000\022G\n\036ac" +
+      "knowledgement_to_coordinator\030\007 \001(\0132\035.Ack" +
+      "nowledgementToCoordinatorH\000\022=\n\031acknowled",
+      "gement_to_client\030\010 \001(\0132\030.Acknowledgement" +
+      "ToClientH\000B\r\n\013map_message*1\n\020Consistency" +
+      "Level\022\013\n\007UNKNOWN\020\000\022\007\n\003ONE\020\001\022\007\n\003TWO\020\002*\"\n\013" +
+      "RequestType\022\010\n\004READ\020\000\022\t\n\005WRITE\020\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -9617,7 +9754,7 @@ public final class Node {
     internal_static_AcknowledgementToCoordinator_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AcknowledgementToCoordinator_descriptor,
-        new java.lang.String[] { "TimeStamp", "Key", "Value", "ReplicaName", "RequestType", });
+        new java.lang.String[] { "CoordinatorTimeStamp", "Key", "Value", "ReplicaName", "RequestType", "ReplicaTimeStamp", });
     internal_static_AcknowledgementToClient_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_AcknowledgementToClient_fieldAccessorTable = new

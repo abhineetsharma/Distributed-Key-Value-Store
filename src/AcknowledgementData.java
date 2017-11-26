@@ -4,8 +4,8 @@ public class AcknowledgementData {
     private boolean acknowledge;
     private String timeStamp;
 
-    public AcknowledgementData(int keyI,String valueI,String timeStampI){
-        key =keyI;
+    public AcknowledgementData(int keyI, String valueI, String timeStampI) {
+        key = keyI;
         value = valueI;
         timeStamp = timeStampI;
     }
@@ -18,8 +18,12 @@ public class AcknowledgementData {
         return value;
     }
 
-    public String getTimeStamp(){
+    public String getTimeStamp() {
         return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStampI) {
+        timeStamp = timeStampI;
     }
 
     public boolean isAcknowledge() {
@@ -30,7 +34,7 @@ public class AcknowledgementData {
         this.acknowledge = acknowledge;
     }
 
-    public void setValue(String valueI){
+    public void setValue(String valueI) {
         value = valueI;
     }
 }

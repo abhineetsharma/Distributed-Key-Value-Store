@@ -56,11 +56,12 @@ message LogBook {
 }
 
 message AcknowledgementToCoordinator {
-    string timeStamp = 1;
+    string coordinatorTimeStamp = 1;
     uint32 key = 2;
     string value = 3;
     string replicaName = 4;
     RequestType request_type = 5;
+    string replicaTimeStamp = 6;
 }
 message AcknowledgementToClient {
     uint32 key = 1;
