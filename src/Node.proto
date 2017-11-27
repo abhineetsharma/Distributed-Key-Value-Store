@@ -12,6 +12,7 @@ message PutKeyFromCoordinator {
     uint32 key = 2;
     string value = 3;
     string coordinatorName = 4;
+    bool isReadRepair = 5;
 }
 
 message ClientReadRequest {

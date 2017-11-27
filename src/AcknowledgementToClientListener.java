@@ -8,6 +8,7 @@ public class AcknowledgementToClientListener {
     private Node.ConsistencyLevel requestConsistencyLevel;
     private boolean isSentToClient;
     private Map<String, AcknowledgementData> replicaAcknowledgementMap;
+    //private boolean isReadRepair;
 
 
     public AcknowledgementToClientListener(String clientNameI, Socket clientSocketI, Node.ConsistencyLevel consistencyLevelI, String timeStampI, int keyI, String valueI, List<NodeServerData> nodeServerDataList) {
@@ -16,7 +17,7 @@ public class AcknowledgementToClientListener {
         requestConsistencyLevel = consistencyLevelI;
         replicaAcknowledgementMap = new ConcurrentSkipListMap<>();
         for (NodeServerData node : nodeServerDataList)
-            replicaAcknowledgementMap.put(node.getName(), new AcknowledgementData(keyI, valueI, timeStampI,node.getName()));
+            replicaAcknowledgementMap.put(node.getName(), new AcknowledgementData(keyI, valueI, timeStampI, node.getName()));
     }
 
     public String getClientName() {
@@ -75,13 +76,13 @@ public class AcknowledgementToClientListener {
         acknowledgementData.setTimeStamp(timeStamp);
     }
 
-    public boolean isInconsistent() {
+    public synchronized boolean isInconsistent() {
         Set<String> set = new HashSet<>();
         for (String replicaName : getAcknowledgedListForTimeStamp()) {
             AcknowledgementData data = replicaAcknowledgementMap.get(replicaName);
             set.add(data.getValue());
         }
-        return set.size() == 1;
+        return set.size() != 1;
     }
 }
 

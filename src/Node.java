@@ -977,6 +977,11 @@ public final class Node {
      */
     com.google.protobuf.ByteString
         getCoordinatorNameBytes();
+
+    /**
+     * <code>bool isReadRepair = 5;</code>
+     */
+    boolean getIsReadRepair();
   }
   /**
    * Protobuf type {@code PutKeyFromCoordinator}
@@ -995,6 +1000,7 @@ public final class Node {
       key_ = 0;
       value_ = "";
       coordinatorName_ = "";
+      isReadRepair_ = false;
     }
 
     @java.lang.Override
@@ -1046,6 +1052,11 @@ public final class Node {
               java.lang.String s = input.readStringRequireUtf8();
 
               coordinatorName_ = s;
+              break;
+            }
+            case 40: {
+
+              isReadRepair_ = input.readBool();
               break;
             }
           }
@@ -1183,6 +1194,15 @@ public final class Node {
       }
     }
 
+    public static final int ISREADREPAIR_FIELD_NUMBER = 5;
+    private boolean isReadRepair_;
+    /**
+     * <code>bool isReadRepair = 5;</code>
+     */
+    public boolean getIsReadRepair() {
+      return isReadRepair_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -1207,6 +1227,9 @@ public final class Node {
       if (!getCoordinatorNameBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, coordinatorName_);
       }
+      if (isReadRepair_ != false) {
+        output.writeBool(5, isReadRepair_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1227,6 +1250,10 @@ public final class Node {
       }
       if (!getCoordinatorNameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, coordinatorName_);
+      }
+      if (isReadRepair_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, isReadRepair_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1252,6 +1279,8 @@ public final class Node {
           .equals(other.getValue());
       result = result && getCoordinatorName()
           .equals(other.getCoordinatorName());
+      result = result && (getIsReadRepair()
+          == other.getIsReadRepair());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1271,6 +1300,9 @@ public final class Node {
       hash = (53 * hash) + getValue().hashCode();
       hash = (37 * hash) + COORDINATORNAME_FIELD_NUMBER;
       hash = (53 * hash) + getCoordinatorName().hashCode();
+      hash = (37 * hash) + ISREADREPAIR_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsReadRepair());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1408,6 +1440,8 @@ public final class Node {
 
         coordinatorName_ = "";
 
+        isReadRepair_ = false;
+
         return this;
       }
 
@@ -1434,6 +1468,7 @@ public final class Node {
         result.key_ = key_;
         result.value_ = value_;
         result.coordinatorName_ = coordinatorName_;
+        result.isReadRepair_ = isReadRepair_;
         onBuilt();
         return result;
       }
@@ -1489,6 +1524,9 @@ public final class Node {
         if (!other.getCoordinatorName().isEmpty()) {
           coordinatorName_ = other.coordinatorName_;
           onChanged();
+        }
+        if (other.getIsReadRepair() != false) {
+          setIsReadRepair(other.getIsReadRepair());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1746,6 +1784,32 @@ public final class Node {
   checkByteStringIsUtf8(value);
         
         coordinatorName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean isReadRepair_ ;
+      /**
+       * <code>bool isReadRepair = 5;</code>
+       */
+      public boolean getIsReadRepair() {
+        return isReadRepair_;
+      }
+      /**
+       * <code>bool isReadRepair = 5;</code>
+       */
+      public Builder setIsReadRepair(boolean value) {
+        
+        isReadRepair_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool isReadRepair = 5;</code>
+       */
+      public Builder clearIsReadRepair() {
+        
+        isReadRepair_ = false;
         onChanged();
         return this;
       }
@@ -9930,40 +9994,40 @@ public final class Node {
     java.lang.String[] descriptorData = {
       "\n\nNode.proto\"P\n\025GetKeyFromCoordinator\022\021\n" +
       "\ttimeStamp\030\001 \001(\t\022\013\n\003key\030\002 \001(\r\022\027\n\017coordin" +
-      "atorName\030\003 \001(\t\"_\n\025PutKeyFromCoordinator\022" +
+      "atorName\030\003 \001(\t\"u\n\025PutKeyFromCoordinator\022" +
       "\021\n\ttimeStamp\030\001 \001(\t\022\013\n\003key\030\002 \001(\r\022\r\n\005value" +
-      "\030\003 \001(\t\022\027\n\017coordinatorName\030\004 \001(\t\"M\n\021Clien" +
-      "tReadRequest\022\013\n\003key\030\001 \001(\r\022+\n\020consistency" +
-      "Level\030\002 \001(\0162\021.ConsistencyLevel\"]\n\022Client" +
-      "WriteRequest\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\t" +
-      "\022+\n\020consistencyLevel\030\003 \001(\0162\021.Consistency" +
-      "Level\"(\n\nReadRepair\022\013\n\003key\030\001 \001(\r\022\r\n\005valu",
-      "e\030\002 \001(\t\"\030\n\005Error\022\017\n\007message\030\001 \001(\t\"e\n\nLog" +
-      "Message\022\024\n\014logStartFlag\030\001 \001(\010\022\013\n\003key\030\002 \001" +
-      "(\r\022\r\n\005value\030\003 \001(\t\022\021\n\ttimeStamp\030\004 \001(\t\022\022\n\n" +
-      "logEndFlag\030\005 \001(\010\"#\n\007LogBook\022\030\n\003log\030\001 \003(\013" +
-      "2\013.LogMessage\"\301\001\n\034AcknowledgementToCoord" +
-      "inator\022\034\n\024coordinatorTimeStamp\030\001 \001(\t\022\013\n\003" +
-      "key\030\002 \001(\r\022\r\n\005value\030\003 \001(\t\022\023\n\013replicaName\030" +
-      "\004 \001(\t\022\"\n\014request_type\030\005 \001(\0162\014.RequestTyp" +
-      "e\022\030\n\020replicaTimeStamp\030\006 \001(\t\022\024\n\014errorMess" +
-      "age\030\007 \001(\t\"K\n\027AcknowledgementToClient\022\013\n\003",
-      "key\030\001 \001(\r\022\r\n\005value\030\002 \001(\t\022\024\n\014errorMessage" +
-      "\030\003 \001(\t\"\314\003\n\016WrapperMessage\022:\n\030get_key_fro" +
-      "m_coordinator\030\001 \001(\0132\026.GetKeyFromCoordina" +
-      "torH\000\022:\n\030put_key_from_coordinator\030\002 \001(\0132" +
-      "\026.PutKeyFromCoordinatorH\000\0221\n\023client_read" +
-      "_request\030\003 \001(\0132\022.ClientReadRequestH\000\0223\n\024" +
-      "client_write_request\030\004 \001(\0132\023.ClientWrite" +
-      "RequestH\000\022\"\n\013read_repair\030\005 \001(\0132\013.ReadRep" +
-      "airH\000\022\037\n\rerror_message\030\006 \001(\0132\006.ErrorH\000\022G" +
-      "\n\036acknowledgement_to_coordinator\030\007 \001(\0132\035",
-      ".AcknowledgementToCoordinatorH\000\022=\n\031ackno" +
-      "wledgement_to_client\030\010 \001(\0132\030.Acknowledge" +
-      "mentToClientH\000B\r\n\013map_message*1\n\020Consist" +
-      "encyLevel\022\013\n\007UNKNOWN\020\000\022\007\n\003ONE\020\001\022\007\n\003TWO\020\002" +
-      "*\"\n\013RequestType\022\010\n\004READ\020\000\022\t\n\005WRITE\020\001b\006pr" +
-      "oto3"
+      "\030\003 \001(\t\022\027\n\017coordinatorName\030\004 \001(\t\022\024\n\014isRea" +
+      "dRepair\030\005 \001(\010\"M\n\021ClientReadRequest\022\013\n\003ke" +
+      "y\030\001 \001(\r\022+\n\020consistencyLevel\030\002 \001(\0162\021.Cons" +
+      "istencyLevel\"]\n\022ClientWriteRequest\022\013\n\003ke" +
+      "y\030\001 \001(\r\022\r\n\005value\030\002 \001(\t\022+\n\020consistencyLev" +
+      "el\030\003 \001(\0162\021.ConsistencyLevel\"(\n\nReadRepai",
+      "r\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\t\"\030\n\005Error\022\017" +
+      "\n\007message\030\001 \001(\t\"e\n\nLogMessage\022\024\n\014logStar" +
+      "tFlag\030\001 \001(\010\022\013\n\003key\030\002 \001(\r\022\r\n\005value\030\003 \001(\t\022" +
+      "\021\n\ttimeStamp\030\004 \001(\t\022\022\n\nlogEndFlag\030\005 \001(\010\"#" +
+      "\n\007LogBook\022\030\n\003log\030\001 \003(\0132\013.LogMessage\"\301\001\n\034" +
+      "AcknowledgementToCoordinator\022\034\n\024coordina" +
+      "torTimeStamp\030\001 \001(\t\022\013\n\003key\030\002 \001(\r\022\r\n\005value" +
+      "\030\003 \001(\t\022\023\n\013replicaName\030\004 \001(\t\022\"\n\014request_t" +
+      "ype\030\005 \001(\0162\014.RequestType\022\030\n\020replicaTimeSt" +
+      "amp\030\006 \001(\t\022\024\n\014errorMessage\030\007 \001(\t\"K\n\027Ackno",
+      "wledgementToClient\022\013\n\003key\030\001 \001(\r\022\r\n\005value" +
+      "\030\002 \001(\t\022\024\n\014errorMessage\030\003 \001(\t\"\314\003\n\016Wrapper" +
+      "Message\022:\n\030get_key_from_coordinator\030\001 \001(" +
+      "\0132\026.GetKeyFromCoordinatorH\000\022:\n\030put_key_f" +
+      "rom_coordinator\030\002 \001(\0132\026.PutKeyFromCoordi" +
+      "natorH\000\0221\n\023client_read_request\030\003 \001(\0132\022.C" +
+      "lientReadRequestH\000\0223\n\024client_write_reque" +
+      "st\030\004 \001(\0132\023.ClientWriteRequestH\000\022\"\n\013read_" +
+      "repair\030\005 \001(\0132\013.ReadRepairH\000\022\037\n\rerror_mes" +
+      "sage\030\006 \001(\0132\006.ErrorH\000\022G\n\036acknowledgement_",
+      "to_coordinator\030\007 \001(\0132\035.AcknowledgementTo" +
+      "CoordinatorH\000\022=\n\031acknowledgement_to_clie" +
+      "nt\030\010 \001(\0132\030.AcknowledgementToClientH\000B\r\n\013" +
+      "map_message*1\n\020ConsistencyLevel\022\013\n\007UNKNO" +
+      "WN\020\000\022\007\n\003ONE\020\001\022\007\n\003TWO\020\002*\"\n\013RequestType\022\010\n" +
+      "\004READ\020\000\022\t\n\005WRITE\020\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -9988,7 +10052,7 @@ public final class Node {
     internal_static_PutKeyFromCoordinator_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_PutKeyFromCoordinator_descriptor,
-        new java.lang.String[] { "TimeStamp", "Key", "Value", "CoordinatorName", });
+        new java.lang.String[] { "TimeStamp", "Key", "Value", "CoordinatorName", "IsReadRepair", });
     internal_static_ClientReadRequest_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_ClientReadRequest_fieldAccessorTable = new

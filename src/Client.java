@@ -28,11 +28,15 @@ public class Client {
             print(nodeMap);
 
 
-            sendPUTRequestToCoordinator("node0", 1, "XYZO", Node.ConsistencyLevel.TWO);
+            for (int i = 0; i < 256; i++) {
+                int no = (i + nodeMap.size()) % nodeMap.size();
+                sendPUTRequestToCoordinator("node" + no, i, "XYZO"+i, Node.ConsistencyLevel.TWO);
 
-            //Thread.sleep(5000);
-            sendGETRequestToCoordinator("node0", 1, Node.ConsistencyLevel.TWO);
-            //sendGETRequestToCoordinator("node5", 5, Node.ConsistencyLevel.TWO);
+                //Thread.sleep(5000);
+                sendGETRequestToCoordinator("node" + no, i, Node.ConsistencyLevel.ONE);
+
+                sendGETRequestToCoordinator("node5", i, Node.ConsistencyLevel.TWO);
+            }
 
         }
     }

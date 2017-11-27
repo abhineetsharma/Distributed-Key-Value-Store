@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeMap;
@@ -25,6 +24,7 @@ public class Server {
     private Map<String, AcknowledgementToClientListener> acknowledgementLogCoordinatorMap;
     private String logFileName;
     private static boolean printFlag = true;// flag to stop print
+    private int replicaFactor;
 
     private void initServer() {
         // server information read by the server read by server
@@ -32,6 +32,7 @@ public class Server {
         nodeMap = new TreeMap<>();
         keyValueMap = new ConcurrentSkipListMap<>();
         acknowledgementLogCoordinatorMap = new ConcurrentSkipListMap<>();
+        replicaFactor = 4;
         String str = "";
         while ((str = fPro.readLine()) != null) {
             NodeServerData nodeServerData = new NodeServerData(str);
@@ -53,10 +54,38 @@ public class Server {
         }
     }
 
-    private void processRequest(String nodeName, String key, String value) {
-        String dateStr = getCurrentTimeString();
+    private void processRequest() {
+
 
         Thread thread = new Thread(() -> {
+
+            for (Entry<String, AcknowledgementToClientListener> e : acknowledgementLogCoordinatorMap.entrySet()) {
+                AcknowledgementToClientListener allReplicasEntry = e.getValue();
+                if (allReplicasEntry.isSentToClient()) {
+                    List<String> replicaAcknowledgementList = allReplicasEntry.getAcknowledgedListForTimeStamp();
+                    AcknowledgementData LatestTimeStampedReplicaData = allReplicasEntry.getAcknowledgementDataByServerName(replicaAcknowledgementList.get(0));
+                    for (int i = 1; i < replicaFactor; i++) {
+                        AcknowledgementData conflictingReplica = allReplicasEntry.getAcknowledgementDataByServerName(replicaAcknowledgementList.get(i));
+                        if (!LatestTimeStampedReplicaData.getTimeStamp().equalsIgnoreCase(conflictingReplica.getTimeStamp())) {
+                            Node.PutKeyFromCoordinator.Builder putKeyFromCoordinatorToConflictingReplicaBuilder = Node.PutKeyFromCoordinator.newBuilder();
+                            putKeyFromCoordinatorToConflictingReplicaBuilder.setKey(LatestTimeStampedReplicaData.getKey());
+                            putKeyFromCoordinatorToConflictingReplicaBuilder.setTimeStamp(LatestTimeStampedReplicaData.getTimeStamp());
+                            putKeyFromCoordinatorToConflictingReplicaBuilder.setValue(LatestTimeStampedReplicaData.getValue());
+                            putKeyFromCoordinatorToConflictingReplicaBuilder.setCoordinatorName(LatestTimeStampedReplicaData.getReplicaName());
+                            putKeyFromCoordinatorToConflictingReplicaBuilder.setIsReadRepair(true);
+                            Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setPutKeyFromCoordinator(putKeyFromCoordinatorToConflictingReplicaBuilder).build();
+                            try {
+                                sendMessageToNodeSocket(nodeMap.get(conflictingReplica.getReplicaName()), message);
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+
+
+                }
+
+            }
         });
         thread.start();
     }
@@ -67,7 +96,7 @@ public class Server {
         int keyPosition = Arrays.asList(mapKeys).indexOf(keyNode);
         List<NodeServerData> nodeServerDataList = new ArrayList<>();
 
-        for (int i = 0; i < 4 && i < nodeMap.size(); i++) {
+        for (int i = 0; i < replicaFactor && i < nodeMap.size(); i++) {
             nodeServerDataList.add(nodeMap.get(mapKeys[(nodeMap.size() + keyPosition + i) % nodeMap.size()]));
         }
 
@@ -140,6 +169,7 @@ public class Server {
             putKeyFromCoordinatorBuilder.setTimeStamp(timeStamp);
             putKeyFromCoordinatorBuilder.setValue(value);
             putKeyFromCoordinatorBuilder.setCoordinatorName(name);
+            putKeyFromCoordinatorBuilder.setIsReadRepair(false);
 
             Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
                     .setPutKeyFromCoordinator(putKeyFromCoordinatorBuilder).build();
@@ -202,8 +232,13 @@ public class Server {
 
         // BEGINE : Nikhil's pre commite code
         // Writting to log file.
+        File dir = new File("dir");
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+
         StringBuilder builder = new StringBuilder();
-        this.logFileName = builder.append(this.name).append("LogFile.txt").toString();
+        this.logFileName = dir.getCanonicalPath() + "/" + builder.append(this.name).append("LogFile.txt").toString();
 
         Node.LogMessage logMessage = Node.LogMessage.newBuilder().setKey(putKeyFromCoordinator.getKey())
                 .setValue(putKeyFromCoordinator.getValue()).setTimeStamp(putKeyFromCoordinator.getTimeStamp())
@@ -271,23 +306,25 @@ public class Server {
                 print(keyValueMap.get(key));
                 // Create acknowledgement and message to coordinator
 
-                Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator
-                        .newBuilder();
-                acknowledgementBuilder.setKey(key);
-                acknowledgementBuilder.setReplicaTimeStamp(timeStamp);
-                acknowledgementBuilder.setCoordinatorTimeStamp(timeStamp);
-                acknowledgementBuilder.setValue(value);
-                acknowledgementBuilder.setReplicaName(name);
-                acknowledgementBuilder.setRequestType(Node.RequestType.WRITE);
+                if (!putKeyFromCoordinator.getIsReadRepair()) {
+                    Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator
+                            .newBuilder();
+                    acknowledgementBuilder.setKey(key);
+                    acknowledgementBuilder.setReplicaTimeStamp(timeStamp);
+                    acknowledgementBuilder.setCoordinatorTimeStamp(timeStamp);
+                    acknowledgementBuilder.setValue(value);
+                    acknowledgementBuilder.setReplicaName(name);
+                    acknowledgementBuilder.setRequestType(Node.RequestType.WRITE);
 
-                Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
-                        .setAcknowledgementToCoordinator(acknowledgementBuilder).build();
+                    Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
+                            .setAcknowledgementToCoordinator(acknowledgementBuilder).build();
 
-                NodeServerData coordinator = nodeMap.get(coordinatorName);
+                    NodeServerData coordinator = nodeMap.get(coordinatorName);
 
-                // send acknowledgement to coordinator
-                sendMessageToNodeSocket(coordinator, message);
-                System.out.println("Write Ack message send to Coordinator : " + coordinatorName + " .....");
+                    // send acknowledgement to coordinator
+                    sendMessageToNodeSocket(coordinator, message);
+                    System.out.println("Write Ack message send to Coordinator : " + coordinatorName + " .....");
+                }
             }
 
             // Write updated logbook back to disk.
@@ -320,7 +357,7 @@ public class Server {
             Socket clientSocket = acknowledgement.getClientSocket();
             boolean isSentToClient = acknowledgement.isSentToClient();
             AcknowledgementData acknowledgementData = acknowledgement.getAcknowledgementDataByServerName(replicaName);
-            List<String> replicaAcknowledgementList = acknowledgement.getAcknowledgedListForTimeStamp();
+
             String errorMessage = acknowledgementToCoordinator.getErrorMessage();
             if (errorMessage == null) errorMessage = "";
             if (null != acknowledgementData) {
@@ -346,7 +383,7 @@ public class Server {
                         acknowledgementData.setAcknowledge(true);
                     }
                 }
-
+                List<String> replicaAcknowledgementList = acknowledgement.getAcknowledgedListForTimeStamp();
                 int acknowledgeCount = replicaAcknowledgementList.size();
 
                 //check
@@ -358,83 +395,31 @@ public class Server {
 
                 } else if (requestType.equals(Node.RequestType.READ)) {
                     //un-comment to change time stamp of particular replica
-                    //                    if (replicaName.equalsIgnoreCase("node2")) {
-                    //                        acknowledgement.setValueFromReplicaAcknowledgement(replicaName, value + "abhineet");
-                    //                        acknowledgement.setTimeStampFromReplica(replicaName, Long.toString(Long.parseLong(replicaTimeStamp) + 1));
-                    //                    }
+//                    if (replicaName.equalsIgnoreCase("node2") && debugFlag && replicaTimeStamp != null && replicaTimeStamp.trim().length() > 0) {
+//                        debugFlag = false;
+//                        acknowledgement.setValueFromReplicaAcknowledgement(replicaName, value + "abhineet");
+//                        acknowledgement.setTimeStampFromReplica(replicaName, Long.toString(Long.parseLong(replicaTimeStamp) - 10000));
+//                    }
                     if (acknowledgeCount >= consistencyLevel.getNumber() && !isSentToClient) {
                         AcknowledgementData acknowledgeData = acknowledgement.getAcknowledgementDataByServerName(replicaAcknowledgementList.get(0));
-                        System.out.println(">>>>>>>>>Replica with latest data : "+acknowledgeData.getReplicaName()+" Time stamp : "+acknowledgeData.getTimeStamp()+" Value : " +acknowledgeData.getValue() );
+                        print(">>>>>>>>>Replica with latest data : " + acknowledgeData.getReplicaName() + " Time stamp : " + acknowledgeData.getTimeStamp() + " Value : " + acknowledgeData.getValue());
                         acknowledgement.setSentToClient(true);
-                        
-                		new Thread(new Runnable() {
-                			@Override
-                			public void run() {
-                				readRepair();
-                			}
-                		}).start();
 
                         sentAcknowledgementToClient(key, acknowledgeData.getValue(), errorMessage, clientSocket);
-                    } else {
-                        System.out.println("err");
                     }
 
+                    if (isSentToClient && acknowledgement.isInconsistent() && acknowledgeCount == replicaFactor) {
+                        processRequest();
+                    }
                 }
 
             }
         }
     }
-    
-    public void readRepair() {
 
-		Timer timer = new Timer();
-		class transferClass extends TimerTask {
-			@Override
-			public void run() {
-				{
-					for (Entry<String, AcknowledgementToClientListener> e : acknowledgementLogCoordinatorMap.entrySet()) {
-						AcknowledgementToClientListener allReplicasEntry = e.getValue();
-						if(allReplicasEntry.isSentToClient()) {
-							List<String> replicaAcknowledgementList = allReplicasEntry.getAcknowledgedListForTimeStamp();
-							AcknowledgementData LatestTimeStampedReplicaData = allReplicasEntry.getAcknowledgementDataByServerName(replicaAcknowledgementList.get(0));
-							for(int i=1;i<4;i++) {
-								AcknowledgementData conflictingReplica = allReplicasEntry.getAcknowledgementDataByServerName(replicaAcknowledgementList.get(i));
-								if(!LatestTimeStampedReplicaData.getTimeStamp().equals(conflictingReplica.getTimeStamp())){
-									Node.PutKeyFromCoordinator.Builder putKeyFromCoordinatorToConflictingReplicaBuilder = Node.PutKeyFromCoordinator.newBuilder();
-									putKeyFromCoordinatorToConflictingReplicaBuilder.setKey(LatestTimeStampedReplicaData.getKey());
-									putKeyFromCoordinatorToConflictingReplicaBuilder.setTimeStamp(LatestTimeStampedReplicaData.getTimeStamp());
-									putKeyFromCoordinatorToConflictingReplicaBuilder.setValue(LatestTimeStampedReplicaData.getValue());
-									putKeyFromCoordinatorToConflictingReplicaBuilder.setCoordinatorName(LatestTimeStampedReplicaData.getReplicaName());
-									Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setPutKeyFromCoordinator(putKeyFromCoordinatorToConflictingReplicaBuilder).build();
-									try {
-										sendMessageToNodeSocket(nodeMap.get(conflictingReplica.getReplicaName()), message);
-									} catch (IOException ex) {
-										ex.printStackTrace();
-									}		
-								}
-							}
+    //uncomment for the above if
+    //boolean debugFlag = true;
 
-
-						}
-
-					}
-					//					timer.cancel();
-					timer.schedule(new transferClass(), (5000));
-
-					try {
-
-
-					} catch (Exception e) {
-						e.printStackTrace();
-						System.err.println("Can not transfer money");
-					}
-				}
-			}
-		}
-		;
-		new transferClass().run();
-	
-    }
 
     private void sentAcknowledgementToClient(int key, String value, String errorMessage, Socket clientSocket) {
         Node.AcknowledgementToClient acknowledgementToClient = Node.AcknowledgementToClient.newBuilder().setKey(key).setValue(value).setErrorMessage(errorMessage).build();
