@@ -1,9 +1,12 @@
 public class AcknowledgementData implements Comparable {
+
+    //<editor-fold desc="Variables">
     private int key;
     private String value;
     private boolean acknowledge;
     private String timeStamp;
     private String replicaName;
+    //</editor-fold>
 
     public AcknowledgementData(int keyI, String valueI, String timeStampI, String replicaNameI) {
         key = keyI;

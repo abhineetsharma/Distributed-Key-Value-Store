@@ -34,14 +34,20 @@ public class Server {
         acknowledgementLogCoordinatorMap = new ConcurrentSkipListMap<>();
         replicaFactor = 4;
         String str = "";
-        while ((str = fPro.readLine()) != null) {
-            NodeServerData nodeServerData = new NodeServerData(str);
-            nodeMap.put(nodeServerData.getName(), nodeServerData);
+        try {
+            if (fPro.countLines() >= replicaFactor) {
+                while ((str = fPro.readLine()) != null) {
+                    NodeServerData nodeServerData = new NodeServerData(str);
+                    nodeMap.put(nodeServerData.getName(), nodeServerData);
 
-            if (nodeServerData.getPort() == portNumber) {
-                name = nodeServerData.getName();
-                ip = nodeServerData.getIp();
+                    if (nodeServerData.getPort() == portNumber) {
+                        name = nodeServerData.getName();
+                        ip = nodeServerData.getIp();
+                    }
+                }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -56,8 +62,6 @@ public class Server {
 
     //thread
     private void processRequest() {
-
-
         Thread thread = new Thread(() -> {
 
             for (Entry<String, AcknowledgementToClientListener> e : acknowledgementLogCoordinatorMap.entrySet()) {
