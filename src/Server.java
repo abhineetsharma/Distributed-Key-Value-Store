@@ -397,7 +397,7 @@ public class Server {
 						if(allReplicasEntry.isSentToClient()) {
 							List<String> replicaAcknowledgementList = allReplicasEntry.getAcknowledgedListForTimeStamp();
 							AcknowledgementData LatestTimeStampedReplicaData = allReplicasEntry.getAcknowledgementDataByServerName(replicaAcknowledgementList.get(0));
-							for(int i=1;i<=4;i++) {
+							for(int i=1;i<4;i++) {
 								AcknowledgementData conflictingReplica = allReplicasEntry.getAcknowledgementDataByServerName(replicaAcknowledgementList.get(i));
 								if(!LatestTimeStampedReplicaData.getTimeStamp().equals(conflictingReplica.getTimeStamp())){
 									Node.PutKeyFromCoordinator.Builder putKeyFromCoordinatorToConflictingReplicaBuilder = Node.PutKeyFromCoordinator.newBuilder();
