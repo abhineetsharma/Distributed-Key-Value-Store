@@ -5,7 +5,7 @@ public class AcknowledgementData implements Comparable {
     private String timeStamp;
     private String replicaName;
 
-    public AcknowledgementData(int keyI, String valueI, String timeStampI,String replicaNameI) {
+    public AcknowledgementData(int keyI, String valueI, String timeStampI, String replicaNameI) {
         key = keyI;
         value = valueI;
         timeStamp = timeStampI;
@@ -40,18 +40,27 @@ public class AcknowledgementData implements Comparable {
         value = valueI;
     }
 
-
     @Override
     public int compareTo(Object o) {
         return ((AcknowledgementData) o).timeStamp.compareTo(timeStamp);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof AcknowledgementData) {
-            return ((AcknowledgementData) obj).timeStamp == timeStamp;
-        }
-        return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AcknowledgementData that = (AcknowledgementData) o;
+
+        if (key != that.key) return false;
+        return timeStamp.equals(that.timeStamp);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = key;
+        result = 31 * result + timeStamp.hashCode();
+        return result;
     }
 
     public String getReplicaName() {

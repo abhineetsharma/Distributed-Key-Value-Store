@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-
 message GetKeyFromCoordinator {
     string timeStamp = 1;
     uint32 key = 2;
@@ -25,6 +24,7 @@ message ClientWriteRequest {
     string value = 2;
     ConsistencyLevel consistencyLevel = 3;
 }
+
 enum ConsistencyLevel {
     UNKNOWN = 0;
     ONE = 1;
@@ -36,14 +36,6 @@ enum RequestType {
     WRITE = 1;
 }
 
-message ReadRepair {
-    uint32 key = 1;
-    string value = 2;
-}
-
-message Error {
-    string message = 1;
-}
 message LogMessage {
     bool logStartFlag = 1;
     uint32 key = 2;
@@ -65,12 +57,12 @@ message AcknowledgementToCoordinator {
     string replicaTimeStamp = 6;
     string errorMessage = 7;
 }
+
 message AcknowledgementToClient {
     uint32 key = 1;
     string value = 2;
     string errorMessage = 3;
 }
-
 
 message WrapperMessage {
     oneof map_message {
@@ -78,10 +70,8 @@ message WrapperMessage {
         PutKeyFromCoordinator put_key_from_coordinator = 2;
         ClientReadRequest client_read_request = 3;
         ClientWriteRequest client_write_request = 4;
-        ReadRepair read_repair = 5;
-        Error error_message = 6;
-        AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;
-        AcknowledgementToClient acknowledgement_to_client = 8;
+        AcknowledgementToCoordinator acknowledgement_to_coordinator = 5;
+        AcknowledgementToClient acknowledgement_to_client = 6;
     }
 }
 

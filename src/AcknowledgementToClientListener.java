@@ -53,7 +53,6 @@ public class AcknowledgementToClientListener {
         return list;
     }
 
-
     public Node.ConsistencyLevel getRequestConsistencyLevel() {
         return requestConsistencyLevel;
     }

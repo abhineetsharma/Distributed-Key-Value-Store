@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -15,6 +13,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 public class Server {
 
+    //<editor-fold desc="Variables ">
     private int portNumber;
     private String name;
     private String filePath;
@@ -25,6 +24,7 @@ public class Server {
     private String logFileName;
     private static boolean printFlag = true;// flag to stop print
     private int replicaFactor;
+    //</editor-fold>
 
     private void initServer() {
         // server information read by the server read by server
@@ -54,6 +54,7 @@ public class Server {
         }
     }
 
+    //thread
     private void processRequest() {
 
 
@@ -223,8 +224,7 @@ public class Server {
     }
 
     //Put Key From Coordinator Request
-    private void processingPutKeyFromCoordinatorRequest(Node.PutKeyFromCoordinator putKeyFromCoordinator)
-            throws IOException {
+    private void processingPutKeyFromCoordinatorRequest(Node.PutKeyFromCoordinator putKeyFromCoordinator) {
         int key = putKeyFromCoordinator.getKey();
         String value = putKeyFromCoordinator.getValue();
         String timeStamp = putKeyFromCoordinator.getTimeStamp();
@@ -238,7 +238,11 @@ public class Server {
         }
 
         StringBuilder builder = new StringBuilder();
-        this.logFileName = dir.getCanonicalPath() + "/" + builder.append(this.name).append("LogFile.txt").toString();
+        try {
+            this.logFileName = dir.getCanonicalPath() + "/" + builder.append(this.name).append("LogFile.txt").toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Node.LogMessage logMessage = Node.LogMessage.newBuilder().setKey(putKeyFromCoordinator.getKey())
                 .setValue(putKeyFromCoordinator.getValue()).setTimeStamp(putKeyFromCoordinator.getTimeStamp())
@@ -322,7 +326,11 @@ public class Server {
                     NodeServerData coordinator = nodeMap.get(coordinatorName);
 
                     // send acknowledgement to coordinator
-                    sendMessageToNodeSocket(coordinator, message);
+                    try {
+                        sendMessageToNodeSocket(coordinator, message);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     System.out.println("Write Ack message send to Coordinator : " + coordinatorName + " .....");
                 }
             }
@@ -417,7 +425,7 @@ public class Server {
         }
     }
 
-    //uncomment for the above if
+    //uncomment for the above if debug test
     //boolean debugFlag = true;
 
 
@@ -436,13 +444,16 @@ public class Server {
         }
     }
 
-    private void sendMessageToNodeSocket(NodeServerData nodeServerData, Node.WrapperMessage message)
-            throws IOException {
+    private void sendMessageToNodeSocket(NodeServerData nodeServerData, Node.WrapperMessage message) throws IOException {
         Socket nodeServerSocket = null;
 
         nodeServerSocket = new Socket(nodeServerData.getIp(), nodeServerData.getPort());
         message.writeDelimitedTo(nodeServerSocket.getOutputStream());
         nodeServerSocket.close();
+    }
+
+    private String getCurrentTimeString() {
+        return Long.toString(System.currentTimeMillis());
     }
 
     public static void main(String[] args) {
@@ -483,38 +494,38 @@ public class Server {
 
                 print(message);
                 if (message != null) {
+                    //Client Read Request
                     if (message.hasClientReadRequest()) {
                         print("----ClientReadRequest Start----");
-                        // call appropriate method from here
                         server.processingClientReadRequest(message.getClientReadRequest(), receiver);
                         print("----ClientReadRequest End----");
-                    } else if (message.hasClientWriteRequest()) {
+                    }
+                    //Client Write Request
+                    else if (message.hasClientWriteRequest()) {
                         print("----ClientWriteRequest Start----");
-                        // call appropriate method from here
                         server.processingClientWriteRequest(message.getClientWriteRequest(), receiver);
                         print("----ClientWriteRequest End----");
-                    } else if (message.hasGetKeyFromCoordinator()) {
+                    }
+                    //Get Key From Coordinator
+                    else if (message.hasGetKeyFromCoordinator()) {
                         print("----GetKeyFromCoordinator Start----");
-                        // call appropriate method from here
                         server.processingGetKeyFromCoordinator(message.getGetKeyFromCoordinator());
                         receiver.close();
                         print("----GetKeyFromCoordinator End----");
-                    } else if (message.hasPutKeyFromCoordinator()) {
+                    }
+                    //Put Key From Coordinator
+                    else if (message.hasPutKeyFromCoordinator()) {
                         print("----PutKeyFromCoordinator Start----");
-                        // call appropriate method from here
                         server.processingPutKeyFromCoordinatorRequest(message.getPutKeyFromCoordinator());
                         receiver.close();
                         print("----PutKeyFromCoordinator End----");
-                    } else if (message.hasAcknowledgementToCoordinator()) {
+                    }
+                    //Acknowledgement To Coordinator
+                    else if (message.hasAcknowledgementToCoordinator()) {
                         print("----Acknowledgement To Coordinator Start----");
                         server.processingAcknowledgementToCoordinator(message.getAcknowledgementToCoordinator());
                         receiver.close();
                         print("----Acknowledgement To Coordinator End----");
-                    } else if (message.hasReadRepair()) {
-                        print("----ReadRepair Start----");
-                        // call appropriate method from here
-                        receiver.close();
-                        print("----ReadRepair End----");
                     }
                 }
             } catch (IOException e) {
@@ -522,23 +533,12 @@ public class Server {
                 e.printStackTrace();
                 System.exit(1);
             } finally {
-                if (receiver != null) {
-//                    try {
-//                        //receiver.close();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-                }
+
             }
             print("\n\n---------------------------------------------");
             print("=====Message received End count = " + msgCount);
             print("---------------------------------------------\n\n");
         }
-    }
-
-
-    private String getCurrentTimeString() {
-        return Long.toString(System.currentTimeMillis());
     }
 
 }

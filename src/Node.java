@@ -3079,1113 +3079,6 @@ public final class Node {
 
   }
 
-  public interface ReadRepairOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ReadRepair)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>uint32 key = 1;</code>
-     */
-    int getKey();
-
-    /**
-     * <code>string value = 2;</code>
-     */
-    java.lang.String getValue();
-    /**
-     * <code>string value = 2;</code>
-     */
-    com.google.protobuf.ByteString
-        getValueBytes();
-  }
-  /**
-   * Protobuf type {@code ReadRepair}
-   */
-  public  static final class ReadRepair extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:ReadRepair)
-      ReadRepairOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use ReadRepair.newBuilder() to construct.
-    private ReadRepair(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private ReadRepair() {
-      key_ = 0;
-      value_ = "";
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private ReadRepair(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-
-              key_ = input.readUInt32();
-              break;
-            }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              value_ = s;
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return Node.internal_static_ReadRepair_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return Node.internal_static_ReadRepair_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              Node.ReadRepair.class, Node.ReadRepair.Builder.class);
-    }
-
-    public static final int KEY_FIELD_NUMBER = 1;
-    private int key_;
-    /**
-     * <code>uint32 key = 1;</code>
-     */
-    public int getKey() {
-      return key_;
-    }
-
-    public static final int VALUE_FIELD_NUMBER = 2;
-    private volatile java.lang.Object value_;
-    /**
-     * <code>string value = 2;</code>
-     */
-    public java.lang.String getValue() {
-      java.lang.Object ref = value_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        value_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string value = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-        getValueBytes() {
-      java.lang.Object ref = value_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        value_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (key_ != 0) {
-        output.writeUInt32(1, key_);
-      }
-      if (!getValueBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, value_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (key_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(1, key_);
-      }
-      if (!getValueBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, value_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof Node.ReadRepair)) {
-        return super.equals(obj);
-      }
-      Node.ReadRepair other = (Node.ReadRepair) obj;
-
-      boolean result = true;
-      result = result && (getKey()
-          == other.getKey());
-      result = result && getValue()
-          .equals(other.getValue());
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + KEY_FIELD_NUMBER;
-      hash = (53 * hash) + getKey();
-      hash = (37 * hash) + VALUE_FIELD_NUMBER;
-      hash = (53 * hash) + getValue().hashCode();
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static Node.ReadRepair parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static Node.ReadRepair parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static Node.ReadRepair parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static Node.ReadRepair parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static Node.ReadRepair parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static Node.ReadRepair parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static Node.ReadRepair parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static Node.ReadRepair parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static Node.ReadRepair parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static Node.ReadRepair parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static Node.ReadRepair parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static Node.ReadRepair parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(Node.ReadRepair prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code ReadRepair}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ReadRepair)
-        Node.ReadRepairOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return Node.internal_static_ReadRepair_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return Node.internal_static_ReadRepair_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                Node.ReadRepair.class, Node.ReadRepair.Builder.class);
-      }
-
-      // Construct using Node.ReadRepair.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        key_ = 0;
-
-        value_ = "";
-
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return Node.internal_static_ReadRepair_descriptor;
-      }
-
-      public Node.ReadRepair getDefaultInstanceForType() {
-        return Node.ReadRepair.getDefaultInstance();
-      }
-
-      public Node.ReadRepair build() {
-        Node.ReadRepair result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public Node.ReadRepair buildPartial() {
-        Node.ReadRepair result = new Node.ReadRepair(this);
-        result.key_ = key_;
-        result.value_ = value_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof Node.ReadRepair) {
-          return mergeFrom((Node.ReadRepair)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(Node.ReadRepair other) {
-        if (other == Node.ReadRepair.getDefaultInstance()) return this;
-        if (other.getKey() != 0) {
-          setKey(other.getKey());
-        }
-        if (!other.getValue().isEmpty()) {
-          value_ = other.value_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        Node.ReadRepair parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (Node.ReadRepair) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private int key_ ;
-      /**
-       * <code>uint32 key = 1;</code>
-       */
-      public int getKey() {
-        return key_;
-      }
-      /**
-       * <code>uint32 key = 1;</code>
-       */
-      public Builder setKey(int value) {
-        
-        key_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>uint32 key = 1;</code>
-       */
-      public Builder clearKey() {
-        
-        key_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object value_ = "";
-      /**
-       * <code>string value = 2;</code>
-       */
-      public java.lang.String getValue() {
-        java.lang.Object ref = value_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          value_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string value = 2;</code>
-       */
-      public com.google.protobuf.ByteString
-          getValueBytes() {
-        java.lang.Object ref = value_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          value_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string value = 2;</code>
-       */
-      public Builder setValue(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        value_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string value = 2;</code>
-       */
-      public Builder clearValue() {
-        
-        value_ = getDefaultInstance().getValue();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string value = 2;</code>
-       */
-      public Builder setValueBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        value_ = value;
-        onChanged();
-        return this;
-      }
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFieldsProto3(unknownFields);
-      }
-
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:ReadRepair)
-    }
-
-    // @@protoc_insertion_point(class_scope:ReadRepair)
-    private static final Node.ReadRepair DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new Node.ReadRepair();
-    }
-
-    public static Node.ReadRepair getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<ReadRepair>
-        PARSER = new com.google.protobuf.AbstractParser<ReadRepair>() {
-      public ReadRepair parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ReadRepair(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<ReadRepair> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<ReadRepair> getParserForType() {
-      return PARSER;
-    }
-
-    public Node.ReadRepair getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface ErrorOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:Error)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>string message = 1;</code>
-     */
-    java.lang.String getMessage();
-    /**
-     * <code>string message = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getMessageBytes();
-  }
-  /**
-   * Protobuf type {@code Error}
-   */
-  public  static final class Error extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:Error)
-      ErrorOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use Error.newBuilder() to construct.
-    private Error(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private Error() {
-      message_ = "";
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private Error(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              message_ = s;
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return Node.internal_static_Error_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return Node.internal_static_Error_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              Node.Error.class, Node.Error.Builder.class);
-    }
-
-    public static final int MESSAGE_FIELD_NUMBER = 1;
-    private volatile java.lang.Object message_;
-    /**
-     * <code>string message = 1;</code>
-     */
-    public java.lang.String getMessage() {
-      java.lang.Object ref = message_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        message_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string message = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getMessageBytes() {
-      java.lang.Object ref = message_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        message_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (!getMessageBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, message_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (!getMessageBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, message_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof Node.Error)) {
-        return super.equals(obj);
-      }
-      Node.Error other = (Node.Error) obj;
-
-      boolean result = true;
-      result = result && getMessage()
-          .equals(other.getMessage());
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
-      hash = (53 * hash) + getMessage().hashCode();
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static Node.Error parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static Node.Error parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static Node.Error parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static Node.Error parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static Node.Error parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static Node.Error parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static Node.Error parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static Node.Error parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static Node.Error parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static Node.Error parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static Node.Error parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static Node.Error parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(Node.Error prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code Error}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:Error)
-        Node.ErrorOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return Node.internal_static_Error_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return Node.internal_static_Error_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                Node.Error.class, Node.Error.Builder.class);
-      }
-
-      // Construct using Node.Error.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        message_ = "";
-
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return Node.internal_static_Error_descriptor;
-      }
-
-      public Node.Error getDefaultInstanceForType() {
-        return Node.Error.getDefaultInstance();
-      }
-
-      public Node.Error build() {
-        Node.Error result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public Node.Error buildPartial() {
-        Node.Error result = new Node.Error(this);
-        result.message_ = message_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof Node.Error) {
-          return mergeFrom((Node.Error)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(Node.Error other) {
-        if (other == Node.Error.getDefaultInstance()) return this;
-        if (!other.getMessage().isEmpty()) {
-          message_ = other.message_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        Node.Error parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (Node.Error) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private java.lang.Object message_ = "";
-      /**
-       * <code>string message = 1;</code>
-       */
-      public java.lang.String getMessage() {
-        java.lang.Object ref = message_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          message_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string message = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getMessageBytes() {
-        java.lang.Object ref = message_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          message_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string message = 1;</code>
-       */
-      public Builder setMessage(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        message_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string message = 1;</code>
-       */
-      public Builder clearMessage() {
-        
-        message_ = getDefaultInstance().getMessage();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string message = 1;</code>
-       */
-      public Builder setMessageBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        message_ = value;
-        onChanged();
-        return this;
-      }
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFieldsProto3(unknownFields);
-      }
-
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:Error)
-    }
-
-    // @@protoc_insertion_point(class_scope:Error)
-    private static final Node.Error DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new Node.Error();
-    }
-
-    public static Node.Error getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<Error>
-        PARSER = new com.google.protobuf.AbstractParser<Error>() {
-      public Error parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Error(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<Error> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<Error> getParserForType() {
-      return PARSER;
-    }
-
-    public Node.Error getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   public interface LogMessageOrBuilder extends
       // @@protoc_insertion_point(interface_extends:LogMessage)
       com.google.protobuf.MessageOrBuilder {
@@ -7794,54 +6687,28 @@ public final class Node {
     Node.ClientWriteRequestOrBuilder getClientWriteRequestOrBuilder();
 
     /**
-     * <code>.ReadRepair read_repair = 5;</code>
-     */
-    boolean hasReadRepair();
-    /**
-     * <code>.ReadRepair read_repair = 5;</code>
-     */
-    Node.ReadRepair getReadRepair();
-    /**
-     * <code>.ReadRepair read_repair = 5;</code>
-     */
-    Node.ReadRepairOrBuilder getReadRepairOrBuilder();
-
-    /**
-     * <code>.Error error_message = 6;</code>
-     */
-    boolean hasErrorMessage();
-    /**
-     * <code>.Error error_message = 6;</code>
-     */
-    Node.Error getErrorMessage();
-    /**
-     * <code>.Error error_message = 6;</code>
-     */
-    Node.ErrorOrBuilder getErrorMessageOrBuilder();
-
-    /**
-     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
+     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 5;</code>
      */
     boolean hasAcknowledgementToCoordinator();
     /**
-     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
+     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 5;</code>
      */
     Node.AcknowledgementToCoordinator getAcknowledgementToCoordinator();
     /**
-     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
+     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 5;</code>
      */
     Node.AcknowledgementToCoordinatorOrBuilder getAcknowledgementToCoordinatorOrBuilder();
 
     /**
-     * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+     * <code>.AcknowledgementToClient acknowledgement_to_client = 6;</code>
      */
     boolean hasAcknowledgementToClient();
     /**
-     * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+     * <code>.AcknowledgementToClient acknowledgement_to_client = 6;</code>
      */
     Node.AcknowledgementToClient getAcknowledgementToClient();
     /**
-     * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+     * <code>.AcknowledgementToClient acknowledgement_to_client = 6;</code>
      */
     Node.AcknowledgementToClientOrBuilder getAcknowledgementToClientOrBuilder();
 
@@ -7947,36 +6814,8 @@ public final class Node {
               break;
             }
             case 42: {
-              Node.ReadRepair.Builder subBuilder = null;
-              if (mapMessageCase_ == 5) {
-                subBuilder = ((Node.ReadRepair) mapMessage_).toBuilder();
-              }
-              mapMessage_ =
-                  input.readMessage(Node.ReadRepair.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom((Node.ReadRepair) mapMessage_);
-                mapMessage_ = subBuilder.buildPartial();
-              }
-              mapMessageCase_ = 5;
-              break;
-            }
-            case 50: {
-              Node.Error.Builder subBuilder = null;
-              if (mapMessageCase_ == 6) {
-                subBuilder = ((Node.Error) mapMessage_).toBuilder();
-              }
-              mapMessage_ =
-                  input.readMessage(Node.Error.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom((Node.Error) mapMessage_);
-                mapMessage_ = subBuilder.buildPartial();
-              }
-              mapMessageCase_ = 6;
-              break;
-            }
-            case 58: {
               Node.AcknowledgementToCoordinator.Builder subBuilder = null;
-              if (mapMessageCase_ == 7) {
+              if (mapMessageCase_ == 5) {
                 subBuilder = ((Node.AcknowledgementToCoordinator) mapMessage_).toBuilder();
               }
               mapMessage_ =
@@ -7985,12 +6824,12 @@ public final class Node {
                 subBuilder.mergeFrom((Node.AcknowledgementToCoordinator) mapMessage_);
                 mapMessage_ = subBuilder.buildPartial();
               }
-              mapMessageCase_ = 7;
+              mapMessageCase_ = 5;
               break;
             }
-            case 66: {
+            case 50: {
               Node.AcknowledgementToClient.Builder subBuilder = null;
-              if (mapMessageCase_ == 8) {
+              if (mapMessageCase_ == 6) {
                 subBuilder = ((Node.AcknowledgementToClient) mapMessage_).toBuilder();
               }
               mapMessage_ =
@@ -7999,7 +6838,7 @@ public final class Node {
                 subBuilder.mergeFrom((Node.AcknowledgementToClient) mapMessage_);
                 mapMessage_ = subBuilder.buildPartial();
               }
-              mapMessageCase_ = 8;
+              mapMessageCase_ = 6;
               break;
             }
           }
@@ -8034,10 +6873,8 @@ public final class Node {
       PUT_KEY_FROM_COORDINATOR(2),
       CLIENT_READ_REQUEST(3),
       CLIENT_WRITE_REQUEST(4),
-      READ_REPAIR(5),
-      ERROR_MESSAGE(6),
-      ACKNOWLEDGEMENT_TO_COORDINATOR(7),
-      ACKNOWLEDGEMENT_TO_CLIENT(8),
+      ACKNOWLEDGEMENT_TO_COORDINATOR(5),
+      ACKNOWLEDGEMENT_TO_CLIENT(6),
       MAPMESSAGE_NOT_SET(0);
       private final int value;
       private MapMessageCase(int value) {
@@ -8057,10 +6894,8 @@ public final class Node {
           case 2: return PUT_KEY_FROM_COORDINATOR;
           case 3: return CLIENT_READ_REQUEST;
           case 4: return CLIENT_WRITE_REQUEST;
-          case 5: return READ_REPAIR;
-          case 6: return ERROR_MESSAGE;
-          case 7: return ACKNOWLEDGEMENT_TO_COORDINATOR;
-          case 8: return ACKNOWLEDGEMENT_TO_CLIENT;
+          case 5: return ACKNOWLEDGEMENT_TO_COORDINATOR;
+          case 6: return ACKNOWLEDGEMENT_TO_CLIENT;
           case 0: return MAPMESSAGE_NOT_SET;
           default: return null;
         }
@@ -8180,105 +7015,53 @@ public final class Node {
       return Node.ClientWriteRequest.getDefaultInstance();
     }
 
-    public static final int READ_REPAIR_FIELD_NUMBER = 5;
+    public static final int ACKNOWLEDGEMENT_TO_COORDINATOR_FIELD_NUMBER = 5;
     /**
-     * <code>.ReadRepair read_repair = 5;</code>
+     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 5;</code>
      */
-    public boolean hasReadRepair() {
+    public boolean hasAcknowledgementToCoordinator() {
       return mapMessageCase_ == 5;
     }
     /**
-     * <code>.ReadRepair read_repair = 5;</code>
+     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 5;</code>
      */
-    public Node.ReadRepair getReadRepair() {
+    public Node.AcknowledgementToCoordinator getAcknowledgementToCoordinator() {
       if (mapMessageCase_ == 5) {
-         return (Node.ReadRepair) mapMessage_;
+         return (Node.AcknowledgementToCoordinator) mapMessage_;
       }
-      return Node.ReadRepair.getDefaultInstance();
+      return Node.AcknowledgementToCoordinator.getDefaultInstance();
     }
     /**
-     * <code>.ReadRepair read_repair = 5;</code>
+     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 5;</code>
      */
-    public Node.ReadRepairOrBuilder getReadRepairOrBuilder() {
+    public Node.AcknowledgementToCoordinatorOrBuilder getAcknowledgementToCoordinatorOrBuilder() {
       if (mapMessageCase_ == 5) {
-         return (Node.ReadRepair) mapMessage_;
+         return (Node.AcknowledgementToCoordinator) mapMessage_;
       }
-      return Node.ReadRepair.getDefaultInstance();
+      return Node.AcknowledgementToCoordinator.getDefaultInstance();
     }
 
-    public static final int ERROR_MESSAGE_FIELD_NUMBER = 6;
+    public static final int ACKNOWLEDGEMENT_TO_CLIENT_FIELD_NUMBER = 6;
     /**
-     * <code>.Error error_message = 6;</code>
+     * <code>.AcknowledgementToClient acknowledgement_to_client = 6;</code>
      */
-    public boolean hasErrorMessage() {
+    public boolean hasAcknowledgementToClient() {
       return mapMessageCase_ == 6;
     }
     /**
-     * <code>.Error error_message = 6;</code>
-     */
-    public Node.Error getErrorMessage() {
-      if (mapMessageCase_ == 6) {
-         return (Node.Error) mapMessage_;
-      }
-      return Node.Error.getDefaultInstance();
-    }
-    /**
-     * <code>.Error error_message = 6;</code>
-     */
-    public Node.ErrorOrBuilder getErrorMessageOrBuilder() {
-      if (mapMessageCase_ == 6) {
-         return (Node.Error) mapMessage_;
-      }
-      return Node.Error.getDefaultInstance();
-    }
-
-    public static final int ACKNOWLEDGEMENT_TO_COORDINATOR_FIELD_NUMBER = 7;
-    /**
-     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
-     */
-    public boolean hasAcknowledgementToCoordinator() {
-      return mapMessageCase_ == 7;
-    }
-    /**
-     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
-     */
-    public Node.AcknowledgementToCoordinator getAcknowledgementToCoordinator() {
-      if (mapMessageCase_ == 7) {
-         return (Node.AcknowledgementToCoordinator) mapMessage_;
-      }
-      return Node.AcknowledgementToCoordinator.getDefaultInstance();
-    }
-    /**
-     * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
-     */
-    public Node.AcknowledgementToCoordinatorOrBuilder getAcknowledgementToCoordinatorOrBuilder() {
-      if (mapMessageCase_ == 7) {
-         return (Node.AcknowledgementToCoordinator) mapMessage_;
-      }
-      return Node.AcknowledgementToCoordinator.getDefaultInstance();
-    }
-
-    public static final int ACKNOWLEDGEMENT_TO_CLIENT_FIELD_NUMBER = 8;
-    /**
-     * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
-     */
-    public boolean hasAcknowledgementToClient() {
-      return mapMessageCase_ == 8;
-    }
-    /**
-     * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+     * <code>.AcknowledgementToClient acknowledgement_to_client = 6;</code>
      */
     public Node.AcknowledgementToClient getAcknowledgementToClient() {
-      if (mapMessageCase_ == 8) {
+      if (mapMessageCase_ == 6) {
          return (Node.AcknowledgementToClient) mapMessage_;
       }
       return Node.AcknowledgementToClient.getDefaultInstance();
     }
     /**
-     * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+     * <code>.AcknowledgementToClient acknowledgement_to_client = 6;</code>
      */
     public Node.AcknowledgementToClientOrBuilder getAcknowledgementToClientOrBuilder() {
-      if (mapMessageCase_ == 8) {
+      if (mapMessageCase_ == 6) {
          return (Node.AcknowledgementToClient) mapMessage_;
       }
       return Node.AcknowledgementToClient.getDefaultInstance();
@@ -8309,16 +7092,10 @@ public final class Node {
         output.writeMessage(4, (Node.ClientWriteRequest) mapMessage_);
       }
       if (mapMessageCase_ == 5) {
-        output.writeMessage(5, (Node.ReadRepair) mapMessage_);
+        output.writeMessage(5, (Node.AcknowledgementToCoordinator) mapMessage_);
       }
       if (mapMessageCase_ == 6) {
-        output.writeMessage(6, (Node.Error) mapMessage_);
-      }
-      if (mapMessageCase_ == 7) {
-        output.writeMessage(7, (Node.AcknowledgementToCoordinator) mapMessage_);
-      }
-      if (mapMessageCase_ == 8) {
-        output.writeMessage(8, (Node.AcknowledgementToClient) mapMessage_);
+        output.writeMessage(6, (Node.AcknowledgementToClient) mapMessage_);
       }
       unknownFields.writeTo(output);
     }
@@ -8346,19 +7123,11 @@ public final class Node {
       }
       if (mapMessageCase_ == 5) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, (Node.ReadRepair) mapMessage_);
+          .computeMessageSize(5, (Node.AcknowledgementToCoordinator) mapMessage_);
       }
       if (mapMessageCase_ == 6) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, (Node.Error) mapMessage_);
-      }
-      if (mapMessageCase_ == 7) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, (Node.AcknowledgementToCoordinator) mapMessage_);
-      }
-      if (mapMessageCase_ == 8) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(8, (Node.AcknowledgementToClient) mapMessage_);
+          .computeMessageSize(6, (Node.AcknowledgementToClient) mapMessage_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -8397,18 +7166,10 @@ public final class Node {
               .equals(other.getClientWriteRequest());
           break;
         case 5:
-          result = result && getReadRepair()
-              .equals(other.getReadRepair());
-          break;
-        case 6:
-          result = result && getErrorMessage()
-              .equals(other.getErrorMessage());
-          break;
-        case 7:
           result = result && getAcknowledgementToCoordinator()
               .equals(other.getAcknowledgementToCoordinator());
           break;
-        case 8:
+        case 6:
           result = result && getAcknowledgementToClient()
               .equals(other.getAcknowledgementToClient());
           break;
@@ -8444,18 +7205,10 @@ public final class Node {
           hash = (53 * hash) + getClientWriteRequest().hashCode();
           break;
         case 5:
-          hash = (37 * hash) + READ_REPAIR_FIELD_NUMBER;
-          hash = (53 * hash) + getReadRepair().hashCode();
-          break;
-        case 6:
-          hash = (37 * hash) + ERROR_MESSAGE_FIELD_NUMBER;
-          hash = (53 * hash) + getErrorMessage().hashCode();
-          break;
-        case 7:
           hash = (37 * hash) + ACKNOWLEDGEMENT_TO_COORDINATOR_FIELD_NUMBER;
           hash = (53 * hash) + getAcknowledgementToCoordinator().hashCode();
           break;
-        case 8:
+        case 6:
           hash = (37 * hash) + ACKNOWLEDGEMENT_TO_CLIENT_FIELD_NUMBER;
           hash = (53 * hash) + getAcknowledgementToClient().hashCode();
           break;
@@ -8644,27 +7397,13 @@ public final class Node {
           }
         }
         if (mapMessageCase_ == 5) {
-          if (readRepairBuilder_ == null) {
-            result.mapMessage_ = mapMessage_;
-          } else {
-            result.mapMessage_ = readRepairBuilder_.build();
-          }
-        }
-        if (mapMessageCase_ == 6) {
-          if (errorMessageBuilder_ == null) {
-            result.mapMessage_ = mapMessage_;
-          } else {
-            result.mapMessage_ = errorMessageBuilder_.build();
-          }
-        }
-        if (mapMessageCase_ == 7) {
           if (acknowledgementToCoordinatorBuilder_ == null) {
             result.mapMessage_ = mapMessage_;
           } else {
             result.mapMessage_ = acknowledgementToCoordinatorBuilder_.build();
           }
         }
-        if (mapMessageCase_ == 8) {
+        if (mapMessageCase_ == 6) {
           if (acknowledgementToClientBuilder_ == null) {
             result.mapMessage_ = mapMessage_;
           } else {
@@ -8728,14 +7467,6 @@ public final class Node {
           }
           case CLIENT_WRITE_REQUEST: {
             mergeClientWriteRequest(other.getClientWriteRequest());
-            break;
-          }
-          case READ_REPAIR: {
-            mergeReadRepair(other.getReadRepair());
-            break;
-          }
-          case ERROR_MESSAGE: {
-            mergeErrorMessage(other.getErrorMessage());
             break;
           }
           case ACKNOWLEDGEMENT_TO_COORDINATOR: {
@@ -9337,303 +8068,31 @@ public final class Node {
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
-          Node.ReadRepair, Node.ReadRepair.Builder, Node.ReadRepairOrBuilder> readRepairBuilder_;
+          Node.AcknowledgementToCoordinator, Node.AcknowledgementToCoordinator.Builder, Node.AcknowledgementToCoordinatorOrBuilder> acknowledgementToCoordinatorBuilder_;
       /**
-       * <code>.ReadRepair read_repair = 5;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 5;</code>
        */
-      public boolean hasReadRepair() {
+      public boolean hasAcknowledgementToCoordinator() {
         return mapMessageCase_ == 5;
       }
       /**
-       * <code>.ReadRepair read_repair = 5;</code>
-       */
-      public Node.ReadRepair getReadRepair() {
-        if (readRepairBuilder_ == null) {
-          if (mapMessageCase_ == 5) {
-            return (Node.ReadRepair) mapMessage_;
-          }
-          return Node.ReadRepair.getDefaultInstance();
-        } else {
-          if (mapMessageCase_ == 5) {
-            return readRepairBuilder_.getMessage();
-          }
-          return Node.ReadRepair.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.ReadRepair read_repair = 5;</code>
-       */
-      public Builder setReadRepair(Node.ReadRepair value) {
-        if (readRepairBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          mapMessage_ = value;
-          onChanged();
-        } else {
-          readRepairBuilder_.setMessage(value);
-        }
-        mapMessageCase_ = 5;
-        return this;
-      }
-      /**
-       * <code>.ReadRepair read_repair = 5;</code>
-       */
-      public Builder setReadRepair(
-          Node.ReadRepair.Builder builderForValue) {
-        if (readRepairBuilder_ == null) {
-          mapMessage_ = builderForValue.build();
-          onChanged();
-        } else {
-          readRepairBuilder_.setMessage(builderForValue.build());
-        }
-        mapMessageCase_ = 5;
-        return this;
-      }
-      /**
-       * <code>.ReadRepair read_repair = 5;</code>
-       */
-      public Builder mergeReadRepair(Node.ReadRepair value) {
-        if (readRepairBuilder_ == null) {
-          if (mapMessageCase_ == 5 &&
-              mapMessage_ != Node.ReadRepair.getDefaultInstance()) {
-            mapMessage_ = Node.ReadRepair.newBuilder((Node.ReadRepair) mapMessage_)
-                .mergeFrom(value).buildPartial();
-          } else {
-            mapMessage_ = value;
-          }
-          onChanged();
-        } else {
-          if (mapMessageCase_ == 5) {
-            readRepairBuilder_.mergeFrom(value);
-          }
-          readRepairBuilder_.setMessage(value);
-        }
-        mapMessageCase_ = 5;
-        return this;
-      }
-      /**
-       * <code>.ReadRepair read_repair = 5;</code>
-       */
-      public Builder clearReadRepair() {
-        if (readRepairBuilder_ == null) {
-          if (mapMessageCase_ == 5) {
-            mapMessageCase_ = 0;
-            mapMessage_ = null;
-            onChanged();
-          }
-        } else {
-          if (mapMessageCase_ == 5) {
-            mapMessageCase_ = 0;
-            mapMessage_ = null;
-          }
-          readRepairBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>.ReadRepair read_repair = 5;</code>
-       */
-      public Node.ReadRepair.Builder getReadRepairBuilder() {
-        return getReadRepairFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.ReadRepair read_repair = 5;</code>
-       */
-      public Node.ReadRepairOrBuilder getReadRepairOrBuilder() {
-        if ((mapMessageCase_ == 5) && (readRepairBuilder_ != null)) {
-          return readRepairBuilder_.getMessageOrBuilder();
-        } else {
-          if (mapMessageCase_ == 5) {
-            return (Node.ReadRepair) mapMessage_;
-          }
-          return Node.ReadRepair.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.ReadRepair read_repair = 5;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          Node.ReadRepair, Node.ReadRepair.Builder, Node.ReadRepairOrBuilder> 
-          getReadRepairFieldBuilder() {
-        if (readRepairBuilder_ == null) {
-          if (!(mapMessageCase_ == 5)) {
-            mapMessage_ = Node.ReadRepair.getDefaultInstance();
-          }
-          readRepairBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              Node.ReadRepair, Node.ReadRepair.Builder, Node.ReadRepairOrBuilder>(
-                  (Node.ReadRepair) mapMessage_,
-                  getParentForChildren(),
-                  isClean());
-          mapMessage_ = null;
-        }
-        mapMessageCase_ = 5;
-        onChanged();;
-        return readRepairBuilder_;
-      }
-
-      private com.google.protobuf.SingleFieldBuilderV3<
-          Node.Error, Node.Error.Builder, Node.ErrorOrBuilder> errorMessageBuilder_;
-      /**
-       * <code>.Error error_message = 6;</code>
-       */
-      public boolean hasErrorMessage() {
-        return mapMessageCase_ == 6;
-      }
-      /**
-       * <code>.Error error_message = 6;</code>
-       */
-      public Node.Error getErrorMessage() {
-        if (errorMessageBuilder_ == null) {
-          if (mapMessageCase_ == 6) {
-            return (Node.Error) mapMessage_;
-          }
-          return Node.Error.getDefaultInstance();
-        } else {
-          if (mapMessageCase_ == 6) {
-            return errorMessageBuilder_.getMessage();
-          }
-          return Node.Error.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.Error error_message = 6;</code>
-       */
-      public Builder setErrorMessage(Node.Error value) {
-        if (errorMessageBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          mapMessage_ = value;
-          onChanged();
-        } else {
-          errorMessageBuilder_.setMessage(value);
-        }
-        mapMessageCase_ = 6;
-        return this;
-      }
-      /**
-       * <code>.Error error_message = 6;</code>
-       */
-      public Builder setErrorMessage(
-          Node.Error.Builder builderForValue) {
-        if (errorMessageBuilder_ == null) {
-          mapMessage_ = builderForValue.build();
-          onChanged();
-        } else {
-          errorMessageBuilder_.setMessage(builderForValue.build());
-        }
-        mapMessageCase_ = 6;
-        return this;
-      }
-      /**
-       * <code>.Error error_message = 6;</code>
-       */
-      public Builder mergeErrorMessage(Node.Error value) {
-        if (errorMessageBuilder_ == null) {
-          if (mapMessageCase_ == 6 &&
-              mapMessage_ != Node.Error.getDefaultInstance()) {
-            mapMessage_ = Node.Error.newBuilder((Node.Error) mapMessage_)
-                .mergeFrom(value).buildPartial();
-          } else {
-            mapMessage_ = value;
-          }
-          onChanged();
-        } else {
-          if (mapMessageCase_ == 6) {
-            errorMessageBuilder_.mergeFrom(value);
-          }
-          errorMessageBuilder_.setMessage(value);
-        }
-        mapMessageCase_ = 6;
-        return this;
-      }
-      /**
-       * <code>.Error error_message = 6;</code>
-       */
-      public Builder clearErrorMessage() {
-        if (errorMessageBuilder_ == null) {
-          if (mapMessageCase_ == 6) {
-            mapMessageCase_ = 0;
-            mapMessage_ = null;
-            onChanged();
-          }
-        } else {
-          if (mapMessageCase_ == 6) {
-            mapMessageCase_ = 0;
-            mapMessage_ = null;
-          }
-          errorMessageBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>.Error error_message = 6;</code>
-       */
-      public Node.Error.Builder getErrorMessageBuilder() {
-        return getErrorMessageFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.Error error_message = 6;</code>
-       */
-      public Node.ErrorOrBuilder getErrorMessageOrBuilder() {
-        if ((mapMessageCase_ == 6) && (errorMessageBuilder_ != null)) {
-          return errorMessageBuilder_.getMessageOrBuilder();
-        } else {
-          if (mapMessageCase_ == 6) {
-            return (Node.Error) mapMessage_;
-          }
-          return Node.Error.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>.Error error_message = 6;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          Node.Error, Node.Error.Builder, Node.ErrorOrBuilder> 
-          getErrorMessageFieldBuilder() {
-        if (errorMessageBuilder_ == null) {
-          if (!(mapMessageCase_ == 6)) {
-            mapMessage_ = Node.Error.getDefaultInstance();
-          }
-          errorMessageBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              Node.Error, Node.Error.Builder, Node.ErrorOrBuilder>(
-                  (Node.Error) mapMessage_,
-                  getParentForChildren(),
-                  isClean());
-          mapMessage_ = null;
-        }
-        mapMessageCase_ = 6;
-        onChanged();;
-        return errorMessageBuilder_;
-      }
-
-      private com.google.protobuf.SingleFieldBuilderV3<
-          Node.AcknowledgementToCoordinator, Node.AcknowledgementToCoordinator.Builder, Node.AcknowledgementToCoordinatorOrBuilder> acknowledgementToCoordinatorBuilder_;
-      /**
-       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
-       */
-      public boolean hasAcknowledgementToCoordinator() {
-        return mapMessageCase_ == 7;
-      }
-      /**
-       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 5;</code>
        */
       public Node.AcknowledgementToCoordinator getAcknowledgementToCoordinator() {
         if (acknowledgementToCoordinatorBuilder_ == null) {
-          if (mapMessageCase_ == 7) {
+          if (mapMessageCase_ == 5) {
             return (Node.AcknowledgementToCoordinator) mapMessage_;
           }
           return Node.AcknowledgementToCoordinator.getDefaultInstance();
         } else {
-          if (mapMessageCase_ == 7) {
+          if (mapMessageCase_ == 5) {
             return acknowledgementToCoordinatorBuilder_.getMessage();
           }
           return Node.AcknowledgementToCoordinator.getDefaultInstance();
         }
       }
       /**
-       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 5;</code>
        */
       public Builder setAcknowledgementToCoordinator(Node.AcknowledgementToCoordinator value) {
         if (acknowledgementToCoordinatorBuilder_ == null) {
@@ -9645,11 +8104,11 @@ public final class Node {
         } else {
           acknowledgementToCoordinatorBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 7;
+        mapMessageCase_ = 5;
         return this;
       }
       /**
-       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 5;</code>
        */
       public Builder setAcknowledgementToCoordinator(
           Node.AcknowledgementToCoordinator.Builder builderForValue) {
@@ -9659,15 +8118,15 @@ public final class Node {
         } else {
           acknowledgementToCoordinatorBuilder_.setMessage(builderForValue.build());
         }
-        mapMessageCase_ = 7;
+        mapMessageCase_ = 5;
         return this;
       }
       /**
-       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 5;</code>
        */
       public Builder mergeAcknowledgementToCoordinator(Node.AcknowledgementToCoordinator value) {
         if (acknowledgementToCoordinatorBuilder_ == null) {
-          if (mapMessageCase_ == 7 &&
+          if (mapMessageCase_ == 5 &&
               mapMessage_ != Node.AcknowledgementToCoordinator.getDefaultInstance()) {
             mapMessage_ = Node.AcknowledgementToCoordinator.newBuilder((Node.AcknowledgementToCoordinator) mapMessage_)
                 .mergeFrom(value).buildPartial();
@@ -9676,26 +8135,26 @@ public final class Node {
           }
           onChanged();
         } else {
-          if (mapMessageCase_ == 7) {
+          if (mapMessageCase_ == 5) {
             acknowledgementToCoordinatorBuilder_.mergeFrom(value);
           }
           acknowledgementToCoordinatorBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 7;
+        mapMessageCase_ = 5;
         return this;
       }
       /**
-       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 5;</code>
        */
       public Builder clearAcknowledgementToCoordinator() {
         if (acknowledgementToCoordinatorBuilder_ == null) {
-          if (mapMessageCase_ == 7) {
+          if (mapMessageCase_ == 5) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
             onChanged();
           }
         } else {
-          if (mapMessageCase_ == 7) {
+          if (mapMessageCase_ == 5) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
           }
@@ -9704,32 +8163,32 @@ public final class Node {
         return this;
       }
       /**
-       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 5;</code>
        */
       public Node.AcknowledgementToCoordinator.Builder getAcknowledgementToCoordinatorBuilder() {
         return getAcknowledgementToCoordinatorFieldBuilder().getBuilder();
       }
       /**
-       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 5;</code>
        */
       public Node.AcknowledgementToCoordinatorOrBuilder getAcknowledgementToCoordinatorOrBuilder() {
-        if ((mapMessageCase_ == 7) && (acknowledgementToCoordinatorBuilder_ != null)) {
+        if ((mapMessageCase_ == 5) && (acknowledgementToCoordinatorBuilder_ != null)) {
           return acknowledgementToCoordinatorBuilder_.getMessageOrBuilder();
         } else {
-          if (mapMessageCase_ == 7) {
+          if (mapMessageCase_ == 5) {
             return (Node.AcknowledgementToCoordinator) mapMessage_;
           }
           return Node.AcknowledgementToCoordinator.getDefaultInstance();
         }
       }
       /**
-       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 7;</code>
+       * <code>.AcknowledgementToCoordinator acknowledgement_to_coordinator = 5;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           Node.AcknowledgementToCoordinator, Node.AcknowledgementToCoordinator.Builder, Node.AcknowledgementToCoordinatorOrBuilder> 
           getAcknowledgementToCoordinatorFieldBuilder() {
         if (acknowledgementToCoordinatorBuilder_ == null) {
-          if (!(mapMessageCase_ == 7)) {
+          if (!(mapMessageCase_ == 5)) {
             mapMessage_ = Node.AcknowledgementToCoordinator.getDefaultInstance();
           }
           acknowledgementToCoordinatorBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -9739,7 +8198,7 @@ public final class Node {
                   isClean());
           mapMessage_ = null;
         }
-        mapMessageCase_ = 7;
+        mapMessageCase_ = 5;
         onChanged();;
         return acknowledgementToCoordinatorBuilder_;
       }
@@ -9747,29 +8206,29 @@ public final class Node {
       private com.google.protobuf.SingleFieldBuilderV3<
           Node.AcknowledgementToClient, Node.AcknowledgementToClient.Builder, Node.AcknowledgementToClientOrBuilder> acknowledgementToClientBuilder_;
       /**
-       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 6;</code>
        */
       public boolean hasAcknowledgementToClient() {
-        return mapMessageCase_ == 8;
+        return mapMessageCase_ == 6;
       }
       /**
-       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 6;</code>
        */
       public Node.AcknowledgementToClient getAcknowledgementToClient() {
         if (acknowledgementToClientBuilder_ == null) {
-          if (mapMessageCase_ == 8) {
+          if (mapMessageCase_ == 6) {
             return (Node.AcknowledgementToClient) mapMessage_;
           }
           return Node.AcknowledgementToClient.getDefaultInstance();
         } else {
-          if (mapMessageCase_ == 8) {
+          if (mapMessageCase_ == 6) {
             return acknowledgementToClientBuilder_.getMessage();
           }
           return Node.AcknowledgementToClient.getDefaultInstance();
         }
       }
       /**
-       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 6;</code>
        */
       public Builder setAcknowledgementToClient(Node.AcknowledgementToClient value) {
         if (acknowledgementToClientBuilder_ == null) {
@@ -9781,11 +8240,11 @@ public final class Node {
         } else {
           acknowledgementToClientBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 8;
+        mapMessageCase_ = 6;
         return this;
       }
       /**
-       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 6;</code>
        */
       public Builder setAcknowledgementToClient(
           Node.AcknowledgementToClient.Builder builderForValue) {
@@ -9795,15 +8254,15 @@ public final class Node {
         } else {
           acknowledgementToClientBuilder_.setMessage(builderForValue.build());
         }
-        mapMessageCase_ = 8;
+        mapMessageCase_ = 6;
         return this;
       }
       /**
-       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 6;</code>
        */
       public Builder mergeAcknowledgementToClient(Node.AcknowledgementToClient value) {
         if (acknowledgementToClientBuilder_ == null) {
-          if (mapMessageCase_ == 8 &&
+          if (mapMessageCase_ == 6 &&
               mapMessage_ != Node.AcknowledgementToClient.getDefaultInstance()) {
             mapMessage_ = Node.AcknowledgementToClient.newBuilder((Node.AcknowledgementToClient) mapMessage_)
                 .mergeFrom(value).buildPartial();
@@ -9812,26 +8271,26 @@ public final class Node {
           }
           onChanged();
         } else {
-          if (mapMessageCase_ == 8) {
+          if (mapMessageCase_ == 6) {
             acknowledgementToClientBuilder_.mergeFrom(value);
           }
           acknowledgementToClientBuilder_.setMessage(value);
         }
-        mapMessageCase_ = 8;
+        mapMessageCase_ = 6;
         return this;
       }
       /**
-       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 6;</code>
        */
       public Builder clearAcknowledgementToClient() {
         if (acknowledgementToClientBuilder_ == null) {
-          if (mapMessageCase_ == 8) {
+          if (mapMessageCase_ == 6) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
             onChanged();
           }
         } else {
-          if (mapMessageCase_ == 8) {
+          if (mapMessageCase_ == 6) {
             mapMessageCase_ = 0;
             mapMessage_ = null;
           }
@@ -9840,32 +8299,32 @@ public final class Node {
         return this;
       }
       /**
-       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 6;</code>
        */
       public Node.AcknowledgementToClient.Builder getAcknowledgementToClientBuilder() {
         return getAcknowledgementToClientFieldBuilder().getBuilder();
       }
       /**
-       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 6;</code>
        */
       public Node.AcknowledgementToClientOrBuilder getAcknowledgementToClientOrBuilder() {
-        if ((mapMessageCase_ == 8) && (acknowledgementToClientBuilder_ != null)) {
+        if ((mapMessageCase_ == 6) && (acknowledgementToClientBuilder_ != null)) {
           return acknowledgementToClientBuilder_.getMessageOrBuilder();
         } else {
-          if (mapMessageCase_ == 8) {
+          if (mapMessageCase_ == 6) {
             return (Node.AcknowledgementToClient) mapMessage_;
           }
           return Node.AcknowledgementToClient.getDefaultInstance();
         }
       }
       /**
-       * <code>.AcknowledgementToClient acknowledgement_to_client = 8;</code>
+       * <code>.AcknowledgementToClient acknowledgement_to_client = 6;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           Node.AcknowledgementToClient, Node.AcknowledgementToClient.Builder, Node.AcknowledgementToClientOrBuilder> 
           getAcknowledgementToClientFieldBuilder() {
         if (acknowledgementToClientBuilder_ == null) {
-          if (!(mapMessageCase_ == 8)) {
+          if (!(mapMessageCase_ == 6)) {
             mapMessage_ = Node.AcknowledgementToClient.getDefaultInstance();
           }
           acknowledgementToClientBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -9875,7 +8334,7 @@ public final class Node {
                   isClean());
           mapMessage_ = null;
         }
-        mapMessageCase_ = 8;
+        mapMessageCase_ = 6;
         onChanged();;
         return acknowledgementToClientBuilder_;
       }
@@ -9949,16 +8408,6 @@ public final class Node {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_ClientWriteRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ReadRepair_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_ReadRepair_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_Error_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_Error_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_LogMessage_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -10001,33 +8450,30 @@ public final class Node {
       "y\030\001 \001(\r\022+\n\020consistencyLevel\030\002 \001(\0162\021.Cons" +
       "istencyLevel\"]\n\022ClientWriteRequest\022\013\n\003ke" +
       "y\030\001 \001(\r\022\r\n\005value\030\002 \001(\t\022+\n\020consistencyLev" +
-      "el\030\003 \001(\0162\021.ConsistencyLevel\"(\n\nReadRepai",
-      "r\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\t\"\030\n\005Error\022\017" +
-      "\n\007message\030\001 \001(\t\"e\n\nLogMessage\022\024\n\014logStar" +
-      "tFlag\030\001 \001(\010\022\013\n\003key\030\002 \001(\r\022\r\n\005value\030\003 \001(\t\022" +
-      "\021\n\ttimeStamp\030\004 \001(\t\022\022\n\nlogEndFlag\030\005 \001(\010\"#" +
-      "\n\007LogBook\022\030\n\003log\030\001 \003(\0132\013.LogMessage\"\301\001\n\034" +
-      "AcknowledgementToCoordinator\022\034\n\024coordina" +
-      "torTimeStamp\030\001 \001(\t\022\013\n\003key\030\002 \001(\r\022\r\n\005value" +
-      "\030\003 \001(\t\022\023\n\013replicaName\030\004 \001(\t\022\"\n\014request_t" +
-      "ype\030\005 \001(\0162\014.RequestType\022\030\n\020replicaTimeSt" +
-      "amp\030\006 \001(\t\022\024\n\014errorMessage\030\007 \001(\t\"K\n\027Ackno",
-      "wledgementToClient\022\013\n\003key\030\001 \001(\r\022\r\n\005value" +
-      "\030\002 \001(\t\022\024\n\014errorMessage\030\003 \001(\t\"\314\003\n\016Wrapper" +
-      "Message\022:\n\030get_key_from_coordinator\030\001 \001(" +
-      "\0132\026.GetKeyFromCoordinatorH\000\022:\n\030put_key_f" +
-      "rom_coordinator\030\002 \001(\0132\026.PutKeyFromCoordi" +
-      "natorH\000\0221\n\023client_read_request\030\003 \001(\0132\022.C" +
-      "lientReadRequestH\000\0223\n\024client_write_reque" +
-      "st\030\004 \001(\0132\023.ClientWriteRequestH\000\022\"\n\013read_" +
-      "repair\030\005 \001(\0132\013.ReadRepairH\000\022\037\n\rerror_mes" +
-      "sage\030\006 \001(\0132\006.ErrorH\000\022G\n\036acknowledgement_",
-      "to_coordinator\030\007 \001(\0132\035.AcknowledgementTo" +
-      "CoordinatorH\000\022=\n\031acknowledgement_to_clie" +
-      "nt\030\010 \001(\0132\030.AcknowledgementToClientH\000B\r\n\013" +
-      "map_message*1\n\020ConsistencyLevel\022\013\n\007UNKNO" +
-      "WN\020\000\022\007\n\003ONE\020\001\022\007\n\003TWO\020\002*\"\n\013RequestType\022\010\n" +
-      "\004READ\020\000\022\t\n\005WRITE\020\001b\006proto3"
+      "el\030\003 \001(\0162\021.ConsistencyLevel\"e\n\nLogMessag",
+      "e\022\024\n\014logStartFlag\030\001 \001(\010\022\013\n\003key\030\002 \001(\r\022\r\n\005" +
+      "value\030\003 \001(\t\022\021\n\ttimeStamp\030\004 \001(\t\022\022\n\nlogEnd" +
+      "Flag\030\005 \001(\010\"#\n\007LogBook\022\030\n\003log\030\001 \003(\0132\013.Log" +
+      "Message\"\301\001\n\034AcknowledgementToCoordinator" +
+      "\022\034\n\024coordinatorTimeStamp\030\001 \001(\t\022\013\n\003key\030\002 " +
+      "\001(\r\022\r\n\005value\030\003 \001(\t\022\023\n\013replicaName\030\004 \001(\t\022" +
+      "\"\n\014request_type\030\005 \001(\0162\014.RequestType\022\030\n\020r" +
+      "eplicaTimeStamp\030\006 \001(\t\022\024\n\014errorMessage\030\007 " +
+      "\001(\t\"K\n\027AcknowledgementToClient\022\013\n\003key\030\001 " +
+      "\001(\r\022\r\n\005value\030\002 \001(\t\022\024\n\014errorMessage\030\003 \001(\t",
+      "\"\207\003\n\016WrapperMessage\022:\n\030get_key_from_coor" +
+      "dinator\030\001 \001(\0132\026.GetKeyFromCoordinatorH\000\022" +
+      ":\n\030put_key_from_coordinator\030\002 \001(\0132\026.PutK" +
+      "eyFromCoordinatorH\000\0221\n\023client_read_reque" +
+      "st\030\003 \001(\0132\022.ClientReadRequestH\000\0223\n\024client" +
+      "_write_request\030\004 \001(\0132\023.ClientWriteReques" +
+      "tH\000\022G\n\036acknowledgement_to_coordinator\030\005 " +
+      "\001(\0132\035.AcknowledgementToCoordinatorH\000\022=\n\031" +
+      "acknowledgement_to_client\030\006 \001(\0132\030.Acknow" +
+      "ledgementToClientH\000B\r\n\013map_message*1\n\020Co",
+      "nsistencyLevel\022\013\n\007UNKNOWN\020\000\022\007\n\003ONE\020\001\022\007\n\003" +
+      "TWO\020\002*\"\n\013RequestType\022\010\n\004READ\020\000\022\t\n\005WRITE\020" +
+      "\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -10065,48 +8511,36 @@ public final class Node {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ClientWriteRequest_descriptor,
         new java.lang.String[] { "Key", "Value", "ConsistencyLevel", });
-    internal_static_ReadRepair_descriptor =
-      getDescriptor().getMessageTypes().get(4);
-    internal_static_ReadRepair_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_ReadRepair_descriptor,
-        new java.lang.String[] { "Key", "Value", });
-    internal_static_Error_descriptor =
-      getDescriptor().getMessageTypes().get(5);
-    internal_static_Error_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_Error_descriptor,
-        new java.lang.String[] { "Message", });
     internal_static_LogMessage_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_LogMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LogMessage_descriptor,
         new java.lang.String[] { "LogStartFlag", "Key", "Value", "TimeStamp", "LogEndFlag", });
     internal_static_LogBook_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_LogBook_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LogBook_descriptor,
         new java.lang.String[] { "Log", });
     internal_static_AcknowledgementToCoordinator_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_AcknowledgementToCoordinator_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AcknowledgementToCoordinator_descriptor,
         new java.lang.String[] { "CoordinatorTimeStamp", "Key", "Value", "ReplicaName", "RequestType", "ReplicaTimeStamp", "ErrorMessage", });
     internal_static_AcknowledgementToClient_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_AcknowledgementToClient_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AcknowledgementToClient_descriptor,
         new java.lang.String[] { "Key", "Value", "ErrorMessage", });
     internal_static_WrapperMessage_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_WrapperMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_WrapperMessage_descriptor,
-        new java.lang.String[] { "GetKeyFromCoordinator", "PutKeyFromCoordinator", "ClientReadRequest", "ClientWriteRequest", "ReadRepair", "ErrorMessage", "AcknowledgementToCoordinator", "AcknowledgementToClient", "MapMessage", });
+        new java.lang.String[] { "GetKeyFromCoordinator", "PutKeyFromCoordinator", "ClientReadRequest", "ClientWriteRequest", "AcknowledgementToCoordinator", "AcknowledgementToClient", "MapMessage", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
