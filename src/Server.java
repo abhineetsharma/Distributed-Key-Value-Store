@@ -6,8 +6,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentSkipListMap;
+
 
 public class Server {
 
@@ -361,6 +366,13 @@ public class Server {
                         AcknowledgementData acknowledgeData = acknowledgement.getAcknowledgementDataByServerName(replicaAcknowledgementList.get(0));
                         System.out.println(">>>>>>>>>Replica with latest data : "+acknowledgeData.getReplicaName()+" Time stamp : "+acknowledgeData.getTimeStamp()+" Value : " +acknowledgeData.getValue() );
                         acknowledgement.setSentToClient(true);
+                        
+                		new Thread(new Runnable() {
+                			@Override
+                			public void run() {
+                				readRepair();
+                			}
+                		}).start();
 
                         sentAcknowledgementToClient(key, acknowledgeData.getValue(), errorMessage, clientSocket);
                     } else {
@@ -371,6 +383,57 @@ public class Server {
 
             }
         }
+    }
+    
+    public void readRepair() {
+
+		Timer timer = new Timer();
+		class transferClass extends TimerTask {
+			@Override
+			public void run() {
+				{
+					for (Entry<String, AcknowledgementToClientListener> e : acknowledgementLogCoordinatorMap.entrySet()) {
+						AcknowledgementToClientListener allReplicasEntry = e.getValue();
+						if(allReplicasEntry.isSentToClient()) {
+							List<String> replicaAcknowledgementList = allReplicasEntry.getAcknowledgedListForTimeStamp();
+							AcknowledgementData LatestTimeStampedReplicaData = allReplicasEntry.getAcknowledgementDataByServerName(replicaAcknowledgementList.get(0));
+							for(int i=1;i<=4;i++) {
+								AcknowledgementData conflictingReplica = allReplicasEntry.getAcknowledgementDataByServerName(replicaAcknowledgementList.get(i));
+								if(!LatestTimeStampedReplicaData.getTimeStamp().equals(conflictingReplica.getTimeStamp())){
+									Node.PutKeyFromCoordinator.Builder putKeyFromCoordinatorToConflictingReplicaBuilder = Node.PutKeyFromCoordinator.newBuilder();
+									putKeyFromCoordinatorToConflictingReplicaBuilder.setKey(LatestTimeStampedReplicaData.getKey());
+									putKeyFromCoordinatorToConflictingReplicaBuilder.setTimeStamp(LatestTimeStampedReplicaData.getTimeStamp());
+									putKeyFromCoordinatorToConflictingReplicaBuilder.setValue(LatestTimeStampedReplicaData.getValue());
+									putKeyFromCoordinatorToConflictingReplicaBuilder.setCoordinatorName(LatestTimeStampedReplicaData.getReplicaName());
+									Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setPutKeyFromCoordinator(putKeyFromCoordinatorToConflictingReplicaBuilder).build();
+									try {
+										sendMessageToNodeSocket(nodeMap.get(conflictingReplica.getReplicaName()), message);
+									} catch (IOException ex) {
+										ex.printStackTrace();
+									}		
+								}
+							}
+
+
+						}
+
+					}
+					//					timer.cancel();
+					timer.schedule(new transferClass(), (5000));
+
+					try {
+
+
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.err.println("Can not transfer money");
+					}
+				}
+			}
+		}
+		;
+		new transferClass().run();
+	
     }
 
     private void sentAcknowledgementToClient(int key, String value, String errorMessage, Socket clientSocket) {
