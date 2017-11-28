@@ -302,7 +302,6 @@ public class Server {
                     keyValueMap.get(key).updateKeyWithValue(timeStamp, value);
                 } else {
                     // this.dataStore.put(log.getKey(), log.getValue());
-
                     keyValueMap.put(key, new ValueMetaData(timeStamp, value));
                 }
                 // do post commit processing via log file and code
