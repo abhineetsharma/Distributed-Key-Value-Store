@@ -1,44 +1,58 @@
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.Queue;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 
 public class Server {
 
-    //<editor-fold desc="Variables ">
+	// this server details
     private int portNumber;
     private String name;
-    private String filePath;
-    private String ip;
-    private Map<String, NodeServerData> nodeMap;
-    private Map<Integer, ValueMetaData> keyValueMap;
+	private String ip;
+	private int replicaFactor;
+
+	// file paths
+	private String NodefilePath;
+	private String logFilePath;
+
+	// data structures
+	private Map<String, ServerData> allServersData;
+	private Map<Integer, ValueMetaData> keyValueDataStore;
     private Map<String, AcknowledgementToClientListener> acknowledgementLogCoordinatorMap;
-    private String logFileName;
-    private static boolean printFlag = true;// flag to stop print
-    private int replicaFactor;
-    //</editor-fold>
+	private Map<String, Queue<ConflictingReplica>> failedWriteRequests;
+
+	// flag to stop print
+	private static boolean printFlag = true;
 
     private void initServer() {
-        // server information read by the server read by server
-        FileProcessor fPro = new FileProcessor(filePath);
-        nodeMap = new TreeMap<>();
-        keyValueMap = new ConcurrentSkipListMap<>();
+		// read Node.txt and write into allServerData
+		FileProcessor fPro = new FileProcessor(NodefilePath);
+		allServersData = new TreeMap<>();
+		keyValueDataStore = new ConcurrentSkipListMap<>();
         acknowledgementLogCoordinatorMap = new ConcurrentSkipListMap<>();
+		failedWriteRequests = new HashMap<>();
         replicaFactor = 4;
         String str = "";
         try {
             if (fPro.countLines() >= replicaFactor) {
                 while ((str = fPro.readLine()) != null) {
-                    NodeServerData nodeServerData = new NodeServerData(str);
-                    nodeMap.put(nodeServerData.getName(), nodeServerData);
+					ServerData nodeServerData = new ServerData(str);
+					allServersData.put(nodeServerData.getName(), nodeServerData);
 
                     if (nodeServerData.getPort() == portNumber) {
                         name = nodeServerData.getName();
@@ -49,6 +63,34 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+		// read logFile for recovery from failure
+		File file = new File(logFilePath);
+		if (file.exists()) {
+			Node.LogBook.Builder logBook = Node.LogBook.newBuilder();
+
+			// Read the existing Log book.
+			try {
+				logBook.mergeFrom(new FileInputStream(logFilePath));
+			} catch (FileNotFoundException e) {
+				System.out.println(": File not found.  Creating a new file.");
+			} catch (IOException ex) {
+				System.out.println("Error reading log file");
+				ex.printStackTrace();
+			}
+
+			// copy log messages with log-end flag = 1 to key-value Map
+			for (Node.LogMessage log : logBook.getLogList()) {
+				if (log.getLogEndFlag()) {
+					if (keyValueDataStore.containsKey(log.getKey())) {
+						// If key is present in our keyValue store then compare time-stamps
+						keyValueDataStore.get(log.getKey()).updateKeyWithValue(log.getTimeStamp(), log.getValue());
+					} else {
+						keyValueDataStore.put(log.getKey(), new ValueMetaData(log.getTimeStamp(), log.getValue()));
+					}
+				}
+			}
+		}
     }
 
     private static void print(Object obj) {
@@ -64,13 +106,13 @@ public class Server {
     private void processRequest() {
         Thread thread = new Thread(() -> {
 
-            for (Entry<String, AcknowledgementToClientListener> e : acknowledgementLogCoordinatorMap.entrySet()) {
+			for (Entry<String, AcknowledgementToClientListener> e : acknowledgementLogCoordinatorMap.entrySet()) {
                 AcknowledgementToClientListener allReplicasEntry = e.getValue();
                 if (allReplicasEntry.isSentToClient()) {
                     List<String> replicaAcknowledgementList = allReplicasEntry.getAcknowledgedListForTimeStamp();
                     AcknowledgementData LatestTimeStampedReplicaData = allReplicasEntry.getAcknowledgementDataByServerName(replicaAcknowledgementList.get(0));
                     for (int i = 1; i < replicaFactor; i++) {
-                         AcknowledgementData conflictingReplica = allReplicasEntry.getAcknowledgementDataByServerName(replicaAcknowledgementList.get(i));
+                        AcknowledgementData conflictingReplica = allReplicasEntry.getAcknowledgementDataByServerName(replicaAcknowledgementList.get(i));
                         if (!LatestTimeStampedReplicaData.getTimeStamp().equalsIgnoreCase(conflictingReplica.getTimeStamp())) {
                             Node.PutKeyFromCoordinator.Builder putKeyFromCoordinatorToConflictingReplicaBuilder = Node.PutKeyFromCoordinator.newBuilder();
                             putKeyFromCoordinatorToConflictingReplicaBuilder.setKey(LatestTimeStampedReplicaData.getKey());
@@ -79,59 +121,59 @@ public class Server {
                             putKeyFromCoordinatorToConflictingReplicaBuilder.setCoordinatorName(LatestTimeStampedReplicaData.getReplicaName());
                             putKeyFromCoordinatorToConflictingReplicaBuilder.setIsReadRepair(true);
                             Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setPutKeyFromCoordinator(putKeyFromCoordinatorToConflictingReplicaBuilder).build();
+							ServerData server = allServersData.get(conflictingReplica.getReplicaName());
                             try {
-                                sendMessageToNodeSocket(nodeMap.get(conflictingReplica.getReplicaName()), message);
+								sendMessageViaSocket(server, message);
                             } catch (IOException ex) {
                                 ex.printStackTrace();
-
+								ConflictingReplica conflictingServer = new ConflictingReplica(server, message);
+								addFailedWriteRequestForServer(server, conflictingServer);
                             }
                         }
                     }
-
-
                 }
-
             }
         });
         thread.start();
     }
 
     //to get the replica server list
-    private List<NodeServerData> getReplicaServersList(String keyNode) {
-        String[] mapKeys = this.nodeMap.keySet().toArray(new String[nodeMap.size()]);
+	private List<ServerData> getReplicaServersList(String keyNode) {
+		String[] mapKeys = this.allServersData.keySet().toArray(new String[allServersData.size()]);
         int keyPosition = Arrays.asList(mapKeys).indexOf(keyNode);
-        List<NodeServerData> nodeServerDataList = new ArrayList<>();
+		List<ServerData> nodeServerDataList = new ArrayList<>();
 
-        for (int i = 0; i < replicaFactor && i < nodeMap.size(); i++) {
-            nodeServerDataList.add(nodeMap.get(mapKeys[(nodeMap.size() + keyPosition + i) % nodeMap.size()]));
+		for (int i = 0; i < replicaFactor && i < allServersData.size(); i++) {
+			nodeServerDataList
+					.add(allServersData
+							.get(mapKeys[(allServersData.size() + keyPosition + i) % allServersData.size()]));
         }
-
         return nodeServerDataList;
     }
 
-    private NodeServerData getNodeByKey(int key) {
-        int num = (key + nodeMap.size()) % nodeMap.size();
-        String[] nodeKeys = nodeMap.keySet().toArray(new String[nodeMap.size()]);
-        return nodeMap.get(nodeKeys[num]);
+	private ServerData getNodeByKey(int key) {
+		int num = (key + allServersData.size()) % allServersData.size();
+		String[] nodeKeys = allServersData.keySet().toArray(new String[allServersData.size()]);
+		return allServersData.get(nodeKeys[num]);
     }
 
-    //Client Read Request
+	// co-ordinator processing client's read request
     private void processingClientReadRequest(Node.ClientReadRequest clientReadRequest, Socket clientSocket) {
         int key = clientReadRequest.getKey();
         //String value = clientReadRequest.getValue();
         Node.ConsistencyLevel clientConsistencyLevel = clientReadRequest.getConsistencyLevel();
 
-        NodeServerData primaryReplica = getNodeByKey(key);
+		ServerData primaryReplica = getNodeByKey(key);
 
         print(primaryReplica.toString());
-        List<NodeServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
+		List<ServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
         print(replicaServerList);
 
         String timeStamp = getCurrentTimeString();
 
         acknowledgementLogCoordinatorMap.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, null, replicaServerList));
 
-        for (NodeServerData replica : replicaServerList) {
+		for (ServerData replica : replicaServerList) {
 
             Node.GetKeyFromCoordinator.Builder getKeyFromCoordinatorBuilder = Node.GetKeyFromCoordinator.newBuilder();
 
@@ -143,31 +185,30 @@ public class Server {
                     .setGetKeyFromCoordinator(getKeyFromCoordinatorBuilder).build();
 
             try {
-                sendMessageToNodeSocket(replica, message);
+				sendMessageViaSocket(replica, message);
             } catch (IOException e) {
                 e.printStackTrace();
+				// update counter
             }
         }
     }
 
-    //Client Write Request
+	// co-ordinator processing client's write request
     private void processingClientWriteRequest(Node.ClientWriteRequest clientWriteRequest, Socket clientSocket) {
         int key = clientWriteRequest.getKey();
         String value = clientWriteRequest.getValue();
         Node.ConsistencyLevel clientConsistencyLevel = clientWriteRequest.getConsistencyLevel();
 
-        NodeServerData primaryReplica = getNodeByKey(key);
+		ServerData primaryReplica = getNodeByKey(key);
 
         print(primaryReplica.toString());
-        List<NodeServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
+		List<ServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
         print(replicaServerList);
 
         String timeStamp = getCurrentTimeString();
-
-
         acknowledgementLogCoordinatorMap.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, value, replicaServerList));
 
-        for (NodeServerData replica : replicaServerList) {
+		for (ServerData replica : replicaServerList) {
 
             Node.PutKeyFromCoordinator.Builder putKeyFromCoordinatorBuilder = Node.PutKeyFromCoordinator.newBuilder();
 
@@ -181,14 +222,29 @@ public class Server {
                     .setPutKeyFromCoordinator(putKeyFromCoordinatorBuilder).build();
 
             try {
-                sendMessageToNodeSocket(replica, message);
+				sendMessageViaSocket(replica, message);
             } catch (IOException e) {
                 e.printStackTrace();
+				System.out.println("replica server " + replica.getName() + " down");
+				ConflictingReplica conflictingReplica = new ConflictingReplica(replica, message);
+				addFailedWriteRequestForServer(replica, conflictingReplica);
             }
         }
     }
 
-    //Get Key From Coordinator
+	private void addFailedWriteRequestForServer(ServerData replica, ConflictingReplica conflictingReplica) {
+		String serverName = replica.getName();
+		if (failedWriteRequests.containsKey(serverName)) {
+			Queue<ConflictingReplica> messages = failedWriteRequests.get(serverName);
+			messages.add(conflictingReplica);
+		} else {
+			Queue<ConflictingReplica> messages = new LinkedList<>();
+			messages.add(conflictingReplica);
+			failedWriteRequests.put(serverName, messages);
+		}
+	}
+
+	// normal server processing getkey request from co-ordinator
     private void processingGetKeyFromCoordinator(Node.GetKeyFromCoordinator getKeyFromCoordinator) {
         int key = getKeyFromCoordinator.getKey();
         String timeStamp = getKeyFromCoordinator.getTimeStamp();
@@ -200,13 +256,11 @@ public class Server {
         acknowledgementBuilder.setReplicaName(name);
         acknowledgementBuilder.setRequestType(Node.RequestType.READ);
         acknowledgementBuilder.setCoordinatorTimeStamp(timeStamp);
-        if (keyValueMap.containsKey(key)) {
-            String value = keyValueMap.get(key).getValue();
-            String replicaTimeStamp = keyValueMap.get(key).getTimeStamp();
+		if (keyValueDataStore.containsKey(key)) {
+			String value = keyValueDataStore.get(key).getValue();
+			String replicaTimeStamp = keyValueDataStore.get(key).getTimeStamp();
 
-            print(keyValueMap.get(key));
-
-
+			print(keyValueDataStore.get(key));
             acknowledgementBuilder.setReplicaTimeStamp(replicaTimeStamp);
             acknowledgementBuilder.setValue(value);
 
@@ -218,142 +272,131 @@ public class Server {
 
         Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setAcknowledgementToCoordinator(acknowledgementBuilder).build();
 
-        NodeServerData coordinator = nodeMap.get(coordinatorName);
+		ServerData coordinator = allServersData.get(coordinatorName);
 
         // send acknowledgement to coordinator
         try {
-            sendMessageToNodeSocket(coordinator, message);
+			sendMessageViaSocket(coordinator, message);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    //Put Key From Coordinator Request
+	// normal server processing putkey request from co-ordinator
     private void processingPutKeyFromCoordinatorRequest(Node.PutKeyFromCoordinator putKeyFromCoordinator) {
-        int key = putKeyFromCoordinator.getKey();
-        String value = putKeyFromCoordinator.getValue();
-        String timeStamp = putKeyFromCoordinator.getTimeStamp();
-        String coordinatorName = putKeyFromCoordinator.getCoordinatorName();
+    	int key = putKeyFromCoordinator.getKey();
+    	String value = putKeyFromCoordinator.getValue();
+    	String timeStamp = putKeyFromCoordinator.getTimeStamp();
+    	String coordinatorName = putKeyFromCoordinator.getCoordinatorName();
 
-        // BEGINE : Nikhil's pre commite code
-        // Writting to log file.
-        File dir = new File("dir");
-        if (!dir.exists()) {
-            dir.mkdir();
-        }
+		// BEGIN : Nikhil's pre commite code
 
-        StringBuilder builder = new StringBuilder();
-        try {
-            this.logFileName = dir.getCanonicalPath() + "/" + builder.append(this.name).append("LogFile.txt").toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    	Node.LogMessage logMessage = Node.LogMessage.newBuilder().setKey(putKeyFromCoordinator.getKey())
+    			.setValue(putKeyFromCoordinator.getValue()).setTimeStamp(putKeyFromCoordinator.getTimeStamp())
+    			.setLogEndFlag(false).build();
+    	Node.LogBook.Builder logBook = Node.LogBook.newBuilder();
 
-        Node.LogMessage logMessage = Node.LogMessage.newBuilder().setKey(putKeyFromCoordinator.getKey())
-                .setValue(putKeyFromCoordinator.getValue()).setTimeStamp(putKeyFromCoordinator.getTimeStamp())
-                .setLogEndFlag(false).build();
-        Node.LogBook.Builder logBook = Node.LogBook.newBuilder();
+    	// Read the existing Log book.
+    	try {
+			logBook.mergeFrom(new FileInputStream(logFilePath));
+    	} catch (FileNotFoundException e) {
+    		System.out.println(": File not found.  Creating a new file.");
+    	} catch (IOException ex) {
+    		System.out.println("Error reading log file");
+    		ex.printStackTrace();
+    	}
 
-        // Read the existing Log book.
-        try {
-            logBook.mergeFrom(new FileInputStream(logFileName));
-        } catch (FileNotFoundException e) {
-            System.out.println(": File not found.  Creating a new file.");
-        } catch (IOException ex) {
-            System.out.println("Error reading log file");
-            ex.printStackTrace();
-        }
+    	// Add a logMessage.
+    	logBook.addLog(logMessage);
 
-        // Add a logMessage.
-        logBook.addLog(logMessage);
+    	// Write the new log book back to disk.
+    	FileOutputStream output;
+    	try {
+			output = new FileOutputStream(logFilePath);
+    		logBook.build().writeTo(output);
+    		output.close();
+    	} catch (FileNotFoundException e) {
+    		e.printStackTrace();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
 
-        // Write the new log book back to disk.
-        FileOutputStream output;
-        try {
-            output = new FileOutputStream(logFileName);
-            logBook.build().writeTo(output);
-            output.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    	// Read the existing Log book.
+    	logBook = Node.LogBook.newBuilder();
+    	try {
+			logBook.mergeFrom(new FileInputStream(logFilePath));
+    	} catch (FileNotFoundException e) {
+    		System.out.println(": File not found.  Creating a new file.");
+    	} catch (IOException ex) {
+    		System.out.println("Error reading log file");
+    		ex.printStackTrace();
+    	}
 
-        // Read the existing Log book.
-        logBook = Node.LogBook.newBuilder();
-        try {
-            logBook.mergeFrom(new FileInputStream(logFileName));
-        } catch (FileNotFoundException e) {
-            System.out.println(": File not found.  Creating a new file.");
-        } catch (IOException ex) {
-            System.out.println("Error reading log file");
-            ex.printStackTrace();
-        }
+    	// END: Nikhil's pre commite code
+    	// DONE : do pre-commit processing via log file and code
 
-        // END: Nikhil's pre commite code
-        // DONE : do pre-commit processing via log file and code
+    	Node.LogBook.Builder newLogBook = Node.LogBook.newBuilder();
+    	for (Node.LogMessage log : logBook.getLogList()) {
+    		if (log.getLogEndFlag()) {
+    			newLogBook.addLog(log);
+    		} else {
 
-        Node.LogBook.Builder newLogBook = Node.LogBook.newBuilder();
-        for (Node.LogMessage log : logBook.getLogList()) {
-            if (log.getLogEndFlag()) {
-                newLogBook.addLog(log);
-            } else {
+				if (keyValueDataStore.containsKey(log.getKey()))
+    			{
+    				//If key is present in our keyValue store then compare time-stamps
+					keyValueDataStore.get(log.getKey()).updateKeyWithValue(log.getTimeStamp(), log.getValue());
+    			}else {
+					keyValueDataStore.put(log.getKey(), new ValueMetaData(log.getTimeStamp(), log.getValue()));
+    			}
+    			// do post commit processing via log file and code
+    			// update log message and add to newLogBook
+    			Node.LogMessage newLogMessage = Node.LogMessage.newBuilder().setKey(log.getKey())
+    					.setValue(log.getValue()).setTimeStamp(log.getTimeStamp()).setLogEndFlag(true).build();
+    			newLogBook.addLog(newLogMessage);
 
-                if (keyValueMap.containsKey(log.getKey())) {
-                    //If key is present in our keyValue store then compare time-stamps
-                    keyValueMap.get(log.getKey()).updateKeyWithValue(log.getTimeStamp(), log.getValue());
-                } else {
-                    keyValueMap.put(log.getKey(), new ValueMetaData(log.getTimeStamp(), log.getValue()));
-                }
-                // do post commit processing via log file and code
-                // update log message and add to newLogBook
-                Node.LogMessage newLogMessage = Node.LogMessage.newBuilder().setKey(log.getKey())
-                        .setValue(log.getValue()).setTimeStamp(log.getTimeStamp()).setLogEndFlag(true).build();
-                newLogBook.addLog(newLogMessage);
+				print(keyValueDataStore.get(log.getKey()));
+    			// Create acknowledgement and message to coordinator
 
-                print(keyValueMap.get(log.getKey()));
-                // Create acknowledgement and message to coordinator
+    			if (!putKeyFromCoordinator.getIsReadRepair()) {
+    				Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator
+    						.newBuilder();
+    				acknowledgementBuilder.setKey(log.getKey());
+    				acknowledgementBuilder.setReplicaTimeStamp(log.getTimeStamp());
+    				acknowledgementBuilder.setCoordinatorTimeStamp(log.getTimeStamp());
+    				acknowledgementBuilder.setValue(log.getValue());
+    				acknowledgementBuilder.setReplicaName(name);
+    				acknowledgementBuilder.setRequestType(Node.RequestType.WRITE);
 
-                if (!putKeyFromCoordinator.getIsReadRepair()) {
-                    Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator
-                            .newBuilder();
-                    acknowledgementBuilder.setKey(log.getKey());
-                    acknowledgementBuilder.setReplicaTimeStamp(log.getTimeStamp());
-                    acknowledgementBuilder.setCoordinatorTimeStamp(log.getTimeStamp());
-                    acknowledgementBuilder.setValue(log.getValue());
-                    acknowledgementBuilder.setReplicaName(name);
-                    acknowledgementBuilder.setRequestType(Node.RequestType.WRITE);
+    				Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
+    						.setAcknowledgementToCoordinator(acknowledgementBuilder).build();
 
-                    Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
-                            .setAcknowledgementToCoordinator(acknowledgementBuilder).build();
+					ServerData coordinator = allServersData.get(coordinatorName);
 
-                    NodeServerData coordinator = nodeMap.get(coordinatorName);
+    				// send acknowledgement to coordinator
+    				try {
+						sendMessageViaSocket(coordinator, message);
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    				System.out.println("Write Ack message send to Coordinator : " + coordinatorName + " .....");
+    			}
+    		}
 
-                    // send acknowledgement to coordinator
-                    try {
-                        sendMessageToNodeSocket(coordinator, message);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.println("Write Ack message send to Coordinator : " + coordinatorName + " .....");
-                }
-            }
-
-            // Write updated logbook back to disk.
-            try {
-                output = new FileOutputStream(logFileName);
-                newLogBook.build().writeTo(output);
-                output.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    		// Write updated logbook back to disk.
+    		try {
+				output = new FileOutputStream(logFilePath);
+    			newLogBook.build().writeTo(output);
+    			output.close();
+    		} catch (FileNotFoundException e) {
+    			e.printStackTrace();
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    	}
 
     }
 
-    //Acknowledgement To Coordinator
+	// normal server sending acknowledgement To Coordinator
     private synchronized void processingAcknowledgementToCoordinator(Node.AcknowledgementToCoordinator acknowledgementToCoordinator) {
         int key = acknowledgementToCoordinator.getKey();
         String value = acknowledgementToCoordinator.getValue();
@@ -420,11 +463,10 @@ public class Server {
                         sentAcknowledgementToClient(key, acknowledgeData.getValue(), errorMessage, clientSocket);
                     }
 
-                    if (isSentToClient && acknowledgement.isInconsistent()) {
+                    if (isSentToClient && acknowledgement.isInconsistent() && acknowledgeCount == replicaFactor) {
                         processRequest();
                     }
                 }
-
             }
         }
     }
@@ -432,7 +474,7 @@ public class Server {
     //uncomment for the above if debug test
     //boolean debugFlag = true;
 
-
+	// co-ordinator sending acknowledgement to client
     private void sentAcknowledgementToClient(int key, String value, String errorMessage, Socket clientSocket) {
         Node.AcknowledgementToClient acknowledgementToClient = Node.AcknowledgementToClient.newBuilder().setKey(key).setValue(value).setErrorMessage(errorMessage).build();
         Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setAcknowledgementToClient(acknowledgementToClient).build();
@@ -448,12 +490,11 @@ public class Server {
         }
     }
 
-    private void sendMessageToNodeSocket(NodeServerData nodeServerData, Node.WrapperMessage message) throws IOException {
-        Socket nodeServerSocket = null;
-
-        nodeServerSocket = new Socket(nodeServerData.getIp(), nodeServerData.getPort());
-        message.writeDelimitedTo(nodeServerSocket.getOutputStream());
-        nodeServerSocket.close();
+	private void sendMessageViaSocket(ServerData serverData, Node.WrapperMessage wrapperMessage) throws IOException {
+		Socket socket = null;
+		socket = new Socket(serverData.getIp(), serverData.getPort());
+		wrapperMessage.writeDelimitedTo(socket.getOutputStream());
+		socket.close();
     }
 
     private String getCurrentTimeString() {
@@ -462,12 +503,26 @@ public class Server {
 
     public static void main(String[] args) {
 
-        Server server = new Server();
+		Server server = new Server();
+
+		File dir = new File("dir");
+		if (!dir.exists()) {
+			dir.mkdir();
+		}
+
+		// set server's log file path
+		StringBuilder builder = new StringBuilder();
+		try {
+			server.logFilePath = dir.getCanonicalPath() + "/"
+					+ builder.append(server.name).append("LogFile.txt").toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 
         if (args.length > 1) {
             server.portNumber = Integer.parseInt(args[0]);
-            server.filePath = args[1];
+			server.NodefilePath = args[1];
 
         } else {
             System.out.println("Invalid number of arguments to controller");

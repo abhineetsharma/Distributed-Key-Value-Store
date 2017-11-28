@@ -15,6 +15,7 @@ public class ValueMetaData {
         return timeStamp;
     }
 
+	// compares incomming timestamp with stored timestamp
     public void updateKeyWithValue(String timeStampI, String valueI) {
         if (timeStampI.compareTo(getTimeStamp()) >= 0) {
             value = valueI;

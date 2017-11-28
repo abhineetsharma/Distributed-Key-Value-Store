@@ -1,12 +1,13 @@
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Client {
     private static String filePath;
-    private static Map<String, NodeServerData> nodeMap;
+	private static Map<String, ServerData> nodeMap;
     private static boolean printFlag = true;// flag to stop print
 
     static {
@@ -22,7 +23,7 @@ public class Client {
             FileProcessor fPro = new FileProcessor(filePath);
             String str = "";
             while ((str = fPro.readLine()) != null) {
-                NodeServerData nodeServerData = new NodeServerData(str);
+				ServerData nodeServerData = new ServerData(str);
                 nodeMap.put(nodeServerData.getName(), nodeServerData);
             }
             print(nodeMap);

@@ -1,5 +1,10 @@
 import java.net.Socket;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public class AcknowledgementToClientListener {
@@ -11,12 +16,14 @@ public class AcknowledgementToClientListener {
     //private boolean isReadRepair;
 
 
-    public AcknowledgementToClientListener(String clientNameI, Socket clientSocketI, Node.ConsistencyLevel consistencyLevelI, String timeStampI, int keyI, String valueI, List<NodeServerData> nodeServerDataList) {
+	public AcknowledgementToClientListener(String clientNameI, Socket clientSocketI,
+			Node.ConsistencyLevel consistencyLevelI, String timeStampI, int keyI, String valueI,
+			List<ServerData> nodeServerDataList) {
         clientName = clientNameI;
         clientSocket = clientSocketI;
         requestConsistencyLevel = consistencyLevelI;
         replicaAcknowledgementMap = new ConcurrentSkipListMap<>();
-        for (NodeServerData node : nodeServerDataList)
+		for (ServerData node : nodeServerDataList)
             replicaAcknowledgementMap.put(node.getName(), new AcknowledgementData(keyI, valueI, timeStampI, node.getName()));
     }
 
