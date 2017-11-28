@@ -229,132 +229,127 @@ public class Server {
 
     //Put Key From Coordinator Request
     private void processingPutKeyFromCoordinatorRequest(Node.PutKeyFromCoordinator putKeyFromCoordinator) {
-        int key = putKeyFromCoordinator.getKey();
-        String value = putKeyFromCoordinator.getValue();
-        String timeStamp = putKeyFromCoordinator.getTimeStamp();
-        String coordinatorName = putKeyFromCoordinator.getCoordinatorName();
+    	int key = putKeyFromCoordinator.getKey();
+    	String value = putKeyFromCoordinator.getValue();
+    	String timeStamp = putKeyFromCoordinator.getTimeStamp();
+    	String coordinatorName = putKeyFromCoordinator.getCoordinatorName();
 
-        // BEGINE : Nikhil's pre commite code
-        // Writting to log file.
-        File dir = new File("dir");
-        if (!dir.exists()) {
-            dir.mkdir();
-        }
+    	// BEGINE : Nikhil's pre commite code
+    	// Writting to log file.
+    	File dir = new File("dir");
+    	if (!dir.exists()) {
+    		dir.mkdir();
+    	}
 
-        StringBuilder builder = new StringBuilder();
-        try {
-            this.logFileName = dir.getCanonicalPath() + "/" + builder.append(this.name).append("LogFile.txt").toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    	StringBuilder builder = new StringBuilder();
+    	try {
+    		this.logFileName = dir.getCanonicalPath() + "/" + builder.append(this.name).append("LogFile.txt").toString();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
 
-        Node.LogMessage logMessage = Node.LogMessage.newBuilder().setKey(putKeyFromCoordinator.getKey())
-                .setValue(putKeyFromCoordinator.getValue()).setTimeStamp(putKeyFromCoordinator.getTimeStamp())
-                .setLogEndFlag(false).build();
-        Node.LogBook.Builder logBook = Node.LogBook.newBuilder();
+    	Node.LogMessage logMessage = Node.LogMessage.newBuilder().setKey(putKeyFromCoordinator.getKey())
+    			.setValue(putKeyFromCoordinator.getValue()).setTimeStamp(putKeyFromCoordinator.getTimeStamp())
+    			.setLogEndFlag(false).build();
+    	Node.LogBook.Builder logBook = Node.LogBook.newBuilder();
 
-        // Read the existing Log book.
-        try {
-            logBook.mergeFrom(new FileInputStream(logFileName));
-        } catch (FileNotFoundException e) {
-            System.out.println(": File not found.  Creating a new file.");
-        } catch (IOException ex) {
-            System.out.println("Error reading log file");
-            ex.printStackTrace();
-        }
+    	// Read the existing Log book.
+    	try {
+    		logBook.mergeFrom(new FileInputStream(logFileName));
+    	} catch (FileNotFoundException e) {
+    		System.out.println(": File not found.  Creating a new file.");
+    	} catch (IOException ex) {
+    		System.out.println("Error reading log file");
+    		ex.printStackTrace();
+    	}
 
-        // Add a logMessage.
-        logBook.addLog(logMessage);
+    	// Add a logMessage.
+    	logBook.addLog(logMessage);
 
-        // Write the new log book back to disk.
-        FileOutputStream output;
-        try {
-            output = new FileOutputStream(logFileName);
-            logBook.build().writeTo(output);
-            output.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    	// Write the new log book back to disk.
+    	FileOutputStream output;
+    	try {
+    		output = new FileOutputStream(logFileName);
+    		logBook.build().writeTo(output);
+    		output.close();
+    	} catch (FileNotFoundException e) {
+    		e.printStackTrace();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
 
-        // Read the existing Log book.
-        logBook = Node.LogBook.newBuilder();
-        try {
-            logBook.mergeFrom(new FileInputStream(logFileName));
-        } catch (FileNotFoundException e) {
-            System.out.println(": File not found.  Creating a new file.");
-        } catch (IOException ex) {
-            System.out.println("Error reading log file");
-            ex.printStackTrace();
-        }
+    	// Read the existing Log book.
+    	logBook = Node.LogBook.newBuilder();
+    	try {
+    		logBook.mergeFrom(new FileInputStream(logFileName));
+    	} catch (FileNotFoundException e) {
+    		System.out.println(": File not found.  Creating a new file.");
+    	} catch (IOException ex) {
+    		System.out.println("Error reading log file");
+    		ex.printStackTrace();
+    	}
 
-        // END: Nikhil's pre commite code
-        // DONE : do pre-commit processing via log file and code
+    	// END: Nikhil's pre commite code
+    	// DONE : do pre-commit processing via log file and code
 
-        Node.LogBook.Builder newLogBook = Node.LogBook.newBuilder();
-        for (Node.LogMessage log : logBook.getLogList()) {
-        	if (log.getLogEndFlag()) {
-        		newLogBook.addLog(log);
-        	} else {
+    	Node.LogBook.Builder newLogBook = Node.LogBook.newBuilder();
+    	for (Node.LogMessage log : logBook.getLogList()) {
+    		if (log.getLogEndFlag()) {
+    			newLogBook.addLog(log);
+    		} else {
 
-        		if (keyValueMap.containsKey(log.getKey())) 
-        		{
-        			//If key is present in our keyValue store then compare time-stamps
-        			if(keyValueMap.get(log.getKey()).getTimeStamp().compareToIgnoreCase(log.getTimeStamp())<0)
-        			{
-        				keyValueMap.get(log.getKey()).updateKeyWithValue(log.getTimeStamp(), log.getValue());
-        			}
-        		}else {
-        			// this.dataStore.put(log.getKey(), log.getValue());
+    			if (keyValueMap.containsKey(log.getKey())) 
+    			{
+    				//If key is present in our keyValue store then compare time-stamps
+    				keyValueMap.get(log.getKey()).updateKeyWithValue(log.getTimeStamp(), log.getValue());
+    			}else {
+    				keyValueMap.put(log.getKey(), new ValueMetaData(log.getTimeStamp(), log.getValue()));
+    			}
+    			// do post commit processing via log file and code
+    			// update log message and add to newLogBook
+    			Node.LogMessage newLogMessage = Node.LogMessage.newBuilder().setKey(log.getKey())
+    					.setValue(log.getValue()).setTimeStamp(log.getTimeStamp()).setLogEndFlag(true).build();
+    			newLogBook.addLog(newLogMessage);
 
-        			keyValueMap.put(log.getKey(), new ValueMetaData(log.getTimeStamp(), log.getValue()));
-        		}
-        		// do post commit processing via log file and code
-        		// update log message and add to newLogBook
-        		Node.LogMessage newLogMessage = Node.LogMessage.newBuilder().setKey(log.getKey())
-        				.setValue(log.getValue()).setTimeStamp(log.getTimeStamp()).setLogEndFlag(true).build();
-        		newLogBook.addLog(newLogMessage);
+    			print(keyValueMap.get(log.getKey()));
+    			// Create acknowledgement and message to coordinator
 
-        		print(keyValueMap.get(log.getKey()));
-        		// Create acknowledgement and message to coordinator
+    			if (!putKeyFromCoordinator.getIsReadRepair()) {
+    				Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator
+    						.newBuilder();
+    				acknowledgementBuilder.setKey(log.getKey());
+    				acknowledgementBuilder.setReplicaTimeStamp(log.getTimeStamp());
+    				acknowledgementBuilder.setCoordinatorTimeStamp(log.getTimeStamp());
+    				acknowledgementBuilder.setValue(log.getValue());
+    				acknowledgementBuilder.setReplicaName(name);
+    				acknowledgementBuilder.setRequestType(Node.RequestType.WRITE);
 
-        		if (!putKeyFromCoordinator.getIsReadRepair()) {
-        			Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator
-        					.newBuilder();
-        			acknowledgementBuilder.setKey(log.getKey());
-        			acknowledgementBuilder.setReplicaTimeStamp(log.getTimeStamp());
-        			acknowledgementBuilder.setCoordinatorTimeStamp(log.getTimeStamp());
-        			acknowledgementBuilder.setValue(log.getValue());
-        			acknowledgementBuilder.setReplicaName(name);
-        			acknowledgementBuilder.setRequestType(Node.RequestType.WRITE);
+    				Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
+    						.setAcknowledgementToCoordinator(acknowledgementBuilder).build();
 
-        			Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
-        					.setAcknowledgementToCoordinator(acknowledgementBuilder).build();
+    				NodeServerData coordinator = nodeMap.get(coordinatorName);
 
-        			NodeServerData coordinator = nodeMap.get(coordinatorName);
+    				// send acknowledgement to coordinator
+    				try {
+    					sendMessageToNodeSocket(coordinator, message);
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    				System.out.println("Write Ack message send to Coordinator : " + coordinatorName + " .....");
+    			}
+    		}
 
-        			// send acknowledgement to coordinator
-        			try {
-        				sendMessageToNodeSocket(coordinator, message);
-        			} catch (IOException e) {
-        				e.printStackTrace();
-        			}
-        			System.out.println("Write Ack message send to Coordinator : " + coordinatorName + " .....");
-        		}
-        	}
-
-        	// Write updated logbook back to disk.
-        	try {
-        		output = new FileOutputStream(logFileName);
-        		newLogBook.build().writeTo(output);
-        		output.close();
-        	} catch (FileNotFoundException e) {
-        		e.printStackTrace();
-        	} catch (IOException e) {
-        		e.printStackTrace();
-        	}
-        }
+    		// Write updated logbook back to disk.
+    		try {
+    			output = new FileOutputStream(logFileName);
+    			newLogBook.build().writeTo(output);
+    			output.close();
+    		} catch (FileNotFoundException e) {
+    			e.printStackTrace();
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    	}
 
     }
 
