@@ -1,12 +1,11 @@
 public class ConflictingReplica {
     private Node.WrapperMessage message;
-    private NodeServerData nodeServerData;
-    private Node.RequestType requestType;
+	private ServerData nodeServerData;
 
-    public ConflictingReplica(NodeServerData nodeServerDataI, Node.WrapperMessage messageI, Node.RequestType requestTypeI) {
+
+	public ConflictingReplica(ServerData nodeServerDataI, Node.WrapperMessage messageI, Node.RequestType requestTypeI) {
         nodeServerData = nodeServerDataI;
         message = messageI;
-        requestType = requestTypeI;
     }
 
     @Override
@@ -15,7 +14,6 @@ public class ConflictingReplica {
         if (o == null || getClass() != o.getClass()) return false;
 
         ConflictingReplica that = (ConflictingReplica) o;
-
         return nodeServerData.equals(that.getNodeServerData());
     }
 
@@ -28,11 +26,8 @@ public class ConflictingReplica {
         return message;
     }
 
-    public NodeServerData getNodeServerData() {
+	public ServerData getNodeServerData() {
         return nodeServerData;
     }
 
-    public Node.RequestType getRequestType() {
-        return requestType;
-    }
 }

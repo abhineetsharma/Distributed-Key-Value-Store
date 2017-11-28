@@ -17,24 +17,28 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 public class Server {
 
-    //<editor-fold desc="Variables ">
+	// this server details
     private int portNumber;
     private String name;
-	private String Nodefile;
+	private String ip;
+	private int replicaFactor;
 
-    private String ip;
-    private Map<String, NodeServerData> nodeMap;
+	// file paths
+	private String NodefilePath;
+	private String logFilePath;
+
+	// data structures
+	private Map<String, ServerData> allServersData;
     private Map<Integer, ValueMetaData> keyValueMap;
     private Map<String, AcknowledgementToClientListener> acknowledgementLogCoordinatorMap;
-	private String logFilePath;
-    private static boolean printFlag = true;// flag to stop print
-    private int replicaFactor;
-    //</editor-fold>
+
+	// flag to stop print
+	private static boolean printFlag = true;
 
     private void initServer() {
         // server information read by the server read by server
-		FileProcessor fPro = new FileProcessor(Nodefile);
-        nodeMap = new TreeMap<>();
+		FileProcessor fPro = new FileProcessor(NodefilePath);
+		allServersData = new TreeMap<>();
         keyValueMap = new ConcurrentSkipListMap<>();
         acknowledgementLogCoordinatorMap = new ConcurrentSkipListMap<>();
         replicaFactor = 4;
@@ -42,8 +46,8 @@ public class Server {
         try {
             if (fPro.countLines() >= replicaFactor) {
                 while ((str = fPro.readLine()) != null) {
-                    NodeServerData nodeServerData = new NodeServerData(str);
-                    nodeMap.put(nodeServerData.getName(), nodeServerData);
+					ServerData nodeServerData = new ServerData(str);
+					allServersData.put(nodeServerData.getName(), nodeServerData);
 
                     if (nodeServerData.getPort() == portNumber) {
                         name = nodeServerData.getName();
@@ -113,7 +117,8 @@ public class Server {
                             putKeyFromCoordinatorToConflictingReplicaBuilder.setIsReadRepair(true);
                             Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setPutKeyFromCoordinator(putKeyFromCoordinatorToConflictingReplicaBuilder).build();
                             try {
-                                sendMessageToNodeSocket(nodeMap.get(conflictingReplica.getReplicaName()), message);
+								sendMessageToNodeSocket(allServersData.get(conflictingReplica.getReplicaName()),
+										message);
                             } catch (IOException ex) {
                                 ex.printStackTrace();
                             }
@@ -129,22 +134,24 @@ public class Server {
     }
 
     //to get the replica server list
-    private List<NodeServerData> getReplicaServersList(String keyNode) {
-        String[] mapKeys = this.nodeMap.keySet().toArray(new String[nodeMap.size()]);
+	private List<ServerData> getReplicaServersList(String keyNode) {
+		String[] mapKeys = this.allServersData.keySet().toArray(new String[allServersData.size()]);
         int keyPosition = Arrays.asList(mapKeys).indexOf(keyNode);
-        List<NodeServerData> nodeServerDataList = new ArrayList<>();
+		List<ServerData> nodeServerDataList = new ArrayList<>();
 
-        for (int i = 0; i < replicaFactor && i < nodeMap.size(); i++) {
-            nodeServerDataList.add(nodeMap.get(mapKeys[(nodeMap.size() + keyPosition + i) % nodeMap.size()]));
+		for (int i = 0; i < replicaFactor && i < allServersData.size(); i++) {
+			nodeServerDataList
+					.add(allServersData
+							.get(mapKeys[(allServersData.size() + keyPosition + i) % allServersData.size()]));
         }
 
         return nodeServerDataList;
     }
 
-    private NodeServerData getNodeByKey(int key) {
-        int num = (key + nodeMap.size()) % nodeMap.size();
-        String[] nodeKeys = nodeMap.keySet().toArray(new String[nodeMap.size()]);
-        return nodeMap.get(nodeKeys[num]);
+	private ServerData getNodeByKey(int key) {
+		int num = (key + allServersData.size()) % allServersData.size();
+		String[] nodeKeys = allServersData.keySet().toArray(new String[allServersData.size()]);
+		return allServersData.get(nodeKeys[num]);
     }
 
     //Client Read Request
@@ -153,17 +160,17 @@ public class Server {
         //String value = clientReadRequest.getValue();
         Node.ConsistencyLevel clientConsistencyLevel = clientReadRequest.getConsistencyLevel();
 
-        NodeServerData primaryReplica = getNodeByKey(key);
+		ServerData primaryReplica = getNodeByKey(key);
 
         print(primaryReplica.toString());
-        List<NodeServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
+		List<ServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
         print(replicaServerList);
 
         String timeStamp = getCurrentTimeString();
 
         acknowledgementLogCoordinatorMap.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, null, replicaServerList));
 
-        for (NodeServerData replica : replicaServerList) {
+		for (ServerData replica : replicaServerList) {
 
             Node.GetKeyFromCoordinator.Builder getKeyFromCoordinatorBuilder = Node.GetKeyFromCoordinator.newBuilder();
 
@@ -188,10 +195,10 @@ public class Server {
         String value = clientWriteRequest.getValue();
         Node.ConsistencyLevel clientConsistencyLevel = clientWriteRequest.getConsistencyLevel();
 
-        NodeServerData primaryReplica = getNodeByKey(key);
+		ServerData primaryReplica = getNodeByKey(key);
 
         print(primaryReplica.toString());
-        List<NodeServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
+		List<ServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
         print(replicaServerList);
 
         String timeStamp = getCurrentTimeString();
@@ -199,7 +206,7 @@ public class Server {
 
         acknowledgementLogCoordinatorMap.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, value, replicaServerList));
 
-        for (NodeServerData replica : replicaServerList) {
+		for (ServerData replica : replicaServerList) {
 
             Node.PutKeyFromCoordinator.Builder putKeyFromCoordinatorBuilder = Node.PutKeyFromCoordinator.newBuilder();
 
@@ -250,7 +257,7 @@ public class Server {
 
         Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setAcknowledgementToCoordinator(acknowledgementBuilder).build();
 
-        NodeServerData coordinator = nodeMap.get(coordinatorName);
+		ServerData coordinator = allServersData.get(coordinatorName);
 
         // send acknowledgement to coordinator
         try {
@@ -348,7 +355,7 @@ public class Server {
     				Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
     						.setAcknowledgementToCoordinator(acknowledgementBuilder).build();
 
-    				NodeServerData coordinator = nodeMap.get(coordinatorName);
+					ServerData coordinator = allServersData.get(coordinatorName);
 
     				// send acknowledgement to coordinator
     				try {
@@ -469,7 +476,7 @@ public class Server {
         }
     }
 
-    private void sendMessageToNodeSocket(NodeServerData nodeServerData, Node.WrapperMessage message) throws IOException {
+	private void sendMessageToNodeSocket(ServerData nodeServerData, Node.WrapperMessage message) throws IOException {
         Socket nodeServerSocket = null;
 
         nodeServerSocket = new Socket(nodeServerData.getIp(), nodeServerData.getPort());
@@ -502,7 +509,7 @@ public class Server {
 
         if (args.length > 1) {
             server.portNumber = Integer.parseInt(args[0]);
-			server.Nodefile = args[1];
+			server.NodefilePath = args[1];
 
         } else {
             System.out.println("Invalid number of arguments to controller");

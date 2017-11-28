@@ -1,18 +1,16 @@
-public class NodeServerData {
+public class ServerData {
     private String name;
     private String ip;
     private int port;
 
-    public NodeServerData(String str) {
+	public ServerData(String str) {
         String[] sarr = str.split(" ");
         if (sarr.length == 3) {
             name = sarr[0];
             ip = sarr[1];
             port = Integer.parseInt(sarr[2]);
         }
-
     }
-
 
     public String getName() {
         return name;
@@ -36,7 +34,7 @@ public class NodeServerData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        NodeServerData that = (NodeServerData) o;
+		ServerData that = (ServerData) o;
 
         if (port != that.port) return false;
         return name.equals(that.name);
