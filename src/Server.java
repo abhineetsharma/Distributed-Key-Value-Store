@@ -1,13 +1,17 @@
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 
@@ -16,19 +20,20 @@ public class Server {
     //<editor-fold desc="Variables ">
     private int portNumber;
     private String name;
-    private String filePath;
+	private String Nodefile;
+
     private String ip;
     private Map<String, NodeServerData> nodeMap;
     private Map<Integer, ValueMetaData> keyValueMap;
     private Map<String, AcknowledgementToClientListener> acknowledgementLogCoordinatorMap;
-    private String logFileName;
+	private String logFilePath;
     private static boolean printFlag = true;// flag to stop print
     private int replicaFactor;
     //</editor-fold>
 
     private void initServer() {
         // server information read by the server read by server
-        FileProcessor fPro = new FileProcessor(filePath);
+		FileProcessor fPro = new FileProcessor(Nodefile);
         nodeMap = new TreeMap<>();
         keyValueMap = new ConcurrentSkipListMap<>();
         acknowledgementLogCoordinatorMap = new ConcurrentSkipListMap<>();
@@ -49,6 +54,34 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+		File file = new File(logFilePath);
+		if (file.exists()) {
+			Node.LogBook.Builder logBook = Node.LogBook.newBuilder();
+
+			// Read the existing Log book.
+			try {
+				logBook.mergeFrom(new FileInputStream(logFilePath));
+			} catch (FileNotFoundException e) {
+				System.out.println(": File not found.  Creating a new file.");
+			} catch (IOException ex) {
+				System.out.println("Error reading log file");
+				ex.printStackTrace();
+			}
+
+			// copy log messages with log-end flag = 1 to key-value Map
+			for (Node.LogMessage log : logBook.getLogList()) {
+				if (log.getLogEndFlag()) {
+					if (keyValueMap.containsKey(log.getKey())) {
+						// If key is present in our keyValue store then compare time-stamps
+						keyValueMap.get(log.getKey()).updateKeyWithValue(log.getTimeStamp(), log.getValue());
+					} else {
+						keyValueMap.put(log.getKey(), new ValueMetaData(log.getTimeStamp(), log.getValue()));
+					}
+				}
+			}
+		}
+
     }
 
     private static void print(Object obj) {
@@ -234,19 +267,7 @@ public class Server {
     	String timeStamp = putKeyFromCoordinator.getTimeStamp();
     	String coordinatorName = putKeyFromCoordinator.getCoordinatorName();
 
-    	// BEGINE : Nikhil's pre commite code
-    	// Writting to log file.
-    	File dir = new File("dir");
-    	if (!dir.exists()) {
-    		dir.mkdir();
-    	}
-
-    	StringBuilder builder = new StringBuilder();
-    	try {
-    		this.logFileName = dir.getCanonicalPath() + "/" + builder.append(this.name).append("LogFile.txt").toString();
-    	} catch (IOException e) {
-    		e.printStackTrace();
-    	}
+		// BEGINE : Nikhil's pre commite code
 
     	Node.LogMessage logMessage = Node.LogMessage.newBuilder().setKey(putKeyFromCoordinator.getKey())
     			.setValue(putKeyFromCoordinator.getValue()).setTimeStamp(putKeyFromCoordinator.getTimeStamp())
@@ -255,7 +276,7 @@ public class Server {
 
     	// Read the existing Log book.
     	try {
-    		logBook.mergeFrom(new FileInputStream(logFileName));
+			logBook.mergeFrom(new FileInputStream(logFilePath));
     	} catch (FileNotFoundException e) {
     		System.out.println(": File not found.  Creating a new file.");
     	} catch (IOException ex) {
@@ -269,7 +290,7 @@ public class Server {
     	// Write the new log book back to disk.
     	FileOutputStream output;
     	try {
-    		output = new FileOutputStream(logFileName);
+			output = new FileOutputStream(logFilePath);
     		logBook.build().writeTo(output);
     		output.close();
     	} catch (FileNotFoundException e) {
@@ -281,7 +302,7 @@ public class Server {
     	// Read the existing Log book.
     	logBook = Node.LogBook.newBuilder();
     	try {
-    		logBook.mergeFrom(new FileInputStream(logFileName));
+			logBook.mergeFrom(new FileInputStream(logFilePath));
     	} catch (FileNotFoundException e) {
     		System.out.println(": File not found.  Creating a new file.");
     	} catch (IOException ex) {
@@ -341,7 +362,7 @@ public class Server {
 
     		// Write updated logbook back to disk.
     		try {
-    			output = new FileOutputStream(logFileName);
+				output = new FileOutputStream(logFilePath);
     			newLogBook.build().writeTo(output);
     			output.close();
     		} catch (FileNotFoundException e) {
@@ -462,12 +483,26 @@ public class Server {
 
     public static void main(String[] args) {
 
-        Server server = new Server();
+		Server server = new Server();
+
+		File dir = new File("dir");
+		if (!dir.exists()) {
+			dir.mkdir();
+		}
+
+		// set server's log file path
+		StringBuilder builder = new StringBuilder();
+		try {
+			server.logFilePath = dir.getCanonicalPath() + "/"
+					+ builder.append(server.name).append("LogFile.txt").toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 
         if (args.length > 1) {
             server.portNumber = Integer.parseInt(args[0]);
-            server.filePath = args[1];
+			server.Nodefile = args[1];
 
         } else {
             System.out.println("Invalid number of arguments to controller");
