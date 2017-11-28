@@ -8,9 +8,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Queue;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
@@ -29,18 +32,20 @@ public class Server {
 
 	// data structures
 	private Map<String, ServerData> allServersData;
-    private Map<Integer, ValueMetaData> keyValueMap;
+	private Map<Integer, ValueMetaData> keyValueDataStore;
     private Map<String, AcknowledgementToClientListener> acknowledgementLogCoordinatorMap;
+	private Map<String, Queue<ConflictingReplica>> failedWriteRequests;
 
 	// flag to stop print
 	private static boolean printFlag = true;
 
     private void initServer() {
-        // server information read by the server read by server
+		// read Node.txt and write into allServerData
 		FileProcessor fPro = new FileProcessor(NodefilePath);
 		allServersData = new TreeMap<>();
-        keyValueMap = new ConcurrentSkipListMap<>();
+		keyValueDataStore = new ConcurrentSkipListMap<>();
         acknowledgementLogCoordinatorMap = new ConcurrentSkipListMap<>();
+		failedWriteRequests = new HashMap<>();
         replicaFactor = 4;
         String str = "";
         try {
@@ -59,6 +64,7 @@ public class Server {
             e.printStackTrace();
         }
 
+		// read logFile for recovery from failure
 		File file = new File(logFilePath);
 		if (file.exists()) {
 			Node.LogBook.Builder logBook = Node.LogBook.newBuilder();
@@ -76,16 +82,15 @@ public class Server {
 			// copy log messages with log-end flag = 1 to key-value Map
 			for (Node.LogMessage log : logBook.getLogList()) {
 				if (log.getLogEndFlag()) {
-					if (keyValueMap.containsKey(log.getKey())) {
+					if (keyValueDataStore.containsKey(log.getKey())) {
 						// If key is present in our keyValue store then compare time-stamps
-						keyValueMap.get(log.getKey()).updateKeyWithValue(log.getTimeStamp(), log.getValue());
+						keyValueDataStore.get(log.getKey()).updateKeyWithValue(log.getTimeStamp(), log.getValue());
 					} else {
-						keyValueMap.put(log.getKey(), new ValueMetaData(log.getTimeStamp(), log.getValue()));
+						keyValueDataStore.put(log.getKey(), new ValueMetaData(log.getTimeStamp(), log.getValue()));
 					}
 				}
 			}
 		}
-
     }
 
     private static void print(Object obj) {
@@ -101,7 +106,7 @@ public class Server {
     private void processRequest() {
         Thread thread = new Thread(() -> {
 
-            for (Entry<String, AcknowledgementToClientListener> e : acknowledgementLogCoordinatorMap.entrySet()) {
+			for (Entry<String, AcknowledgementToClientListener> e : acknowledgementLogCoordinatorMap.entrySet()) {
                 AcknowledgementToClientListener allReplicasEntry = e.getValue();
                 if (allReplicasEntry.isSentToClient()) {
                     List<String> replicaAcknowledgementList = allReplicasEntry.getAcknowledgedListForTimeStamp();
@@ -116,18 +121,17 @@ public class Server {
                             putKeyFromCoordinatorToConflictingReplicaBuilder.setCoordinatorName(LatestTimeStampedReplicaData.getReplicaName());
                             putKeyFromCoordinatorToConflictingReplicaBuilder.setIsReadRepair(true);
                             Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setPutKeyFromCoordinator(putKeyFromCoordinatorToConflictingReplicaBuilder).build();
+							ServerData server = allServersData.get(conflictingReplica.getReplicaName());
                             try {
-								sendMessageToNodeSocket(allServersData.get(conflictingReplica.getReplicaName()),
-										message);
+								sendMessageViaSocket(server, message);
                             } catch (IOException ex) {
                                 ex.printStackTrace();
+								ConflictingReplica conflictingServer = new ConflictingReplica(server, message);
+								addFailedWriteRequestForServer(server, conflictingServer);
                             }
                         }
                     }
-
-
                 }
-
             }
         });
         thread.start();
@@ -144,7 +148,6 @@ public class Server {
 					.add(allServersData
 							.get(mapKeys[(allServersData.size() + keyPosition + i) % allServersData.size()]));
         }
-
         return nodeServerDataList;
     }
 
@@ -154,7 +157,7 @@ public class Server {
 		return allServersData.get(nodeKeys[num]);
     }
 
-    //Client Read Request
+	// co-ordinator processing client's read request
     private void processingClientReadRequest(Node.ClientReadRequest clientReadRequest, Socket clientSocket) {
         int key = clientReadRequest.getKey();
         //String value = clientReadRequest.getValue();
@@ -182,14 +185,15 @@ public class Server {
                     .setGetKeyFromCoordinator(getKeyFromCoordinatorBuilder).build();
 
             try {
-                sendMessageToNodeSocket(replica, message);
+				sendMessageViaSocket(replica, message);
             } catch (IOException e) {
                 e.printStackTrace();
+				// update counter
             }
         }
     }
 
-    //Client Write Request
+	// co-ordinator processing client's write request
     private void processingClientWriteRequest(Node.ClientWriteRequest clientWriteRequest, Socket clientSocket) {
         int key = clientWriteRequest.getKey();
         String value = clientWriteRequest.getValue();
@@ -202,8 +206,6 @@ public class Server {
         print(replicaServerList);
 
         String timeStamp = getCurrentTimeString();
-
-
         acknowledgementLogCoordinatorMap.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, value, replicaServerList));
 
 		for (ServerData replica : replicaServerList) {
@@ -220,14 +222,29 @@ public class Server {
                     .setPutKeyFromCoordinator(putKeyFromCoordinatorBuilder).build();
 
             try {
-                sendMessageToNodeSocket(replica, message);
+				sendMessageViaSocket(replica, message);
             } catch (IOException e) {
                 e.printStackTrace();
+				System.out.println("replica server " + replica.getName() + " down");
+				ConflictingReplica conflictingReplica = new ConflictingReplica(replica, message);
+				addFailedWriteRequestForServer(replica, conflictingReplica);
             }
         }
     }
 
-    //Get Key From Coordinator
+	private void addFailedWriteRequestForServer(ServerData replica, ConflictingReplica conflictingReplica) {
+		String serverName = replica.getName();
+		if (failedWriteRequests.containsKey(serverName)) {
+			Queue<ConflictingReplica> messages = failedWriteRequests.get(serverName);
+			messages.add(conflictingReplica);
+		} else {
+			Queue<ConflictingReplica> messages = new LinkedList<>();
+			messages.add(conflictingReplica);
+			failedWriteRequests.put(serverName, messages);
+		}
+	}
+
+	// normal server processing getkey request from co-ordinator
     private void processingGetKeyFromCoordinator(Node.GetKeyFromCoordinator getKeyFromCoordinator) {
         int key = getKeyFromCoordinator.getKey();
         String timeStamp = getKeyFromCoordinator.getTimeStamp();
@@ -239,13 +256,11 @@ public class Server {
         acknowledgementBuilder.setReplicaName(name);
         acknowledgementBuilder.setRequestType(Node.RequestType.READ);
         acknowledgementBuilder.setCoordinatorTimeStamp(timeStamp);
-        if (keyValueMap.containsKey(key)) {
-            String value = keyValueMap.get(key).getValue();
-            String replicaTimeStamp = keyValueMap.get(key).getTimeStamp();
+		if (keyValueDataStore.containsKey(key)) {
+			String value = keyValueDataStore.get(key).getValue();
+			String replicaTimeStamp = keyValueDataStore.get(key).getTimeStamp();
 
-            print(keyValueMap.get(key));
-
-
+			print(keyValueDataStore.get(key));
             acknowledgementBuilder.setReplicaTimeStamp(replicaTimeStamp);
             acknowledgementBuilder.setValue(value);
 
@@ -261,20 +276,20 @@ public class Server {
 
         // send acknowledgement to coordinator
         try {
-            sendMessageToNodeSocket(coordinator, message);
+			sendMessageViaSocket(coordinator, message);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    //Put Key From Coordinator Request
+	// normal server processing putkey request from co-ordinator
     private void processingPutKeyFromCoordinatorRequest(Node.PutKeyFromCoordinator putKeyFromCoordinator) {
     	int key = putKeyFromCoordinator.getKey();
     	String value = putKeyFromCoordinator.getValue();
     	String timeStamp = putKeyFromCoordinator.getTimeStamp();
     	String coordinatorName = putKeyFromCoordinator.getCoordinatorName();
 
-		// BEGINE : Nikhil's pre commite code
+		// BEGIN : Nikhil's pre commite code
 
     	Node.LogMessage logMessage = Node.LogMessage.newBuilder().setKey(putKeyFromCoordinator.getKey())
     			.setValue(putKeyFromCoordinator.getValue()).setTimeStamp(putKeyFromCoordinator.getTimeStamp())
@@ -326,12 +341,12 @@ public class Server {
     			newLogBook.addLog(log);
     		} else {
 
-    			if (keyValueMap.containsKey(log.getKey())) 
+				if (keyValueDataStore.containsKey(log.getKey()))
     			{
     				//If key is present in our keyValue store then compare time-stamps
-    				keyValueMap.get(log.getKey()).updateKeyWithValue(log.getTimeStamp(), log.getValue());
+					keyValueDataStore.get(log.getKey()).updateKeyWithValue(log.getTimeStamp(), log.getValue());
     			}else {
-    				keyValueMap.put(log.getKey(), new ValueMetaData(log.getTimeStamp(), log.getValue()));
+					keyValueDataStore.put(log.getKey(), new ValueMetaData(log.getTimeStamp(), log.getValue()));
     			}
     			// do post commit processing via log file and code
     			// update log message and add to newLogBook
@@ -339,7 +354,7 @@ public class Server {
     					.setValue(log.getValue()).setTimeStamp(log.getTimeStamp()).setLogEndFlag(true).build();
     			newLogBook.addLog(newLogMessage);
 
-    			print(keyValueMap.get(log.getKey()));
+				print(keyValueDataStore.get(log.getKey()));
     			// Create acknowledgement and message to coordinator
 
     			if (!putKeyFromCoordinator.getIsReadRepair()) {
@@ -359,7 +374,7 @@ public class Server {
 
     				// send acknowledgement to coordinator
     				try {
-    					sendMessageToNodeSocket(coordinator, message);
+						sendMessageViaSocket(coordinator, message);
     				} catch (IOException e) {
     					e.printStackTrace();
     				}
@@ -381,7 +396,7 @@ public class Server {
 
     }
 
-    //Acknowledgement To Coordinator
+	// normal server sending acknowledgement To Coordinator
     private synchronized void processingAcknowledgementToCoordinator(Node.AcknowledgementToCoordinator acknowledgementToCoordinator) {
         int key = acknowledgementToCoordinator.getKey();
         String value = acknowledgementToCoordinator.getValue();
@@ -452,7 +467,6 @@ public class Server {
                         processRequest();
                     }
                 }
-
             }
         }
     }
@@ -460,7 +474,7 @@ public class Server {
     //uncomment for the above if debug test
     //boolean debugFlag = true;
 
-
+	// co-ordinator sending acknowledgement to client
     private void sentAcknowledgementToClient(int key, String value, String errorMessage, Socket clientSocket) {
         Node.AcknowledgementToClient acknowledgementToClient = Node.AcknowledgementToClient.newBuilder().setKey(key).setValue(value).setErrorMessage(errorMessage).build();
         Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setAcknowledgementToClient(acknowledgementToClient).build();
@@ -476,12 +490,11 @@ public class Server {
         }
     }
 
-	private void sendMessageToNodeSocket(ServerData nodeServerData, Node.WrapperMessage message) throws IOException {
-        Socket nodeServerSocket = null;
-
-        nodeServerSocket = new Socket(nodeServerData.getIp(), nodeServerData.getPort());
-        message.writeDelimitedTo(nodeServerSocket.getOutputStream());
-        nodeServerSocket.close();
+	private void sendMessageViaSocket(ServerData serverData, Node.WrapperMessage wrapperMessage) throws IOException {
+		Socket socket = null;
+		socket = new Socket(serverData.getIp(), serverData.getPort());
+		wrapperMessage.writeDelimitedTo(socket.getOutputStream());
+		socket.close();
     }
 
     private String getCurrentTimeString() {
