@@ -39,11 +39,11 @@ public class AcknowledgementToClientListener {
         return replicaAcknowledgementMap;
     }
 
-    public AcknowledgementData getAcknowledgementDataByServerName(String nodeName) {
+    public synchronized AcknowledgementData getAcknowledgementDataByServerName(String nodeName) {
         return replicaAcknowledgementMap.get(nodeName);
     }
 
-    public synchronized List<String> getAcknowledgedListForTimeStamp() {
+    public synchronized List<String>    getAcknowledgedListForTimeStamp() {
         List<AcknowledgementData> AcknowledgementDataList = new ArrayList<>();
         for (String name : replicaAcknowledgementMap.keySet()) {
             AcknowledgementData data = replicaAcknowledgementMap.get(name);
