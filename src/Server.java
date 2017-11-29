@@ -33,7 +33,7 @@ public class Server {
     private Map<String, ServerData> allServersData;
     private Map<Integer, ValueMetaData> keyValueDataStore;
     private Map<String, AcknowledgementToClientListener> acknowledgementLogCoordinatorMap;
-    private Map<String, Queue<ConflictingReplica>> failedWriteRequests;
+    private Map<String, List<ConflictingReplica>> failedWriteRequests;
 
     // flag to stop print
     private static boolean printFlag = true;
@@ -137,7 +137,7 @@ public class Server {
         String timeStamp = getCurrentTimeString();
 
         acknowledgementLogCoordinatorMap.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, null, replicaServerList));
-
+        int messageSentCounterToReplica = 0;
         for (ServerData replica : replicaServerList) {
 
             Node.GetKeyFromCoordinator.Builder getKeyFromCoordinatorBuilder = Node.GetKeyFromCoordinator.newBuilder();
@@ -151,9 +151,16 @@ public class Server {
 
             try {
                 sendMessageViaSocket(replica, message);
+                messageSentCounterToReplica++;
             } catch (IOException e) {
                 e.printStackTrace();
                 // update counter
+            }
+            if (messageSentCounterToReplica < clientConsistencyLevel.getNumber()) {
+                //return client an error message
+                String errorMessage = "Cannot find the key " + key;
+                sentAcknowledgementToClient(key, null, errorMessage, clientSocket);
+                acknowledgementLogCoordinatorMap.remove(timeStamp);
             }
         }
     }
@@ -200,10 +207,10 @@ public class Server {
     private void addFailedWriteRequestForServer(ServerData replica, ConflictingReplica conflictingReplica) {
         String serverName = replica.getName();
         if (failedWriteRequests.containsKey(serverName)) {
-            Queue<ConflictingReplica> messages = failedWriteRequests.get(serverName);
+            List<ConflictingReplica> messages = failedWriteRequests.get(serverName);
             messages.add(conflictingReplica);
         } else {
-            Queue<ConflictingReplica> messages = new LinkedList<>();
+            List<ConflictingReplica> messages = new ArrayList<>();
             messages.add(conflictingReplica);
             failedWriteRequests.put(serverName, messages);
         }
@@ -379,7 +386,6 @@ public class Server {
             AcknowledgementData acknowledgementData = acknowledgement.getAcknowledgementDataByServerName(replicaName);
 
             String errorMessage = acknowledgementToCoordinator.getErrorMessage();
-            if (errorMessage == null) errorMessage = "";
             if (null != acknowledgementData) {
                 int replicaKey = acknowledgementData.getKey();
                 String replicaValue = acknowledgementData.getValue();
@@ -393,12 +399,11 @@ public class Server {
                 }
                 //Read request
                 else if (requestType.equals(Node.RequestType.READ)) {
-                    if (value == null && errorMessage.trim().length() > 0) {
+                    if (value == null && errorMessage != null && errorMessage.trim().length() > 0) {
                         //value is null because key does not exist
 
                     } else {
-                        acknowledgement.setValueFromReplicaAcknowledgement(replicaName, value);
-                        acknowledgement.setTimeStampFromReplica(replicaName, replicaTimeStamp);
+                        acknowledgement.setTimeStampAndValueFromReplica(replicaName, replicaTimeStamp, value);
                         //set the time stamp of last write operation into Acknowledgement log
                         acknowledgementData.setAcknowledge(true);
                     }
@@ -488,6 +493,11 @@ public class Server {
 
     // coordinator sending acknowledgement to client
     private void sentAcknowledgementToClient(int key, String value, String errorMessage, Socket clientSocket) {
+        if (value == null)
+            value = "";
+        if (errorMessage == null) {
+            errorMessage = "";
+        }
         Node.AcknowledgementToClient acknowledgementToClient = Node.AcknowledgementToClient.newBuilder().setKey(key).setValue(value).setErrorMessage(errorMessage).build();
         Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setAcknowledgementToClient(acknowledgementToClient).build();
         print("Send to client: " + message + " " + clientSocket.isClosed());

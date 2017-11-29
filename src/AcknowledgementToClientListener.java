@@ -12,6 +12,7 @@ public class AcknowledgementToClientListener {
     private Socket clientSocket;
     private Node.ConsistencyLevel requestConsistencyLevel;
     private boolean isSentToClient;
+    private boolean isFailed;
     private Map<String, AcknowledgementData> replicaAcknowledgementMap;
     //private boolean isReadRepair;
 
@@ -72,14 +73,10 @@ public class AcknowledgementToClientListener {
         isSentToClient = sentToClient;
     }
 
-    public synchronized void setValueFromReplicaAcknowledgement(String replicaName, String value) {
-        AcknowledgementData acknowledgementData = getAcknowledgementDataByServerName(replicaName);
-        acknowledgementData.setValue(value);
-    }
-
-    public synchronized void setTimeStampFromReplica(String replicaName, String timeStamp) {
+    public synchronized void setTimeStampAndValueFromReplica(String replicaName, String timeStamp,String value) {
         AcknowledgementData acknowledgementData = getAcknowledgementDataByServerName(replicaName);
         acknowledgementData.setTimeStamp(timeStamp);
+        acknowledgementData.setValue(value);
     }
 
     public synchronized boolean isInconsistent() {
@@ -89,6 +86,14 @@ public class AcknowledgementToClientListener {
             set.add(data.getValue());
         }
         return set.size() != 1;
+    }
+
+    public boolean isFailed() {
+        return isFailed;
+    }
+
+    public void setFailed(boolean failed) {
+        isFailed = failed;
     }
 }
 
