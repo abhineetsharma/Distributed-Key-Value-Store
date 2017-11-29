@@ -9,10 +9,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
@@ -104,7 +102,7 @@ public class Server {
 
     //to get the replica server list
     private List<ServerData> getReplicaServersList(String keyNode) {
-        String[] mapKeys = this.allServersData.keySet().toArray(new String[allServersData.size()]);
+        String[] mapKeys = allServersData.keySet().toArray(new String[allServersData.size()]);
         int keyPosition = Arrays.asList(mapKeys).indexOf(keyNode);
         List<ServerData> nodeServerDataList = new ArrayList<>();
 
@@ -116,19 +114,19 @@ public class Server {
         return nodeServerDataList;
     }
 
-    private ServerData getNodeByKey(int key) {
+    private ServerData getPrimaryReplicaForKey(int key) {
         int num = (key + allServersData.size()) % allServersData.size();
         String[] nodeKeys = allServersData.keySet().toArray(new String[allServersData.size()]);
         return allServersData.get(nodeKeys[num]);
     }
 
-    // co-ordinator processing client's read request
+    // coordinator processing client's read request
     private void processingClientReadRequest(Node.ClientReadRequest clientReadRequest, Socket clientSocket) {
         int key = clientReadRequest.getKey();
         //String value = clientReadRequest.getValue();
         Node.ConsistencyLevel clientConsistencyLevel = clientReadRequest.getConsistencyLevel();
 
-        ServerData primaryReplica = getNodeByKey(key);
+        ServerData primaryReplica = getPrimaryReplicaForKey(key);
 
         print(primaryReplica.toString());
         List<ServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
@@ -136,7 +134,9 @@ public class Server {
 
         String timeStamp = getCurrentTimeString();
 
-        acknowledgementLogCoordinatorMap.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, null, replicaServerList));
+        acknowledgementLogCoordinatorMap.put(timeStamp,
+                new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, null, replicaServerList));
+
         int messageSentCounterToReplica = 0;
         for (ServerData replica : replicaServerList) {
 
@@ -154,24 +154,24 @@ public class Server {
                 messageSentCounterToReplica++;
             } catch (IOException e) {
                 e.printStackTrace();
-                // update counter
             }
-            if (messageSentCounterToReplica < clientConsistencyLevel.getNumber()) {
-                //return client an error message
-                String errorMessage = "Cannot find the key " + key;
-                sentAcknowledgementToClient(key, null, errorMessage, clientSocket);
-                acknowledgementLogCoordinatorMap.remove(timeStamp);
-            }
+
+        }
+        if (messageSentCounterToReplica < clientConsistencyLevel.getNumber()) {
+            //return client an error message
+            String errorMessage = "Cannot find the key " + key;
+            sentAcknowledgementToClient(key, null, errorMessage, clientSocket);
+            acknowledgementLogCoordinatorMap.remove(timeStamp);
         }
     }
 
-    // co-ordinator processing client's write request
+    // coordinator processing client's write request
     private void processingClientWriteRequest(Node.ClientWriteRequest clientWriteRequest, Socket clientSocket) {
         int key = clientWriteRequest.getKey();
         String value = clientWriteRequest.getValue();
         Node.ConsistencyLevel clientConsistencyLevel = clientWriteRequest.getConsistencyLevel();
 
-        ServerData primaryReplica = getNodeByKey(key);
+        ServerData primaryReplica = getPrimaryReplicaForKey(key);
 
         print(primaryReplica.toString());
         List<ServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
@@ -216,7 +216,7 @@ public class Server {
         }
     }
 
-    // normal server processing getkey request from co-ordinator
+    // normal server processing get key request from co-ordinator
     private void processingGetKeyFromCoordinator(Node.GetKeyFromCoordinator getKeyFromCoordinator) {
         int key = getKeyFromCoordinator.getKey();
         String timeStamp = getKeyFromCoordinator.getTimeStamp();
@@ -224,20 +224,22 @@ public class Server {
 
 
         Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator.newBuilder();
+
         acknowledgementBuilder.setKey(key);
         acknowledgementBuilder.setReplicaName(name);
         acknowledgementBuilder.setRequestType(Node.RequestType.READ);
         acknowledgementBuilder.setCoordinatorTimeStamp(timeStamp);
-        if (keyValueDataStore.containsKey(key)) {
-            String value = keyValueDataStore.get(key).getValue();
-            String replicaTimeStamp = keyValueDataStore.get(key).getTimeStamp();
 
-            print(keyValueDataStore.get(key));
+        if (keyValueDataStore.containsKey(key)) {
+            ValueMetaData data = keyValueDataStore.get(key);
+            String value = data.getValue();
+            String replicaTimeStamp = data.getTimeStamp();
+
+            print(data);
+
             acknowledgementBuilder.setReplicaTimeStamp(replicaTimeStamp);
             acknowledgementBuilder.setValue(value);
 
-
-            System.out.println("Read Ack message sent to the Coordinator : " + coordinatorName + " .....");
         } else {
             acknowledgementBuilder.setErrorMessage("Key " + key + " not found ");
         }
@@ -249,6 +251,7 @@ public class Server {
         // send acknowledgement to coordinator
         try {
             sendMessageViaSocket(coordinator, message);
+            System.out.println("Read Ack message sent to the Coordinator : " + coordinatorName + " .....");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -256,16 +259,17 @@ public class Server {
 
     // normal server processing putkey request from co-ordinator
     private void processingPutKeyFromCoordinatorRequest(Node.PutKeyFromCoordinator putKeyFromCoordinator) {
-        int key = putKeyFromCoordinator.getKey();
-        String value = putKeyFromCoordinator.getValue();
-        String timeStamp = putKeyFromCoordinator.getTimeStamp();
+        int putKey = putKeyFromCoordinator.getKey();
+        String putValue = putKeyFromCoordinator.getValue();
+        String putTimeStamp = putKeyFromCoordinator.getTimeStamp();
         String coordinatorName = putKeyFromCoordinator.getCoordinatorName();
 
         // BEGIN : Nikhil's pre commite code
 
-        Node.LogMessage logMessage = Node.LogMessage.newBuilder().setKey(putKeyFromCoordinator.getKey())
-                .setValue(putKeyFromCoordinator.getValue()).setTimeStamp(putKeyFromCoordinator.getTimeStamp())
+        Node.LogMessage logMessage = Node.LogMessage.newBuilder().setKey(putKey)
+                .setValue(putValue).setTimeStamp(putTimeStamp)
                 .setLogEndFlag(false).build();
+
         Node.LogBook.Builder logBook = Node.LogBook.newBuilder();
 
         // Read the existing Log book.
@@ -312,33 +316,39 @@ public class Server {
             if (log.getLogEndFlag()) {
                 newLogBook.addLog(log);
             } else {
+                int logKey = log.getKey();
+                String logTimeStamp = log.getTimeStamp();
+                String logValue = log.getValue();
 
-                if (keyValueDataStore.containsKey(log.getKey())) {
+                if (keyValueDataStore.containsKey(logKey)) {
                     //If key is present in our keyValue store then compare time-stamps
-                    keyValueDataStore.get(log.getKey()).updateKeyWithValue(log.getTimeStamp(), log.getValue());
+                    keyValueDataStore.get(logKey).updateKeyWithValue(logTimeStamp, logValue);
                 } else {
-                    keyValueDataStore.put(log.getKey(), new ValueMetaData(log.getTimeStamp(), log.getValue()));
+                    keyValueDataStore.put(logKey, new ValueMetaData(logTimeStamp, logValue));
                 }
                 // do post commit processing via log file and code
                 // update log message and add to newLogBook
-                Node.LogMessage newLogMessage = Node.LogMessage.newBuilder().setKey(log.getKey())
-                        .setValue(log.getValue()).setTimeStamp(log.getTimeStamp()).setLogEndFlag(true).build();
+                Node.LogMessage newLogMessage = Node.LogMessage.newBuilder().setKey(logKey)
+                        .setValue(logValue).setTimeStamp(logTimeStamp).setLogEndFlag(true).build();
                 newLogBook.addLog(newLogMessage);
 
-                print(keyValueDataStore.get(log.getKey()));
+                print(keyValueDataStore.get(logKey));
                 // Create acknowledgement and message to coordinator
 
                 if (!putKeyFromCoordinator.getIsReadRepair()) {
-                    Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator.newBuilder();
-                    acknowledgementBuilder.setKey(log.getKey());
-                    acknowledgementBuilder.setReplicaTimeStamp(log.getTimeStamp());
-                    acknowledgementBuilder.setCoordinatorTimeStamp(log.getTimeStamp());
-                    acknowledgementBuilder.setValue(log.getValue());
-                    acknowledgementBuilder.setReplicaName(name);
-                    acknowledgementBuilder.setRequestType(Node.RequestType.WRITE);
+                    Node.AcknowledgementToCoordinator acknowledgement = Node.AcknowledgementToCoordinator
+                            .newBuilder()
+                            .setKey(logKey)
+                            .setReplicaTimeStamp(logTimeStamp)
+                            .setCoordinatorTimeStamp(logTimeStamp)
+                            .setValue(logValue)
+                            .setReplicaName(name)
+                            .setRequestType(Node.RequestType.WRITE).build();
 
-                    Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
-                            .setAcknowledgementToCoordinator(acknowledgementBuilder).build();
+                    Node.WrapperMessage message = Node.WrapperMessage
+                            .newBuilder()
+                            .setAcknowledgementToCoordinator(acknowledgement)
+                            .build();
 
                     ServerData coordinator = allServersData.get(coordinatorName);
 
@@ -617,11 +627,10 @@ public class Server {
                 e.printStackTrace();
                 System.exit(1);
             } finally {
-
+                print("\n\n---------------------------------------------");
+                print("=====Message received End count = " + msgCount);
+                print("---------------------------------------------\n\n");
             }
-            print("\n\n---------------------------------------------");
-            print("=====Message received End count = " + msgCount);
-            print("---------------------------------------------\n\n");
         }
     }
 }
