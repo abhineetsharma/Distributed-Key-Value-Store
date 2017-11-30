@@ -83,7 +83,7 @@ public class FileProcessor {
                     }
                 }
             }
-            return (count == 0 && !empty) ? 1 : count;
+            return (count == 0 && !empty) ? 1 : count+1;
         } finally {
             is.close();
         }

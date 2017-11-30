@@ -6,12 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public class Server {
@@ -227,6 +222,7 @@ public class Server {
     // coordinator processing client's write request
     private void processingClientWriteRequest(MyCassandra.ClientWriteRequest clientWriteRequest, Socket clientSocket) {
         int key = clientWriteRequest.getKey();
+        Map<ServerData, ConflictingReplica> failedWriteRequestListMap = new LinkedHashMap<>();
         String value = clientWriteRequest.getValue();
         MyCassandra.ConsistencyLevel clientConsistencyLevel = clientWriteRequest.getConsistencyLevel();
 
@@ -259,7 +255,19 @@ public class Server {
                 e.printStackTrace();
                 System.out.println("replica server " + replica.getName() + " down");
                 ConflictingReplica conflictingReplica = new ConflictingReplica(replica.getName(), message);
-                addFailedWriteRequestForReplica(replica, conflictingReplica);
+                failedWriteRequestListMap.put(replica, conflictingReplica);
+                //addFailedWriteRequestForReplica(replica, conflictingReplica);
+            }
+
+        }
+        if ((replicaFactor - failedWriteRequestListMap.size()) < clientConsistencyLevel.getNumber()) {
+            String errorMessage = "Cannot write the key " + key;
+            sendAcknowledgementToClient(key, null, errorMessage, clientSocket);
+            CoordinatorAcknowledgementLog.remove(timeStamp);
+        } else {
+            for (ServerData serverData : failedWriteRequestListMap.keySet()) {
+                ConflictingReplica conflictingReplica = failedWriteRequestListMap.get(serverData);
+                addFailedWriteRequestForReplica(serverData, conflictingReplica);
             }
         }
     }
