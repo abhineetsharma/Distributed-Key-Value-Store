@@ -274,6 +274,9 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -920,7 +923,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new GetKeyFromCoordinator(input, extensionRegistry);
+        return new GetKeyFromCoordinator(input, extensionRegistry);
       }
     };
 
@@ -1013,6 +1016,9 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -1843,7 +1849,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new PutKeyFromCoordinator(input, extensionRegistry);
+        return new PutKeyFromCoordinator(input, extensionRegistry);
       }
     };
 
@@ -1907,6 +1913,9 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -2383,7 +2392,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ClientReadRequest(input, extensionRegistry);
+        return new ClientReadRequest(input, extensionRegistry);
       }
     };
 
@@ -2458,6 +2467,9 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -3060,7 +3072,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new ClientWriteRequest(input, extensionRegistry);
+        return new ClientWriteRequest(input, extensionRegistry);
       }
     };
 
@@ -3148,6 +3160,9 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -3910,7 +3925,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new LogMessage(input, extensionRegistry);
+        return new LogMessage(input, extensionRegistry);
       }
     };
 
@@ -3983,6 +3998,9 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -4664,7 +4682,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new LogBook(input, extensionRegistry);
+        return new LogBook(input, extensionRegistry);
       }
     };
 
@@ -4678,6 +4696,1660 @@ public final class Node {
     }
 
     public Node.LogBook getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface HintedHandOffOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:HintedHandOff)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string ServerName = 1;</code>
+     */
+    java.lang.String getServerName();
+    /**
+     * <code>string ServerName = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getServerNameBytes();
+
+    /**
+     * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+     */
+    java.util.List<Node.WrapperMessage> 
+        getAllWrapperMessageList();
+    /**
+     * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+     */
+    Node.WrapperMessage getAllWrapperMessage(int index);
+    /**
+     * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+     */
+    int getAllWrapperMessageCount();
+    /**
+     * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+     */
+    java.util.List<? extends Node.WrapperMessageOrBuilder> 
+        getAllWrapperMessageOrBuilderList();
+    /**
+     * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+     */
+    Node.WrapperMessageOrBuilder getAllWrapperMessageOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code HintedHandOff}
+   */
+  public  static final class HintedHandOff extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:HintedHandOff)
+      HintedHandOffOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use HintedHandOff.newBuilder() to construct.
+    private HintedHandOff(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private HintedHandOff() {
+      serverName_ = "";
+      allWrapperMessage_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private HintedHandOff(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              serverName_ = s;
+              break;
+            }
+            case 18: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                allWrapperMessage_ = new java.util.ArrayList<Node.WrapperMessage>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              allWrapperMessage_.add(
+                  input.readMessage(Node.WrapperMessage.parser(), extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          allWrapperMessage_ = java.util.Collections.unmodifiableList(allWrapperMessage_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return Node.internal_static_HintedHandOff_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return Node.internal_static_HintedHandOff_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              Node.HintedHandOff.class, Node.HintedHandOff.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int SERVERNAME_FIELD_NUMBER = 1;
+    private volatile java.lang.Object serverName_;
+    /**
+     * <code>string ServerName = 1;</code>
+     */
+    public java.lang.String getServerName() {
+      java.lang.Object ref = serverName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        serverName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string ServerName = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getServerNameBytes() {
+      java.lang.Object ref = serverName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        serverName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ALL_WRAPPER_MESSAGE_FIELD_NUMBER = 2;
+    private java.util.List<Node.WrapperMessage> allWrapperMessage_;
+    /**
+     * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+     */
+    public java.util.List<Node.WrapperMessage> getAllWrapperMessageList() {
+      return allWrapperMessage_;
+    }
+    /**
+     * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+     */
+    public java.util.List<? extends Node.WrapperMessageOrBuilder> 
+        getAllWrapperMessageOrBuilderList() {
+      return allWrapperMessage_;
+    }
+    /**
+     * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+     */
+    public int getAllWrapperMessageCount() {
+      return allWrapperMessage_.size();
+    }
+    /**
+     * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+     */
+    public Node.WrapperMessage getAllWrapperMessage(int index) {
+      return allWrapperMessage_.get(index);
+    }
+    /**
+     * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+     */
+    public Node.WrapperMessageOrBuilder getAllWrapperMessageOrBuilder(
+        int index) {
+      return allWrapperMessage_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getServerNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, serverName_);
+      }
+      for (int i = 0; i < allWrapperMessage_.size(); i++) {
+        output.writeMessage(2, allWrapperMessage_.get(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getServerNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, serverName_);
+      }
+      for (int i = 0; i < allWrapperMessage_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, allWrapperMessage_.get(i));
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof Node.HintedHandOff)) {
+        return super.equals(obj);
+      }
+      Node.HintedHandOff other = (Node.HintedHandOff) obj;
+
+      boolean result = true;
+      result = result && getServerName()
+          .equals(other.getServerName());
+      result = result && getAllWrapperMessageList()
+          .equals(other.getAllWrapperMessageList());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + SERVERNAME_FIELD_NUMBER;
+      hash = (53 * hash) + getServerName().hashCode();
+      if (getAllWrapperMessageCount() > 0) {
+        hash = (37 * hash) + ALL_WRAPPER_MESSAGE_FIELD_NUMBER;
+        hash = (53 * hash) + getAllWrapperMessageList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static Node.HintedHandOff parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Node.HintedHandOff parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Node.HintedHandOff parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Node.HintedHandOff parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Node.HintedHandOff parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Node.HintedHandOff parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Node.HintedHandOff parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static Node.HintedHandOff parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static Node.HintedHandOff parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static Node.HintedHandOff parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static Node.HintedHandOff parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static Node.HintedHandOff parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(Node.HintedHandOff prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code HintedHandOff}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:HintedHandOff)
+        Node.HintedHandOffOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return Node.internal_static_HintedHandOff_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return Node.internal_static_HintedHandOff_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                Node.HintedHandOff.class, Node.HintedHandOff.Builder.class);
+      }
+
+      // Construct using Node.HintedHandOff.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getAllWrapperMessageFieldBuilder();
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        serverName_ = "";
+
+        if (allWrapperMessageBuilder_ == null) {
+          allWrapperMessage_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          allWrapperMessageBuilder_.clear();
+        }
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return Node.internal_static_HintedHandOff_descriptor;
+      }
+
+      public Node.HintedHandOff getDefaultInstanceForType() {
+        return Node.HintedHandOff.getDefaultInstance();
+      }
+
+      public Node.HintedHandOff build() {
+        Node.HintedHandOff result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public Node.HintedHandOff buildPartial() {
+        Node.HintedHandOff result = new Node.HintedHandOff(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        result.serverName_ = serverName_;
+        if (allWrapperMessageBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            allWrapperMessage_ = java.util.Collections.unmodifiableList(allWrapperMessage_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.allWrapperMessage_ = allWrapperMessage_;
+        } else {
+          result.allWrapperMessage_ = allWrapperMessageBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof Node.HintedHandOff) {
+          return mergeFrom((Node.HintedHandOff)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(Node.HintedHandOff other) {
+        if (other == Node.HintedHandOff.getDefaultInstance()) return this;
+        if (!other.getServerName().isEmpty()) {
+          serverName_ = other.serverName_;
+          onChanged();
+        }
+        if (allWrapperMessageBuilder_ == null) {
+          if (!other.allWrapperMessage_.isEmpty()) {
+            if (allWrapperMessage_.isEmpty()) {
+              allWrapperMessage_ = other.allWrapperMessage_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureAllWrapperMessageIsMutable();
+              allWrapperMessage_.addAll(other.allWrapperMessage_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.allWrapperMessage_.isEmpty()) {
+            if (allWrapperMessageBuilder_.isEmpty()) {
+              allWrapperMessageBuilder_.dispose();
+              allWrapperMessageBuilder_ = null;
+              allWrapperMessage_ = other.allWrapperMessage_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              allWrapperMessageBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getAllWrapperMessageFieldBuilder() : null;
+            } else {
+              allWrapperMessageBuilder_.addAllMessages(other.allWrapperMessage_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        Node.HintedHandOff parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (Node.HintedHandOff) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object serverName_ = "";
+      /**
+       * <code>string ServerName = 1;</code>
+       */
+      public java.lang.String getServerName() {
+        java.lang.Object ref = serverName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          serverName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string ServerName = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getServerNameBytes() {
+        java.lang.Object ref = serverName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          serverName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string ServerName = 1;</code>
+       */
+      public Builder setServerName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        serverName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string ServerName = 1;</code>
+       */
+      public Builder clearServerName() {
+        
+        serverName_ = getDefaultInstance().getServerName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string ServerName = 1;</code>
+       */
+      public Builder setServerNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        serverName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<Node.WrapperMessage> allWrapperMessage_ =
+        java.util.Collections.emptyList();
+      private void ensureAllWrapperMessageIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          allWrapperMessage_ = new java.util.ArrayList<Node.WrapperMessage>(allWrapperMessage_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          Node.WrapperMessage, Node.WrapperMessage.Builder, Node.WrapperMessageOrBuilder> allWrapperMessageBuilder_;
+
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public java.util.List<Node.WrapperMessage> getAllWrapperMessageList() {
+        if (allWrapperMessageBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(allWrapperMessage_);
+        } else {
+          return allWrapperMessageBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public int getAllWrapperMessageCount() {
+        if (allWrapperMessageBuilder_ == null) {
+          return allWrapperMessage_.size();
+        } else {
+          return allWrapperMessageBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public Node.WrapperMessage getAllWrapperMessage(int index) {
+        if (allWrapperMessageBuilder_ == null) {
+          return allWrapperMessage_.get(index);
+        } else {
+          return allWrapperMessageBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public Builder setAllWrapperMessage(
+          int index, Node.WrapperMessage value) {
+        if (allWrapperMessageBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAllWrapperMessageIsMutable();
+          allWrapperMessage_.set(index, value);
+          onChanged();
+        } else {
+          allWrapperMessageBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public Builder setAllWrapperMessage(
+          int index, Node.WrapperMessage.Builder builderForValue) {
+        if (allWrapperMessageBuilder_ == null) {
+          ensureAllWrapperMessageIsMutable();
+          allWrapperMessage_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          allWrapperMessageBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public Builder addAllWrapperMessage(Node.WrapperMessage value) {
+        if (allWrapperMessageBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAllWrapperMessageIsMutable();
+          allWrapperMessage_.add(value);
+          onChanged();
+        } else {
+          allWrapperMessageBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public Builder addAllWrapperMessage(
+          int index, Node.WrapperMessage value) {
+        if (allWrapperMessageBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAllWrapperMessageIsMutable();
+          allWrapperMessage_.add(index, value);
+          onChanged();
+        } else {
+          allWrapperMessageBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public Builder addAllWrapperMessage(
+          Node.WrapperMessage.Builder builderForValue) {
+        if (allWrapperMessageBuilder_ == null) {
+          ensureAllWrapperMessageIsMutable();
+          allWrapperMessage_.add(builderForValue.build());
+          onChanged();
+        } else {
+          allWrapperMessageBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public Builder addAllWrapperMessage(
+          int index, Node.WrapperMessage.Builder builderForValue) {
+        if (allWrapperMessageBuilder_ == null) {
+          ensureAllWrapperMessageIsMutable();
+          allWrapperMessage_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          allWrapperMessageBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public Builder addAllAllWrapperMessage(
+          java.lang.Iterable<? extends Node.WrapperMessage> values) {
+        if (allWrapperMessageBuilder_ == null) {
+          ensureAllWrapperMessageIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, allWrapperMessage_);
+          onChanged();
+        } else {
+          allWrapperMessageBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public Builder clearAllWrapperMessage() {
+        if (allWrapperMessageBuilder_ == null) {
+          allWrapperMessage_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          allWrapperMessageBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public Builder removeAllWrapperMessage(int index) {
+        if (allWrapperMessageBuilder_ == null) {
+          ensureAllWrapperMessageIsMutable();
+          allWrapperMessage_.remove(index);
+          onChanged();
+        } else {
+          allWrapperMessageBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public Node.WrapperMessage.Builder getAllWrapperMessageBuilder(
+          int index) {
+        return getAllWrapperMessageFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public Node.WrapperMessageOrBuilder getAllWrapperMessageOrBuilder(
+          int index) {
+        if (allWrapperMessageBuilder_ == null) {
+          return allWrapperMessage_.get(index);  } else {
+          return allWrapperMessageBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public java.util.List<? extends Node.WrapperMessageOrBuilder> 
+           getAllWrapperMessageOrBuilderList() {
+        if (allWrapperMessageBuilder_ != null) {
+          return allWrapperMessageBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(allWrapperMessage_);
+        }
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public Node.WrapperMessage.Builder addAllWrapperMessageBuilder() {
+        return getAllWrapperMessageFieldBuilder().addBuilder(
+            Node.WrapperMessage.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public Node.WrapperMessage.Builder addAllWrapperMessageBuilder(
+          int index) {
+        return getAllWrapperMessageFieldBuilder().addBuilder(
+            index, Node.WrapperMessage.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .WrapperMessage all_wrapper_message = 2;</code>
+       */
+      public java.util.List<Node.WrapperMessage.Builder> 
+           getAllWrapperMessageBuilderList() {
+        return getAllWrapperMessageFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          Node.WrapperMessage, Node.WrapperMessage.Builder, Node.WrapperMessageOrBuilder> 
+          getAllWrapperMessageFieldBuilder() {
+        if (allWrapperMessageBuilder_ == null) {
+          allWrapperMessageBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              Node.WrapperMessage, Node.WrapperMessage.Builder, Node.WrapperMessageOrBuilder>(
+                  allWrapperMessage_,
+                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          allWrapperMessage_ = null;
+        }
+        return allWrapperMessageBuilder_;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:HintedHandOff)
+    }
+
+    // @@protoc_insertion_point(class_scope:HintedHandOff)
+    private static final Node.HintedHandOff DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new Node.HintedHandOff();
+    }
+
+    public static Node.HintedHandOff getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<HintedHandOff>
+        PARSER = new com.google.protobuf.AbstractParser<HintedHandOff>() {
+      public HintedHandOff parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new HintedHandOff(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<HintedHandOff> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HintedHandOff> getParserForType() {
+      return PARSER;
+    }
+
+    public Node.HintedHandOff getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface HintedHandOffBookOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:HintedHandOffBook)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .HintedHandOff log = 1;</code>
+     */
+    java.util.List<Node.HintedHandOff> 
+        getLogList();
+    /**
+     * <code>repeated .HintedHandOff log = 1;</code>
+     */
+    Node.HintedHandOff getLog(int index);
+    /**
+     * <code>repeated .HintedHandOff log = 1;</code>
+     */
+    int getLogCount();
+    /**
+     * <code>repeated .HintedHandOff log = 1;</code>
+     */
+    java.util.List<? extends Node.HintedHandOffOrBuilder> 
+        getLogOrBuilderList();
+    /**
+     * <code>repeated .HintedHandOff log = 1;</code>
+     */
+    Node.HintedHandOffOrBuilder getLogOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code HintedHandOffBook}
+   */
+  public  static final class HintedHandOffBook extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:HintedHandOffBook)
+      HintedHandOffBookOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use HintedHandOffBook.newBuilder() to construct.
+    private HintedHandOffBook(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private HintedHandOffBook() {
+      log_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private HintedHandOffBook(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                log_ = new java.util.ArrayList<Node.HintedHandOff>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              log_.add(
+                  input.readMessage(Node.HintedHandOff.parser(), extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          log_ = java.util.Collections.unmodifiableList(log_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return Node.internal_static_HintedHandOffBook_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return Node.internal_static_HintedHandOffBook_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              Node.HintedHandOffBook.class, Node.HintedHandOffBook.Builder.class);
+    }
+
+    public static final int LOG_FIELD_NUMBER = 1;
+    private java.util.List<Node.HintedHandOff> log_;
+    /**
+     * <code>repeated .HintedHandOff log = 1;</code>
+     */
+    public java.util.List<Node.HintedHandOff> getLogList() {
+      return log_;
+    }
+    /**
+     * <code>repeated .HintedHandOff log = 1;</code>
+     */
+    public java.util.List<? extends Node.HintedHandOffOrBuilder> 
+        getLogOrBuilderList() {
+      return log_;
+    }
+    /**
+     * <code>repeated .HintedHandOff log = 1;</code>
+     */
+    public int getLogCount() {
+      return log_.size();
+    }
+    /**
+     * <code>repeated .HintedHandOff log = 1;</code>
+     */
+    public Node.HintedHandOff getLog(int index) {
+      return log_.get(index);
+    }
+    /**
+     * <code>repeated .HintedHandOff log = 1;</code>
+     */
+    public Node.HintedHandOffOrBuilder getLogOrBuilder(
+        int index) {
+      return log_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      for (int i = 0; i < log_.size(); i++) {
+        output.writeMessage(1, log_.get(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < log_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, log_.get(i));
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof Node.HintedHandOffBook)) {
+        return super.equals(obj);
+      }
+      Node.HintedHandOffBook other = (Node.HintedHandOffBook) obj;
+
+      boolean result = true;
+      result = result && getLogList()
+          .equals(other.getLogList());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (getLogCount() > 0) {
+        hash = (37 * hash) + LOG_FIELD_NUMBER;
+        hash = (53 * hash) + getLogList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static Node.HintedHandOffBook parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Node.HintedHandOffBook parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Node.HintedHandOffBook parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Node.HintedHandOffBook parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Node.HintedHandOffBook parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Node.HintedHandOffBook parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Node.HintedHandOffBook parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static Node.HintedHandOffBook parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static Node.HintedHandOffBook parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static Node.HintedHandOffBook parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static Node.HintedHandOffBook parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static Node.HintedHandOffBook parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(Node.HintedHandOffBook prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code HintedHandOffBook}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:HintedHandOffBook)
+        Node.HintedHandOffBookOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return Node.internal_static_HintedHandOffBook_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return Node.internal_static_HintedHandOffBook_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                Node.HintedHandOffBook.class, Node.HintedHandOffBook.Builder.class);
+      }
+
+      // Construct using Node.HintedHandOffBook.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getLogFieldBuilder();
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        if (logBuilder_ == null) {
+          log_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          logBuilder_.clear();
+        }
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return Node.internal_static_HintedHandOffBook_descriptor;
+      }
+
+      public Node.HintedHandOffBook getDefaultInstanceForType() {
+        return Node.HintedHandOffBook.getDefaultInstance();
+      }
+
+      public Node.HintedHandOffBook build() {
+        Node.HintedHandOffBook result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public Node.HintedHandOffBook buildPartial() {
+        Node.HintedHandOffBook result = new Node.HintedHandOffBook(this);
+        int from_bitField0_ = bitField0_;
+        if (logBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            log_ = java.util.Collections.unmodifiableList(log_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.log_ = log_;
+        } else {
+          result.log_ = logBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof Node.HintedHandOffBook) {
+          return mergeFrom((Node.HintedHandOffBook)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(Node.HintedHandOffBook other) {
+        if (other == Node.HintedHandOffBook.getDefaultInstance()) return this;
+        if (logBuilder_ == null) {
+          if (!other.log_.isEmpty()) {
+            if (log_.isEmpty()) {
+              log_ = other.log_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureLogIsMutable();
+              log_.addAll(other.log_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.log_.isEmpty()) {
+            if (logBuilder_.isEmpty()) {
+              logBuilder_.dispose();
+              logBuilder_ = null;
+              log_ = other.log_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              logBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getLogFieldBuilder() : null;
+            } else {
+              logBuilder_.addAllMessages(other.log_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        Node.HintedHandOffBook parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (Node.HintedHandOffBook) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<Node.HintedHandOff> log_ =
+        java.util.Collections.emptyList();
+      private void ensureLogIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          log_ = new java.util.ArrayList<Node.HintedHandOff>(log_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          Node.HintedHandOff, Node.HintedHandOff.Builder, Node.HintedHandOffOrBuilder> logBuilder_;
+
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public java.util.List<Node.HintedHandOff> getLogList() {
+        if (logBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(log_);
+        } else {
+          return logBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public int getLogCount() {
+        if (logBuilder_ == null) {
+          return log_.size();
+        } else {
+          return logBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public Node.HintedHandOff getLog(int index) {
+        if (logBuilder_ == null) {
+          return log_.get(index);
+        } else {
+          return logBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public Builder setLog(
+          int index, Node.HintedHandOff value) {
+        if (logBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLogIsMutable();
+          log_.set(index, value);
+          onChanged();
+        } else {
+          logBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public Builder setLog(
+          int index, Node.HintedHandOff.Builder builderForValue) {
+        if (logBuilder_ == null) {
+          ensureLogIsMutable();
+          log_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          logBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public Builder addLog(Node.HintedHandOff value) {
+        if (logBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLogIsMutable();
+          log_.add(value);
+          onChanged();
+        } else {
+          logBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public Builder addLog(
+          int index, Node.HintedHandOff value) {
+        if (logBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureLogIsMutable();
+          log_.add(index, value);
+          onChanged();
+        } else {
+          logBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public Builder addLog(
+          Node.HintedHandOff.Builder builderForValue) {
+        if (logBuilder_ == null) {
+          ensureLogIsMutable();
+          log_.add(builderForValue.build());
+          onChanged();
+        } else {
+          logBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public Builder addLog(
+          int index, Node.HintedHandOff.Builder builderForValue) {
+        if (logBuilder_ == null) {
+          ensureLogIsMutable();
+          log_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          logBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public Builder addAllLog(
+          java.lang.Iterable<? extends Node.HintedHandOff> values) {
+        if (logBuilder_ == null) {
+          ensureLogIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, log_);
+          onChanged();
+        } else {
+          logBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public Builder clearLog() {
+        if (logBuilder_ == null) {
+          log_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          logBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public Builder removeLog(int index) {
+        if (logBuilder_ == null) {
+          ensureLogIsMutable();
+          log_.remove(index);
+          onChanged();
+        } else {
+          logBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public Node.HintedHandOff.Builder getLogBuilder(
+          int index) {
+        return getLogFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public Node.HintedHandOffOrBuilder getLogOrBuilder(
+          int index) {
+        if (logBuilder_ == null) {
+          return log_.get(index);  } else {
+          return logBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public java.util.List<? extends Node.HintedHandOffOrBuilder> 
+           getLogOrBuilderList() {
+        if (logBuilder_ != null) {
+          return logBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(log_);
+        }
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public Node.HintedHandOff.Builder addLogBuilder() {
+        return getLogFieldBuilder().addBuilder(
+            Node.HintedHandOff.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public Node.HintedHandOff.Builder addLogBuilder(
+          int index) {
+        return getLogFieldBuilder().addBuilder(
+            index, Node.HintedHandOff.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .HintedHandOff log = 1;</code>
+       */
+      public java.util.List<Node.HintedHandOff.Builder> 
+           getLogBuilderList() {
+        return getLogFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          Node.HintedHandOff, Node.HintedHandOff.Builder, Node.HintedHandOffOrBuilder> 
+          getLogFieldBuilder() {
+        if (logBuilder_ == null) {
+          logBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              Node.HintedHandOff, Node.HintedHandOff.Builder, Node.HintedHandOffOrBuilder>(
+                  log_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          log_ = null;
+        }
+        return logBuilder_;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:HintedHandOffBook)
+    }
+
+    // @@protoc_insertion_point(class_scope:HintedHandOffBook)
+    private static final Node.HintedHandOffBook DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new Node.HintedHandOffBook();
+    }
+
+    public static Node.HintedHandOffBook getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<HintedHandOffBook>
+        PARSER = new com.google.protobuf.AbstractParser<HintedHandOffBook>() {
+      public HintedHandOffBook parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new HintedHandOffBook(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<HintedHandOffBook> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HintedHandOffBook> getParserForType() {
+      return PARSER;
+    }
+
+    public Node.HintedHandOffBook getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -4783,6 +6455,9 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -5889,7 +7564,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new AcknowledgementToCoordinator(input, extensionRegistry);
+        return new AcknowledgementToCoordinator(input, extensionRegistry);
       }
     };
 
@@ -5965,6 +7640,9 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -6611,7 +8289,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new AcknowledgementToClient(input, extensionRegistry);
+        return new AcknowledgementToClient(input, extensionRegistry);
       }
     };
 
@@ -6739,6 +8417,9 @@ public final class Node {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -8368,7 +10049,7 @@ public final class Node {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new WrapperMessage(input, extensionRegistry);
+        return new WrapperMessage(input, extensionRegistry);
       }
     };
 
@@ -8418,6 +10099,16 @@ public final class Node {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_LogBook_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_HintedHandOff_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_HintedHandOff_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_HintedHandOffBook_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_HintedHandOffBook_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_AcknowledgementToCoordinator_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -8450,30 +10141,33 @@ public final class Node {
       "y\030\001 \001(\r\022+\n\020consistencyLevel\030\002 \001(\0162\021.Cons" +
       "istencyLevel\"]\n\022ClientWriteRequest\022\013\n\003ke" +
       "y\030\001 \001(\r\022\r\n\005value\030\002 \001(\t\022+\n\020consistencyLev" +
-      "el\030\003 \001(\0162\021.ConsistencyLevel\"e\n\nLogMessag",
+      "el\030\003 \001(\0162\021.ConsistencyLevel\"e\n\nLogMessag" +
       "e\022\024\n\014logStartFlag\030\001 \001(\010\022\013\n\003key\030\002 \001(\r\022\r\n\005" +
       "value\030\003 \001(\t\022\021\n\ttimeStamp\030\004 \001(\t\022\022\n\nlogEnd" +
       "Flag\030\005 \001(\010\"#\n\007LogBook\022\030\n\003log\030\001 \003(\0132\013.Log" +
-      "Message\"\301\001\n\034AcknowledgementToCoordinator" +
-      "\022\034\n\024coordinatorTimeStamp\030\001 \001(\t\022\013\n\003key\030\002 " +
-      "\001(\r\022\r\n\005value\030\003 \001(\t\022\023\n\013replicaName\030\004 \001(\t\022" +
-      "\"\n\014request_type\030\005 \001(\0162\014.RequestType\022\030\n\020r" +
-      "eplicaTimeStamp\030\006 \001(\t\022\024\n\014errorMessage\030\007 " +
-      "\001(\t\"K\n\027AcknowledgementToClient\022\013\n\003key\030\001 " +
-      "\001(\r\022\r\n\005value\030\002 \001(\t\022\024\n\014errorMessage\030\003 \001(\t",
-      "\"\207\003\n\016WrapperMessage\022:\n\030get_key_from_coor" +
-      "dinator\030\001 \001(\0132\026.GetKeyFromCoordinatorH\000\022" +
-      ":\n\030put_key_from_coordinator\030\002 \001(\0132\026.PutK" +
-      "eyFromCoordinatorH\000\0221\n\023client_read_reque" +
-      "st\030\003 \001(\0132\022.ClientReadRequestH\000\0223\n\024client" +
-      "_write_request\030\004 \001(\0132\023.ClientWriteReques" +
-      "tH\000\022G\n\036acknowledgement_to_coordinator\030\005 " +
-      "\001(\0132\035.AcknowledgementToCoordinatorH\000\022=\n\031" +
-      "acknowledgement_to_client\030\006 \001(\0132\030.Acknow" +
-      "ledgementToClientH\000B\r\n\013map_message*1\n\020Co",
-      "nsistencyLevel\022\013\n\007UNKNOWN\020\000\022\007\n\003ONE\020\001\022\007\n\003" +
-      "TWO\020\002*\"\n\013RequestType\022\010\n\004READ\020\000\022\t\n\005WRITE\020" +
-      "\001b\006proto3"
+      "Message\"Q\n\rHintedHandOff\022\022\n\nServerName\030\001" +
+      " \001(\t\022,\n\023all_wrapper_message\030\002 \003(\0132\017.Wrap" +
+      "perMessage\"0\n\021HintedHandOffBook\022\033\n\003log\030\001" +
+      " \003(\0132\016.HintedHandOff\"\301\001\n\034Acknowledgement" +
+      "ToCoordinator\022\034\n\024coordinatorTimeStamp\030\001 " +
+      "\001(\t\022\013\n\003key\030\002 \001(\r\022\r\n\005value\030\003 \001(\t\022\023\n\013repli" +
+      "caName\030\004 \001(\t\022\"\n\014request_type\030\005 \001(\0162\014.Req" +
+      "uestType\022\030\n\020replicaTimeStamp\030\006 \001(\t\022\024\n\014er" +
+      "rorMessage\030\007 \001(\t\"K\n\027AcknowledgementToCli" +
+      "ent\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\t\022\024\n\014error" +
+      "Message\030\003 \001(\t\"\207\003\n\016WrapperMessage\022:\n\030get_" +
+      "key_from_coordinator\030\001 \001(\0132\026.GetKeyFromC" +
+      "oordinatorH\000\022:\n\030put_key_from_coordinator" +
+      "\030\002 \001(\0132\026.PutKeyFromCoordinatorH\000\0221\n\023clie" +
+      "nt_read_request\030\003 \001(\0132\022.ClientReadReques" +
+      "tH\000\0223\n\024client_write_request\030\004 \001(\0132\023.Clie" +
+      "ntWriteRequestH\000\022G\n\036acknowledgement_to_c" +
+      "oordinator\030\005 \001(\0132\035.AcknowledgementToCoor" +
+      "dinatorH\000\022=\n\031acknowledgement_to_client\030\006" +
+      " \001(\0132\030.AcknowledgementToClientH\000B\r\n\013map_" +
+      "message*1\n\020ConsistencyLevel\022\013\n\007UNKNOWN\020\000" +
+      "\022\007\n\003ONE\020\001\022\007\n\003TWO\020\002*\"\n\013RequestType\022\010\n\004REA" +
+      "D\020\000\022\t\n\005WRITE\020\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -8523,20 +10217,32 @@ public final class Node {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LogBook_descriptor,
         new java.lang.String[] { "Log", });
-    internal_static_AcknowledgementToCoordinator_descriptor =
+    internal_static_HintedHandOff_descriptor =
       getDescriptor().getMessageTypes().get(6);
+    internal_static_HintedHandOff_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_HintedHandOff_descriptor,
+        new java.lang.String[] { "ServerName", "AllWrapperMessage", });
+    internal_static_HintedHandOffBook_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_HintedHandOffBook_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_HintedHandOffBook_descriptor,
+        new java.lang.String[] { "Log", });
+    internal_static_AcknowledgementToCoordinator_descriptor =
+      getDescriptor().getMessageTypes().get(8);
     internal_static_AcknowledgementToCoordinator_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AcknowledgementToCoordinator_descriptor,
         new java.lang.String[] { "CoordinatorTimeStamp", "Key", "Value", "ReplicaName", "RequestType", "ReplicaTimeStamp", "ErrorMessage", });
     internal_static_AcknowledgementToClient_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_AcknowledgementToClient_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AcknowledgementToClient_descriptor,
         new java.lang.String[] { "Key", "Value", "ErrorMessage", });
     internal_static_WrapperMessage_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_WrapperMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_WrapperMessage_descriptor,

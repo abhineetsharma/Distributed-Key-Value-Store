@@ -26,6 +26,7 @@ public class Server {
     // file paths
     private String nodeFilePath;
     private String logFilePath;
+    private String hintedhandOffFilePath;
 
     // data structures
     private Map<String, ServerData> allServersData;
@@ -535,6 +536,33 @@ public class Server {
         return Long.toString(System.currentTimeMillis());
     }
 
+    private void sendPendingRequestsToCoordinator(String coordinatorName) {
+    	if (this.failedWriteRequests.containsKey(coordinatorName)) {
+			List<ConflictingReplica> failedWritesQueue = failedWriteRequests.get(coordinatorName);
+			boolean sendSuccess;
+			for (ConflictingReplica cr : failedWritesQueue) {
+				try {
+					sendSuccess = false;
+					sendMessageViaSocket(cr.getNodeServerData(), cr.getMessage());
+					sendSuccess = true;
+					if (sendSuccess) {
+						//delete the key-value from data structure	
+						
+						//read the old book
+						Node.HintedHandOffBook hintedHandOffBook = Node.HintedHandOffBook.parseFrom(new FileInputStream(this.hintedhandOffFilePath));
+						
+						//modify the in-memory hintedHandOff data structure
+						Node.HintedHandOffBook.Builder newHHFBook = Node.HintedHandOffBook.newBuilder();
+						
+						
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+    
     public static void main(String[] args) {
 
         Server server = new Server();
@@ -553,6 +581,13 @@ public class Server {
             e.printStackTrace();
         }
 
+        // set HintedHandoff log file path
+        StringBuilder strbuilder = new StringBuilder();
+        try {
+			server.hintedhandOffFilePath = dir.getCanonicalPath() + "/" + strbuilder.append(server.name).append("hhf.txt").toString();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 
         if (args.length > 1) {
             server.portNumber = Integer.parseInt(args[0]);
@@ -603,6 +638,8 @@ public class Server {
                     //Get Key From Coordinator
                     else if (message.hasGetKeyFromCoordinator()) {
                         print("----GetKeyFromCoordinator Start----");
+                        server.sendPendingRequestsToCoordinator(
+								message.getGetKeyFromCoordinator().getCoordinatorName());
                         server.processingGetKeyFromCoordinator(message.getGetKeyFromCoordinator());
                         receiver.close();
                         print("----GetKeyFromCoordinator End----");
@@ -610,6 +647,8 @@ public class Server {
                     //Put Key From Coordinator
                     else if (message.hasPutKeyFromCoordinator()) {
                         print("----PutKeyFromCoordinator Start----");
+                        server.sendPendingRequestsToCoordinator(
+								message.getPutKeyFromCoordinator().getCoordinatorName());
                         server.processingPutKeyFromCoordinatorRequest(message.getPutKeyFromCoordinator());
                         receiver.close();
                         print("----PutKeyFromCoordinator End----");

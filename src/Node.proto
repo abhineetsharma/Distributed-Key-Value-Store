@@ -48,6 +48,15 @@ message LogBook {
     repeated LogMessage log = 1;
 }
 
+message HintedHandOff{
+	string ServerName = 1;
+	repeated WrapperMessage all_wrapper_message = 2;
+}
+
+message HintedHandOffBook{
+	repeated HintedHandOff log = 1;
+}
+
 message AcknowledgementToCoordinator {
     string coordinatorTimeStamp = 1;
     uint32 key = 2;
