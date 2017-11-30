@@ -46,7 +46,7 @@ public class Server {
         keyValueDataStore = new ConcurrentSkipListMap<>();
         CoordinatorAcknowledgementLog = new ConcurrentSkipListMap<>();
         failedWrites = new HashMap<>();
-        replicaFactor = 4;
+        replicaFactor = 2;
 
         String str = "";
 
