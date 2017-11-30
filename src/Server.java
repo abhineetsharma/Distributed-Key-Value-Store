@@ -157,10 +157,11 @@ public class Server {
             }
 
         }
+        //if message sent is less then the consistency level then send an error acknowledgement ot he client
         if (messageSentCounterToReplica < clientConsistencyLevel.getNumber()) {
             //return client an error message
             String errorMessage = "Cannot find the key " + key;
-            sentAcknowledgementToClient(key, null, errorMessage, clientSocket);
+            sendAcknowledgementToClient(key, null, errorMessage, clientSocket);
             acknowledgementLogCoordinatorMap.remove(timeStamp);
         }
     }
@@ -182,16 +183,17 @@ public class Server {
 
         for (ServerData replica : replicaServerList) {
 
-            Node.PutKeyFromCoordinator.Builder putKeyFromCoordinatorBuilder = Node.PutKeyFromCoordinator.newBuilder();
-
-            putKeyFromCoordinatorBuilder.setKey(key);
-            putKeyFromCoordinatorBuilder.setTimeStamp(timeStamp);
-            putKeyFromCoordinatorBuilder.setValue(value);
-            putKeyFromCoordinatorBuilder.setCoordinatorName(name);
-            putKeyFromCoordinatorBuilder.setIsReadRepair(false);
+            Node.PutKeyFromCoordinator putKeyFromCoordinator = Node.PutKeyFromCoordinator
+                    .newBuilder()
+                    .setKey(key)
+                    .setTimeStamp(timeStamp)
+                    .setValue(value)
+                    .setCoordinatorName(name)
+                    .setIsReadRepair(false)
+                    .build();
 
             Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
-                    .setPutKeyFromCoordinator(putKeyFromCoordinatorBuilder).build();
+                    .setPutKeyFromCoordinator(putKeyFromCoordinator).build();
 
             try {
                 sendMessageViaSocket(replica, message);
@@ -199,12 +201,12 @@ public class Server {
                 e.printStackTrace();
                 System.out.println("replica server " + replica.getName() + " down");
                 ConflictingReplica conflictingReplica = new ConflictingReplica(replica, message);
-                addFailedWriteRequestForServer(replica, conflictingReplica);
+                addFailedWriteRequestForReplica(replica, conflictingReplica);
             }
         }
     }
 
-    private void addFailedWriteRequestForServer(ServerData replica, ConflictingReplica conflictingReplica) {
+    private void addFailedWriteRequestForReplica(ServerData replica, ConflictingReplica conflictingReplica) {
         String serverName = replica.getName();
         if (failedWriteRequests.containsKey(serverName)) {
             List<ConflictingReplica> messages = failedWriteRequests.get(serverName);
@@ -223,12 +225,12 @@ public class Server {
         String coordinatorName = getKeyFromCoordinator.getCoordinatorName();
 
 
-        Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator.newBuilder();
-
-        acknowledgementBuilder.setKey(key);
-        acknowledgementBuilder.setReplicaName(name);
-        acknowledgementBuilder.setRequestType(Node.RequestType.READ);
-        acknowledgementBuilder.setCoordinatorTimeStamp(timeStamp);
+        Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator
+                .newBuilder()
+                .setKey(key)
+                .setReplicaName(name)
+                .setRequestType(Node.RequestType.READ)
+                .setCoordinatorTimeStamp(timeStamp);
 
         if (keyValueDataStore.containsKey(key)) {
             ValueMetaData data = keyValueDataStore.get(key);
@@ -251,7 +253,7 @@ public class Server {
         // send acknowledgement to coordinator
         try {
             sendMessageViaSocket(coordinator, message);
-            System.out.println("Read Ack message sent to the Coordinator : " + coordinatorName + " .....");
+            print("Read Ack message sent to the Coordinator : " + coordinatorName + " .....");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -425,7 +427,7 @@ public class Server {
                 if (requestType.equals(Node.RequestType.WRITE)) {
                     if (acknowledgeCount >= consistencyLevel.getNumber() && !isSentToClient) {
                         acknowledgement.setSentToClient(true);
-                        sentAcknowledgementToClient(key, value, errorMessage, clientSocket);
+                        sendAcknowledgementToClient(key, value, errorMessage, clientSocket);
                     }
 
                 } else if (requestType.equals(Node.RequestType.READ)) {
@@ -441,7 +443,7 @@ public class Server {
                         print("Replica with latest data : " + acknowledgeData.getReplicaName() + " Time stamp : " + acknowledgeData.getTimeStamp() + " Value : " + acknowledgeData.getValue());
                         acknowledgement.setSentToClient(true);
 
-                        sentAcknowledgementToClient(key, acknowledgeData.getValue(), errorMessage, clientSocket);
+                        sendAcknowledgementToClient(key, acknowledgeData.getValue(), errorMessage, clientSocket);
                     }
 
                     if (isSentToClient && acknowledgement.isInconsistent()) {
@@ -492,7 +494,7 @@ public class Server {
                     } catch (IOException ex) {
                         ex.printStackTrace();
                         ConflictingReplica conflictingServer = new ConflictingReplica(replicaServer, message);
-                        addFailedWriteRequestForServer(replicaServer, conflictingServer);
+                        addFailedWriteRequestForReplica(replicaServer, conflictingServer);
                     }
                 }
             }
@@ -502,7 +504,7 @@ public class Server {
     }
 
     // coordinator sending acknowledgement to client
-    private void sentAcknowledgementToClient(int key, String value, String errorMessage, Socket clientSocket) {
+    private void sendAcknowledgementToClient(int key, String value, String errorMessage, Socket clientSocket) {
         if (value == null)
             value = "";
         if (errorMessage == null) {
