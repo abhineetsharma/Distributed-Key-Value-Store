@@ -49,20 +49,20 @@ public class Server {
         replicaFactor = 4;
 
         String str = "";
-        try {
-            if (fPro.countLines() >= replicaFactor) {
-                while ((str = fPro.readLine()) != null) {
-                    ServerData nodeServerData = new ServerData(str);
-                    allServersData.put(nodeServerData.getName(), nodeServerData);
 
-                    if (nodeServerData.getPort() == portNumber) {
-                        name = nodeServerData.getName();
-                        ip = nodeServerData.getIp();
-                    }
-                }
+
+        while ((str = fPro.readLine()) != null) {
+            ServerData nodeServerData = new ServerData(str);
+            allServersData.put(nodeServerData.getName(), nodeServerData);
+
+            if (nodeServerData.getPort() == portNumber) {
+                name = nodeServerData.getName();
+                ip = nodeServerData.getIp();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        if (allServersData.size() < replicaFactor) {
+            System.out.println("Not enough servers in the file, require " + replicaFactor + " for the system");
+            System.exit(1);
         }
 
 
