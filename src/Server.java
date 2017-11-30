@@ -46,11 +46,13 @@ public class Server {
         }
 
         FileProcessor fPro = new FileProcessor(nodeFilePath);
+
         allServersData = new TreeMap<>();
         keyValueDataStore = new ConcurrentSkipListMap<>();
         CoordinatorAcknowledgementLog = new ConcurrentSkipListMap<>();
         failedWrites = new HashMap<>();
         replicaFactor = 4;
+
         String str = "";
         try {
             if (fPro.countLines() >= replicaFactor) {
@@ -163,9 +165,10 @@ public class Server {
         List<ServerData> nodeServerDataList = new ArrayList<>();
 
         for (int i = 0; i < replicaFactor && i < allServersData.size(); i++) {
-            nodeServerDataList
-                    .add(allServersData
-                            .get(mapKeys[(allServersData.size() + keyPosition + i) % allServersData.size()]));
+            nodeServerDataList.add(
+                    allServersData.get(
+                            mapKeys[(allServersData.size() + keyPosition + i) % allServersData.size()]
+                    ));
         }
         return nodeServerDataList;
     }
@@ -186,21 +189,20 @@ public class Server {
 
         print(primaryReplica.toString());
         List<ServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
-        print(replicaServerList);
+        print("The replica servers for key " + key + "\n" + replicaServerList);
 
         String timeStamp = getCurrentTimeString();
 
-        CoordinatorAcknowledgementLog.put(timeStamp,
-                new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, null, replicaServerList));
+        CoordinatorAcknowledgementLog.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, null, replicaServerList));
 
         int messageSentCounterToReplica = 0;
         for (ServerData replica : replicaServerList) {
 
             MyCassandra.GetKeyFromCoordinator.Builder getKeyFromCoordinatorBuilder = MyCassandra.GetKeyFromCoordinator.newBuilder();
 
-            getKeyFromCoordinatorBuilder.setKey(key);
-            getKeyFromCoordinatorBuilder.setTimeStamp(timeStamp);
-            getKeyFromCoordinatorBuilder.setCoordinatorName(name);
+            getKeyFromCoordinatorBuilder.setKey(key)
+                    .setTimeStamp(timeStamp)
+                    .setCoordinatorName(name);
 
             MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage.newBuilder()
                     .setGetKeyFromCoordinator(getKeyFromCoordinatorBuilder).build();
@@ -263,6 +265,8 @@ public class Server {
     }
 
     private void addFailedWriteRequestForReplica(ServerData replica, ConflictingReplica conflictingReplica) {
+        print("----Failed WriteRequest For Replica Start----");
+        print("Hinted Hand Off Saved for : " + replica.getName());
         String serverName = replica.getName();
         if (failedWrites.containsKey(serverName)) {
             List<ConflictingReplica> messages = failedWrites.get(serverName);
@@ -273,6 +277,7 @@ public class Server {
             failedWrites.put(serverName, messages);
         }
         writeToFile(failedWrites);
+        print("----Failed WriteRequest For Replica End-----");
     }
 
     private void writeToFile(Map<String, List<ConflictingReplica>> failedWritesI) {
@@ -622,9 +627,11 @@ public class Server {
         return Long.toString(System.currentTimeMillis());
     }
 
-    private void sendPendingRequestsToCoordinator(String coordinatorName) {
-        if (failedWrites.containsKey(coordinatorName)) {
-            List<ConflictingReplica> failedWritesList = failedWrites.get(coordinatorName);
+    private void sendPendingRequestsToCoordinator(String respawnReplica) {
+        if (failedWrites.containsKey(respawnReplica)) {
+            print("----Hinted hand off message Start----");
+            print("Hinted Hand Off for : " + respawnReplica);
+            List<ConflictingReplica> failedWritesList = failedWrites.get(respawnReplica);
 
             boolean allSent = true;
             for (ConflictingReplica cr : failedWritesList) {
@@ -632,15 +639,17 @@ public class Server {
                     sendMessageViaSocket(allServersData.get(cr.getServerName()), cr.getMessage());
                 } catch (IOException e) {
                     System.out.println("could not send message to " + cr.getServerName());
+                    e.printStackTrace();
                     allSent = false;
                 }
             }
 
             //delete the server name from failedWrites.
             if (allSent) {
-                failedWrites.remove(coordinatorName);
+                failedWrites.remove(respawnReplica);
                 writeToFile(failedWrites);
             }
+            print("----Hinted hand off message End------");
         }
     }
 
@@ -702,7 +711,6 @@ public class Server {
                         print("----PutKeyFromCoordinator Start----");
                         String coordinatorName = message.getPutKeyFromCoordinator().getCoordinatorName();
                         server.sendPendingRequestsToCoordinator(coordinatorName);
-
                         server.processingPutKeyFromCoordinatorRequest(message.getPutKeyFromCoordinator());
                         receiver.close();
                         print("----PutKeyFromCoordinator End----");

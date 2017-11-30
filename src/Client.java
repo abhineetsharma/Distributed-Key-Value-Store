@@ -32,12 +32,12 @@ public class Client {
             // for (int i = 0; i < 256; i++) {
             // .. int no = (i + nodeMap.size()) % nodeMap.size();
             for (int i = 1; i < 256; i++) {
-                sendPUTRequestToCoordinator("node" + get(i), i, "XYZOi", MyCassandra.ConsistencyLevel.TWO);
+                sendPUTRequestToCoordinator("node" + get(i), i, "XYZO" + i, MyCassandra.ConsistencyLevel.TWO);
 
                 //Thread.sleep(5000);
-                sendGETRequestToCoordinator("node" + get(i+2), i, MyCassandra.ConsistencyLevel.ONE);
+                sendGETRequestToCoordinator("node" + get(i + 2), i, MyCassandra.ConsistencyLevel.ONE);
 
-                sendGETRequestToCoordinator("node" + get(i+3), i, MyCassandra.ConsistencyLevel.TWO);
+                sendGETRequestToCoordinator("node" + get(i + 3), i, MyCassandra.ConsistencyLevel.TWO);
             }
             // }
 
