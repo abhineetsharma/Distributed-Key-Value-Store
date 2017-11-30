@@ -31,15 +31,23 @@ public class Client {
 
             // for (int i = 0; i < 256; i++) {
             // .. int no = (i + nodeMap.size()) % nodeMap.size();
-            sendPUTRequestToCoordinator("node2", 1, "XYZOi", MyCassandra.ConsistencyLevel.TWO);
+            for (int i = 1; i < 256; i++) {
+                sendPUTRequestToCoordinator("node" + get(i), i, "XYZOi", MyCassandra.ConsistencyLevel.TWO);
 
-            //Thread.sleep(5000);
-            sendGETRequestToCoordinator("node1", 1, MyCassandra.ConsistencyLevel.ONE);
+                //Thread.sleep(5000);
+                sendGETRequestToCoordinator("node" + get(i+2), i, MyCassandra.ConsistencyLevel.ONE);
 
-            sendGETRequestToCoordinator("node4", 1, MyCassandra.ConsistencyLevel.TWO);
+                sendGETRequestToCoordinator("node" + get(i+3), i, MyCassandra.ConsistencyLevel.TWO);
+            }
             // }
 
+
         }
+    }
+
+    public static int get(int num) {
+
+        return ((nodeMap.size()) + num) % (nodeMap.size());
     }
 
     private static void sendPUTRequestToCoordinator(String node, int key, String value, MyCassandra.ConsistencyLevel consistencyLevel) {

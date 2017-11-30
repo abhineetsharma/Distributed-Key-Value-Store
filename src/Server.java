@@ -25,7 +25,7 @@ public class Server {
     // file paths
     private String nodeFilePath;
     private String logFilePath;
-    private String hintedhandOffFilePath;
+    private String hintedHandOffFilePath;
 
     // data structures
     private Map<String, ServerData> allServersData;
@@ -36,8 +36,15 @@ public class Server {
     // flag to stop print
     private static boolean printFlag = true;
 
-    private void initServer() {
-        // read Node.txt and write into allServerData
+    private void initServer(String[] args) {
+        if (args.length > 1) {
+            portNumber = Integer.parseInt(args[0]);
+            nodeFilePath = args[1];
+        } else {
+            System.out.println("Invalid number of arguments to controller");
+            System.exit(0);
+        }
+
         FileProcessor fPro = new FileProcessor(nodeFilePath);
         allServersData = new TreeMap<>();
         keyValueDataStore = new ConcurrentSkipListMap<>();
@@ -61,6 +68,30 @@ public class Server {
             e.printStackTrace();
         }
 
+
+        File dir = new File("dir");
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+
+        // set server's log file path
+        StringBuilder builder = new StringBuilder();
+        try {
+            logFilePath = dir.getCanonicalPath() + "/"
+                    + builder.append(name).append("LogFile.txt").toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // set Hinted Hand off log file path
+        StringBuilder strBuilder = new StringBuilder();
+        try {
+            hintedHandOffFilePath = dir.getCanonicalPath() + "/" + strBuilder.append(name).append("hhf.txt").toString();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        // read Node.txt and write into allServerData
+
         // read logFile and write to keyValueDataStore
         File file = new File(logFilePath);
         if (file.exists()) {
@@ -73,42 +104,46 @@ public class Server {
                 System.out.println("Error reading log file in initServer");
                 ex.printStackTrace();
             }
+            print("Reading From log Start\n");
 
             // copy log messages with log-end flag = 1 to key-value Map
             for (MyCassandra.LogMessage log : logBook.getLogList()) {
                 if (log.getLogEndFlag()) {
+
                     if (keyValueDataStore.containsKey(log.getKey())) {
                         // If key is present in our keyValue store then compare time-stamps
                         keyValueDataStore.get(log.getKey()).updateKeyWithValue(log.getTimeStamp(), log.getValue());
                     } else {
                         keyValueDataStore.put(log.getKey(), new ValueMetaData(log.getTimeStamp(), log.getValue()));
                     }
+                    print(keyValueDataStore.get(log.getKey()));
                 }
             }
+            print("\nReading From log End");
         }
 
         //read hinted-hand off file and write to FailedWrites
-        file = new File(hintedhandOffFilePath);
+        file = new File(hintedHandOffFilePath);
         if (file.exists()) {
-        	MyCassandra.HintedHandOffBook.Builder hhfBook = MyCassandra.HintedHandOffBook.newBuilder();
-        	try {
-        		hhfBook.mergeFrom(new FileInputStream(hintedhandOffFilePath));
-            }  catch (IOException ex) {
+            MyCassandra.HintedHandOffBook.Builder hhfBook = MyCassandra.HintedHandOffBook.newBuilder();
+            try {
+                hhfBook.mergeFrom(new FileInputStream(hintedHandOffFilePath));
+            } catch (IOException ex) {
                 System.out.println("Error reading hhf file in initServer");
                 ex.printStackTrace();
             }
 
-        	//copy all failedWrite messages to failedWrites data structure
-        	for (MyCassandra.HintedHandOff message : hhfBook.getLogList()) {
+            //copy all failedWrite messages to failedWrites data structure
+            for (MyCassandra.HintedHandOff message : hhfBook.getLogList()) {
 
-        		List<ConflictingReplica> list = new ArrayList<>();
-        		ConflictingReplica cr = null;
-        		for(MyCassandra.WrapperMessage wrapperMessage: message.getAllWrapperMessageList()) {
-        			cr = new ConflictingReplica(message.getServerName(), wrapperMessage);
-        			list.add(cr);
-        			failedWrites.put(message.getServerName(), list);
-        		}
-        	}
+                List<ConflictingReplica> list = new ArrayList<>();
+                ConflictingReplica cr = null;
+                for (MyCassandra.WrapperMessage wrapperMessage : message.getAllWrapperMessageList()) {
+                    cr = new ConflictingReplica(message.getServerName(), wrapperMessage);
+                    list.add(cr);
+                    failedWrites.put(message.getServerName(), list);
+                }
+            }
         }
     }
 
@@ -161,7 +196,7 @@ public class Server {
         int messageSentCounterToReplica = 0;
         for (ServerData replica : replicaServerList) {
 
-        	MyCassandra.GetKeyFromCoordinator.Builder getKeyFromCoordinatorBuilder = MyCassandra.GetKeyFromCoordinator.newBuilder();
+            MyCassandra.GetKeyFromCoordinator.Builder getKeyFromCoordinatorBuilder = MyCassandra.GetKeyFromCoordinator.newBuilder();
 
             getKeyFromCoordinatorBuilder.setKey(key);
             getKeyFromCoordinatorBuilder.setTimeStamp(timeStamp);
@@ -204,7 +239,7 @@ public class Server {
 
         for (ServerData replica : replicaServerList) {
 
-        	MyCassandra.PutKeyFromCoordinator.Builder putKeyFromCoordinatorBuilder = MyCassandra.PutKeyFromCoordinator.newBuilder();
+            MyCassandra.PutKeyFromCoordinator.Builder putKeyFromCoordinatorBuilder = MyCassandra.PutKeyFromCoordinator.newBuilder();
 
             putKeyFromCoordinatorBuilder.setKey(key);
             putKeyFromCoordinatorBuilder.setTimeStamp(timeStamp);
@@ -242,15 +277,15 @@ public class Server {
 
     private void writeToFile(Map<String, List<ConflictingReplica>> failedWritesI) {
 
-    	MyCassandra.HintedHandOffBook.Builder hhfBook = MyCassandra.HintedHandOffBook.newBuilder();
+        MyCassandra.HintedHandOffBook.Builder hhfBook = MyCassandra.HintedHandOffBook.newBuilder();
 
-        for(Map.Entry<String, List<ConflictingReplica>> entry : failedWrites.entrySet()) {
+        for (Map.Entry<String, List<ConflictingReplica>> entry : failedWrites.entrySet()) {
             String serverName = entry.getKey();
             List<ConflictingReplica> listOfWriteMessages = entry.getValue();
 
             ArrayList<MyCassandra.WrapperMessage> wrapperList = new ArrayList<>();
-            for(ConflictingReplica cr : listOfWriteMessages) {
-            	wrapperList.add(cr.getMessage());
+            for (ConflictingReplica cr : listOfWriteMessages) {
+                wrapperList.add(cr.getMessage());
             }
 
             MyCassandra.HintedHandOff hhf = MyCassandra.HintedHandOff.newBuilder().setServerName(serverName).addAllAllWrapperMessage(wrapperList).build();
@@ -258,19 +293,19 @@ public class Server {
         }
 
         FileOutputStream output;
-		try {
-			output = new FileOutputStream(hintedhandOffFilePath);
-			hhfBook.build().writeTo(output);
-	        output.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			System.out.println("Hinted hand off file not found");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+        try {
+            output = new FileOutputStream(hintedHandOffFilePath);
+            hhfBook.build().writeTo(output);
+            output.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Hinted hand off file not found");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	// normal server processing get key request from co-ordinator
+    // normal server processing get key request from co-ordinator
     private void processingGetKeyFromCoordinator(MyCassandra.GetKeyFromCoordinator getKeyFromCoordinator) {
         int key = getKeyFromCoordinator.getKey();
         String timeStamp = getKeyFromCoordinator.getTimeStamp();
@@ -389,7 +424,7 @@ public class Server {
                 // Create acknowledgement and message to coordinator
 
                 if (!putKeyFromCoordinator.getIsReadRepair()) {
-                	MyCassandra.AcknowledgementToCoordinator acknowledgement = MyCassandra.AcknowledgementToCoordinator
+                    MyCassandra.AcknowledgementToCoordinator acknowledgement = MyCassandra.AcknowledgementToCoordinator
                             .newBuilder()
                             .setKey(logKey)
                             .setReplicaTimeStamp(logTimeStamp)
@@ -398,7 +433,7 @@ public class Server {
                             .setReplicaName(name)
                             .setRequestType(MyCassandra.RequestType.WRITE).build();
 
-                	MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage
+                    MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage
                             .newBuilder()
                             .setAcknowledgementToCoordinator(acknowledgement)
                             .build();
@@ -442,7 +477,7 @@ public class Server {
         AcknowledgementToClientListener acknowledgement = CoordinatorAcknowledgementLog.get(replicasCoordinatorTimeStamp);
 
         if (null != acknowledgement) {
-        	MyCassandra.ConsistencyLevel consistencyLevel = acknowledgement.getRequestConsistencyLevel();
+            MyCassandra.ConsistencyLevel consistencyLevel = acknowledgement.getRequestConsistencyLevel();
             Socket clientSocket = acknowledgement.getClientSocket();
             boolean isSentToClient = acknowledgement.isSentToClient();
 
@@ -506,6 +541,7 @@ public class Server {
             }
         }
     }
+
     //uncomment for the above if debug test
     //boolean debugFlag = true;
     //Read repair thread
@@ -522,7 +558,7 @@ public class Server {
             for (String serverName : replicaAcknowledgementList) {
                 AcknowledgementData acknowledgementData = acknowledgement.getAcknowledgementDataByServerName(serverName);
                 if (!mostRecentValueFromReplica.getValue().equalsIgnoreCase(acknowledgementData.getValue())) {
-                    MyCassandra.PutKeyFromCoordinator.Builder putKeyFromCoordinatorToConflictingReplicaBuilder = Node.PutKeyFromCoordinator.newBuilder();
+                    MyCassandra.PutKeyFromCoordinator.Builder putKeyFromCoordinatorToConflictingReplicaBuilder = MyCassandra.PutKeyFromCoordinator.newBuilder();
 
                     putKeyFromCoordinatorToConflictingReplicaBuilder.setKey(mostRecentValueFromReplica.getKey())
                             .setTimeStamp(mostRecentValueFromReplica.getTimeStamp())
@@ -543,7 +579,7 @@ public class Server {
                     } catch (IOException ex) {
                         ex.printStackTrace();
 
-                        ConflictingReplica conflictingServer = new ConflictingReplica(replicaServer, message);
+                        ConflictingReplica conflictingServer = new ConflictingReplica(replicaServer.getName(), message);
                         addFailedWriteRequestForReplica(replicaServer, conflictingServer);
                     }
                 }
@@ -587,63 +623,33 @@ public class Server {
     }
 
     private void sendPendingRequestsToCoordinator(String coordinatorName) {
-    	if (this.failedWrites.containsKey(coordinatorName)) {
-			List<ConflictingReplica> failedWritesList = failedWrites.get(coordinatorName);
+        if (failedWrites.containsKey(coordinatorName)) {
+            List<ConflictingReplica> failedWritesList = failedWrites.get(coordinatorName);
 
-			boolean allSent = true;
-			for (ConflictingReplica cr : failedWritesList) {
-				try {
-					sendMessageViaSocket(allServersData.get(cr.getServerName()), cr.getMessage());
-				} catch (IOException e) {
-					System.out.println("could not send message to "+ cr.getServerName());
-					allSent = false;
-				}
-			}
+            boolean allSent = true;
+            for (ConflictingReplica cr : failedWritesList) {
+                try {
+                    sendMessageViaSocket(allServersData.get(cr.getServerName()), cr.getMessage());
+                } catch (IOException e) {
+                    System.out.println("could not send message to " + cr.getServerName());
+                    allSent = false;
+                }
+            }
 
-			//delete the server name from failedWrites.
-			if(allSent) {
-				failedWrites.remove(coordinatorName);
-				writeToFile(failedWrites);
-			}
-		}
-	}
+            //delete the server name from failedWrites.
+            if (allSent) {
+                failedWrites.remove(coordinatorName);
+                writeToFile(failedWrites);
+            }
+        }
+    }
 
     public static void main(String[] args) {
 
         Server server = new Server();
 
-        File dir = new File("dir");
-        if (!dir.exists()) {
-            dir.mkdir();
-        }
 
-        // set server's log file path
-        StringBuilder builder = new StringBuilder();
-        try {
-            server.logFilePath = dir.getCanonicalPath() + "/"
-                    + builder.append(server.name).append("LogFile.txt").toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // set HintedHandoff log file path
-        StringBuilder strbuilder = new StringBuilder();
-        try {
-			server.hintedhandOffFilePath = dir.getCanonicalPath() + "/" + strbuilder.append(server.name).append("hhf.txt").toString();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-        if (args.length > 1) {
-            server.portNumber = Integer.parseInt(args[0]);
-            server.nodeFilePath = args[1];
-
-        } else {
-            System.out.println("Invalid number of arguments to controller");
-            System.exit(0);
-        }
-
-        server.initServer();
+        server.initServer(args);
 
         ServerSocket serverSocket = null;
         try {
@@ -660,6 +666,7 @@ public class Server {
         while (true) {
             Socket receiver = null;
             try {
+                Thread.sleep(500);
                 receiver = serverSocket.accept();
                 print("\n\n----------------------------------------");
                 print("====Message received count = " + (++msgCount));
@@ -683,8 +690,9 @@ public class Server {
                     //Get Key From Coordinator
                     else if (message.hasGetKeyFromCoordinator()) {
                         print("----GetKeyFromCoordinator Start----");
-                        server.sendPendingRequestsToCoordinator(
-								message.getGetKeyFromCoordinator().getCoordinatorName());
+                        String coordinatorName = message.getGetKeyFromCoordinator().getCoordinatorName();
+                        server.sendPendingRequestsToCoordinator(coordinatorName);
+
                         server.processingGetKeyFromCoordinator(message.getGetKeyFromCoordinator());
                         receiver.close();
                         print("----GetKeyFromCoordinator End----");
@@ -692,8 +700,9 @@ public class Server {
                     //Put Key From Coordinator
                     else if (message.hasPutKeyFromCoordinator()) {
                         print("----PutKeyFromCoordinator Start----");
-                        server.sendPendingRequestsToCoordinator(
-								message.getPutKeyFromCoordinator().getCoordinatorName());
+                        String coordinatorName = message.getPutKeyFromCoordinator().getCoordinatorName();
+                        server.sendPendingRequestsToCoordinator(coordinatorName);
+
                         server.processingPutKeyFromCoordinatorRequest(message.getPutKeyFromCoordinator());
                         receiver.close();
                         print("----PutKeyFromCoordinator End----");
@@ -710,6 +719,8 @@ public class Server {
                 System.out.println("Error reading data from socket. Exiting main thread");
                 e.printStackTrace();
                 System.exit(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             } finally {
                 print("\n\n---------------------------------------------");
                 print("=====Message received End count = " + msgCount);
