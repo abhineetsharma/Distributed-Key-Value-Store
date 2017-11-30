@@ -15,6 +15,8 @@ import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 
+
+
 public class Server {
 
     // this server details
@@ -31,8 +33,8 @@ public class Server {
     // data structures
     private Map<String, ServerData> allServersData;
     private Map<Integer, ValueMetaData> keyValueDataStore;
-    private Map<String, AcknowledgementToClientListener> acknowledgementLogCoordinatorMap;
-    private Map<String, List<ConflictingReplica>> failedWriteRequests;
+    private Map<String, AcknowledgementToClientListener> CoordinatorAcknowledgementLog;
+    private Map<String, List<ConflictingReplica>> failedWrites;
 
     // flag to stop print
     private static boolean printFlag = true;
@@ -42,8 +44,8 @@ public class Server {
         FileProcessor fPro = new FileProcessor(nodeFilePath);
         allServersData = new TreeMap<>();
         keyValueDataStore = new ConcurrentSkipListMap<>();
-        acknowledgementLogCoordinatorMap = new ConcurrentSkipListMap<>();
-        failedWriteRequests = new HashMap<>();
+        CoordinatorAcknowledgementLog = new ConcurrentSkipListMap<>();
+        failedWrites = new HashMap<>();
         replicaFactor = 4;
         String str = "";
         try {
@@ -62,7 +64,7 @@ public class Server {
             e.printStackTrace();
         }
 
-        // read logFile for recovery from failure
+        // read logFile and write to keyValueDataStore
         File file = new File(logFilePath);
         if (file.exists()) {
             Node.LogBook.Builder logBook = Node.LogBook.newBuilder();
@@ -70,10 +72,8 @@ public class Server {
             // Read the existing Log book.
             try {
                 logBook.mergeFrom(new FileInputStream(logFilePath));
-            } catch (FileNotFoundException e) {
-                System.out.println(": File not found.  Creating a new file.");
             } catch (IOException ex) {
-                System.out.println("Error reading log file");
+                System.out.println("Error reading log file in initServer");
                 ex.printStackTrace();
             }
 
@@ -89,6 +89,30 @@ public class Server {
                 }
             }
         }
+        
+        //read hinted-hand off file and write to FailedWrites
+        file = new File(hintedhandOffFilePath);
+        if (file.exists()) {
+        	Node.HintedHandOffBook.Builder hhfBook = Node.HintedHandOffBook.newBuilder();
+        	try {
+        		hhfBook.mergeFrom(new FileInputStream(hintedhandOffFilePath));
+            }  catch (IOException ex) {
+                System.out.println("Error reading hhf file in initServer");
+                ex.printStackTrace();
+            }
+
+        	//copy all failedWrite messages to failedWrites data structure
+        	for (Node.HintedHandOff message : hhfBook.getLogList()) {
+        		
+        		List<ConflictingReplica> list = new ArrayList<>();
+        		ConflictingReplica cr = null;
+        		for(Node.WrapperMessage wrapperMessage: message.getAllWrapperMessageList()) {
+        			cr = new ConflictingReplica(message.getServerName(), wrapperMessage);
+        			list.add(cr);
+        			failedWrites.put(message.getServerName(), list);
+        		}
+        	}
+        }   
     }
 
     private static void print(Object obj) {
@@ -99,7 +123,6 @@ public class Server {
                 System.out.println("null");
         }
     }
-
 
     //to get the replica server list
     private List<ServerData> getReplicaServersList(String keyNode) {
@@ -135,7 +158,7 @@ public class Server {
 
         String timeStamp = getCurrentTimeString();
 
-        acknowledgementLogCoordinatorMap.put(timeStamp,
+        CoordinatorAcknowledgementLog.put(timeStamp,
                 new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, null, replicaServerList));
 
         int messageSentCounterToReplica = 0;
@@ -162,7 +185,7 @@ public class Server {
             //return client an error message
             String errorMessage = "Cannot find the key " + key;
             sentAcknowledgementToClient(key, null, errorMessage, clientSocket);
-            acknowledgementLogCoordinatorMap.remove(timeStamp);
+            CoordinatorAcknowledgementLog.remove(timeStamp);
         }
     }
 
@@ -179,7 +202,7 @@ public class Server {
         print(replicaServerList);
 
         String timeStamp = getCurrentTimeString();
-        acknowledgementLogCoordinatorMap.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, value, replicaServerList));
+        CoordinatorAcknowledgementLog.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, value, replicaServerList));
 
         for (ServerData replica : replicaServerList) {
 
@@ -199,30 +222,60 @@ public class Server {
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("replica server " + replica.getName() + " down");
-                ConflictingReplica conflictingReplica = new ConflictingReplica(replica, message);
-                addFailedWriteRequestForServer(replica, conflictingReplica);
+                ConflictingReplica conflictingReplica = new ConflictingReplica(replica.getName(), message);
+                addToFailedWrites(replica, conflictingReplica);
             }
         }
     }
 
-    private void addFailedWriteRequestForServer(ServerData replica, ConflictingReplica conflictingReplica) {
+    private void addToFailedWrites(ServerData replica, ConflictingReplica conflictingReplica) {
         String serverName = replica.getName();
-        if (failedWriteRequests.containsKey(serverName)) {
-            List<ConflictingReplica> messages = failedWriteRequests.get(serverName);
+        if (failedWrites.containsKey(serverName)) {
+            List<ConflictingReplica> messages = failedWrites.get(serverName);
             messages.add(conflictingReplica);
         } else {
             List<ConflictingReplica> messages = new ArrayList<>();
             messages.add(conflictingReplica);
-            failedWriteRequests.put(serverName, messages);
+            failedWrites.put(serverName, messages);
         }
+        writeToFile(failedWrites);
     }
 
-    // normal server processing get key request from co-ordinator
+    private void writeToFile(Map<String, List<ConflictingReplica>> failedWritesI) {
+    	
+    	Node.HintedHandOffBook.Builder hhfBook = Node.HintedHandOffBook.newBuilder();	       
+        
+        for(Map.Entry<String, List<ConflictingReplica>> entry : failedWrites.entrySet()) {
+            String serverName = entry.getKey();
+            List<ConflictingReplica> listOfWriteMessages = entry.getValue();
+            
+            ArrayList<Node.WrapperMessage> wrapperList = new ArrayList<>();
+            for(ConflictingReplica cr : listOfWriteMessages) {
+            	wrapperList.add(cr.getMessage());
+            }
+            
+            Node.HintedHandOff hhf = Node.HintedHandOff.newBuilder().setServerName(serverName).addAllAllWrapperMessage(wrapperList).build();
+            hhfBook.addLog(hhf);
+        }
+        
+        FileOutputStream output;
+		try {
+			output = new FileOutputStream(hintedhandOffFilePath);
+			hhfBook.build().writeTo(output);
+	        output.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Hinted hand off file not found");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// normal server processing get key request from co-ordinator
     private void processingGetKeyFromCoordinator(Node.GetKeyFromCoordinator getKeyFromCoordinator) {
         int key = getKeyFromCoordinator.getKey();
         String timeStamp = getKeyFromCoordinator.getTimeStamp();
         String coordinatorName = getKeyFromCoordinator.getCoordinatorName();
-
 
         Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator.newBuilder();
 
@@ -387,7 +440,7 @@ public class Server {
         String replicasCoordinatorTimeStamp = acknowledgementToCoordinator.getCoordinatorTimeStamp();
         String replicaTimeStamp = acknowledgementToCoordinator.getReplicaTimeStamp();
 
-        AcknowledgementToClientListener acknowledgement = acknowledgementLogCoordinatorMap.get(replicasCoordinatorTimeStamp);
+        AcknowledgementToClientListener acknowledgement = CoordinatorAcknowledgementLog.get(replicasCoordinatorTimeStamp);
 
         if (null != acknowledgement) {
             Node.ConsistencyLevel consistencyLevel = acknowledgement.getRequestConsistencyLevel();
@@ -455,9 +508,6 @@ public class Server {
         }
     }
 
-    //uncomment for the above if debug test
-    //boolean debugFlag = true;
-
     //Read repair thread
     private synchronized void processReadRepair(AcknowledgementToClientListener acknowledgement) {
         Thread thread = new Thread(() -> {
@@ -492,12 +542,11 @@ public class Server {
                         sendMessageViaSocket(replicaServer, message);
                     } catch (IOException ex) {
                         ex.printStackTrace();
-                        ConflictingReplica conflictingServer = new ConflictingReplica(replicaServer, message);
-                        addFailedWriteRequestForServer(replicaServer, conflictingServer);
+                        ConflictingReplica conflictingServer = new ConflictingReplica(replicaServer.getName(), message);
+                        addToFailedWrites(replicaServer, conflictingServer);
                     }
                 }
             }
-
         });
         thread.start();
     }
@@ -537,28 +586,23 @@ public class Server {
     }
 
     private void sendPendingRequestsToCoordinator(String coordinatorName) {
-    	if (this.failedWriteRequests.containsKey(coordinatorName)) {
-			List<ConflictingReplica> failedWritesQueue = failedWriteRequests.get(coordinatorName);
-			boolean sendSuccess;
-			for (ConflictingReplica cr : failedWritesQueue) {
+    	if (this.failedWrites.containsKey(coordinatorName)) {
+			List<ConflictingReplica> failedWritesList = failedWrites.get(coordinatorName);
+			
+			boolean allSent = true;
+			for (ConflictingReplica cr : failedWritesList) {
 				try {
-					sendSuccess = false;
-					sendMessageViaSocket(cr.getNodeServerData(), cr.getMessage());
-					sendSuccess = true;
-					if (sendSuccess) {
-						//delete the key-value from data structure	
-						
-						//read the old book
-						Node.HintedHandOffBook hintedHandOffBook = Node.HintedHandOffBook.parseFrom(new FileInputStream(this.hintedhandOffFilePath));
-						
-						//modify the in-memory hintedHandOff data structure
-						Node.HintedHandOffBook.Builder newHHFBook = Node.HintedHandOffBook.newBuilder();
-						
-						
-					}
+					sendMessageViaSocket(allServersData.get(cr.getServerName()), cr.getMessage());
 				} catch (IOException e) {
-					e.printStackTrace();
+					System.out.println("could not send message to "+ cr.getServerName());
+					allSent = false;
 				}
+			}
+			
+			//delete the server name from failedWrites.
+			if(allSent) {
+				failedWrites.remove(coordinatorName);
+				writeToFile(failedWrites);
 			}
 		}
 	}
