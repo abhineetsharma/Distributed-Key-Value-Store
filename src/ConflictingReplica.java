@@ -1,34 +1,18 @@
 public class ConflictingReplica {
-    private Node.WrapperMessage message;
-	private ServerData serverData;
-	private String messageType;
+    private MyCassandra.WrapperMessage message;
+	private String serverName;
 
-
-	public ConflictingReplica(ServerData serverDataI, Node.WrapperMessage messageI) {
-		serverData = serverDataI;
+	public ConflictingReplica(String serverNameI, MyCassandra.WrapperMessage messageI) {
+		serverName = serverNameI;
         message = messageI;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ConflictingReplica that = (ConflictingReplica) o;
-		return serverData.equals(that.getNodeServerData());
-    }
-
-    @Override
-    public int hashCode() {
-        return getNodeServerData().hashCode();
-    }
-
-    public Node.WrapperMessage getMessage() {
+	
+    public MyCassandra.WrapperMessage getMessage() {
         return message;
     }
 
-	public ServerData getNodeServerData() {
-		return serverData;
+	public String getServerName() {
+		return serverName;
     }
 
 }
