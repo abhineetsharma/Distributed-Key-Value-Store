@@ -31,31 +31,31 @@ public class Client {
 
             // for (int i = 0; i < 256; i++) {
             // .. int no = (i + nodeMap.size()) % nodeMap.size();
-            sendPUTRequestToCoordinator("node2", 1, "XYZOi", Node.ConsistencyLevel.TWO);
+            sendPUTRequestToCoordinator("node2", 1, "XYZOi", MyCassandra.ConsistencyLevel.TWO);
 
             //Thread.sleep(5000);
-            sendGETRequestToCoordinator("node1", 1, Node.ConsistencyLevel.ONE);
+            sendGETRequestToCoordinator("node1", 1, MyCassandra.ConsistencyLevel.ONE);
 
-            sendGETRequestToCoordinator("node4", 1, Node.ConsistencyLevel.TWO);
+            sendGETRequestToCoordinator("node4", 1, MyCassandra.ConsistencyLevel.TWO);
             // }
 
         }
     }
 
-    private static void sendPUTRequestToCoordinator(String node, int key, String value, Node.ConsistencyLevel consistencyLevel) {
+    private static void sendPUTRequestToCoordinator(String node, int key, String value, MyCassandra.ConsistencyLevel consistencyLevel) {
         try {
             System.out.println("IP: " + nodeMap.get(node).getIp() + " Port:" + nodeMap.get(node).getPort());
             Socket socket = null;
 
             socket = new Socket(nodeMap.get(node).getIp(), nodeMap.get(node).getPort());
 
-            Node.ClientWriteRequest.Builder putKeyVal = Node.ClientWriteRequest.newBuilder();
+            MyCassandra.ClientWriteRequest.Builder putKeyVal = MyCassandra.ClientWriteRequest.newBuilder();
             putKeyVal.setKey(key).setValue(value).setConsistencyLevel(consistencyLevel).build();
-            Node.WrapperMessage.Builder msg = Node.WrapperMessage.newBuilder();
+            MyCassandra.WrapperMessage.Builder msg = MyCassandra.WrapperMessage.newBuilder();
             msg.setClientWriteRequest(putKeyVal).build().writeDelimitedTo(socket.getOutputStream());
 
 
-            Node.WrapperMessage message = Node.WrapperMessage.parseDelimitedFrom(socket.getInputStream());
+            MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage.parseDelimitedFrom(socket.getInputStream());
             System.out.println("Message Received : " + message);
             socket.close();
         } catch (IOException e) {
@@ -63,20 +63,20 @@ public class Client {
         }
     }
 
-    private static void sendGETRequestToCoordinator(String node, int key, Node.ConsistencyLevel consistencyLevel) {
+    private static void sendGETRequestToCoordinator(String node, int key, MyCassandra.ConsistencyLevel consistencyLevel) {
         try {
             System.out.println("IP: " + nodeMap.get(node).getIp() + " Port:" + nodeMap.get(node).getPort());
             Socket socket = null;
 
             socket = new Socket(nodeMap.get(node).getIp(), nodeMap.get(node).getPort());
 
-            Node.ClientReadRequest.Builder getKeyVal = Node.ClientReadRequest.newBuilder();
+            MyCassandra.ClientReadRequest.Builder getKeyVal = MyCassandra.ClientReadRequest.newBuilder();
             getKeyVal.setKey(key).setConsistencyLevel(consistencyLevel).build();
-            Node.WrapperMessage.Builder msg = Node.WrapperMessage.newBuilder();
+            MyCassandra.WrapperMessage.Builder msg = MyCassandra.WrapperMessage.newBuilder();
             msg.setClientReadRequest(getKeyVal).build().writeDelimitedTo(socket.getOutputStream());
 
 
-            Node.WrapperMessage message = Node.WrapperMessage.parseDelimitedFrom(socket.getInputStream());
+            MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage.parseDelimitedFrom(socket.getInputStream());
             System.out.println("Message Received : " + message);
             socket.close();
         } catch (IOException e) {

@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class AcknowledgementToClientListener {
     private String clientName;
     private Socket clientSocket;
-    private Node.ConsistencyLevel requestConsistencyLevel;
+    private MyCassandra.ConsistencyLevel requestConsistencyLevel;
     private boolean isSentToClient;
     private boolean isFailed;
     private Map<String, AcknowledgementData> replicaAcknowledgementMap;
@@ -18,7 +18,7 @@ public class AcknowledgementToClientListener {
 
 
 	public AcknowledgementToClientListener(String clientNameI, Socket clientSocketI,
-			Node.ConsistencyLevel consistencyLevelI, String timeStampI, int keyI, String valueI,
+			MyCassandra.ConsistencyLevel consistencyLevelI, String timeStampI, int keyI, String valueI,
 			List<ServerData> nodeServerDataList) {
         clientName = clientNameI;
         clientSocket = clientSocketI;
@@ -61,7 +61,7 @@ public class AcknowledgementToClientListener {
         return list;
     }
 
-    public Node.ConsistencyLevel getRequestConsistencyLevel() {
+    public MyCassandra.ConsistencyLevel getRequestConsistencyLevel() {
         return requestConsistencyLevel;
     }
 

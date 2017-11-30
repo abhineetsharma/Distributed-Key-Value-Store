@@ -14,9 +14,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-
-
-
 public class Server {
 
     // this server details
@@ -67,7 +64,7 @@ public class Server {
         // read logFile and write to keyValueDataStore
         File file = new File(logFilePath);
         if (file.exists()) {
-            Node.LogBook.Builder logBook = Node.LogBook.newBuilder();
+            MyCassandra.LogBook.Builder logBook = MyCassandra.LogBook.newBuilder();
 
             // Read the existing Log book.
             try {
@@ -78,7 +75,7 @@ public class Server {
             }
 
             // copy log messages with log-end flag = 1 to key-value Map
-            for (Node.LogMessage log : logBook.getLogList()) {
+            for (MyCassandra.LogMessage log : logBook.getLogList()) {
                 if (log.getLogEndFlag()) {
                     if (keyValueDataStore.containsKey(log.getKey())) {
                         // If key is present in our keyValue store then compare time-stamps
@@ -93,7 +90,7 @@ public class Server {
         //read hinted-hand off file and write to FailedWrites
         file = new File(hintedhandOffFilePath);
         if (file.exists()) {
-        	Node.HintedHandOffBook.Builder hhfBook = Node.HintedHandOffBook.newBuilder();
+        	MyCassandra.HintedHandOffBook.Builder hhfBook = MyCassandra.HintedHandOffBook.newBuilder();
         	try {
         		hhfBook.mergeFrom(new FileInputStream(hintedhandOffFilePath));
             }  catch (IOException ex) {
@@ -102,11 +99,11 @@ public class Server {
             }
 
         	//copy all failedWrite messages to failedWrites data structure
-        	for (Node.HintedHandOff message : hhfBook.getLogList()) {
+        	for (MyCassandra.HintedHandOff message : hhfBook.getLogList()) {
         		
         		List<ConflictingReplica> list = new ArrayList<>();
         		ConflictingReplica cr = null;
-        		for(Node.WrapperMessage wrapperMessage: message.getAllWrapperMessageList()) {
+        		for(MyCassandra.WrapperMessage wrapperMessage: message.getAllWrapperMessageList()) {
         			cr = new ConflictingReplica(message.getServerName(), wrapperMessage);
         			list.add(cr);
         			failedWrites.put(message.getServerName(), list);
@@ -145,10 +142,10 @@ public class Server {
     }
 
     // coordinator processing client's read request
-    private void processingClientReadRequest(Node.ClientReadRequest clientReadRequest, Socket clientSocket) {
+    private void processingClientReadRequest(MyCassandra.ClientReadRequest clientReadRequest, Socket clientSocket) {
         int key = clientReadRequest.getKey();
         //String value = clientReadRequest.getValue();
-        Node.ConsistencyLevel clientConsistencyLevel = clientReadRequest.getConsistencyLevel();
+        MyCassandra.ConsistencyLevel clientConsistencyLevel = clientReadRequest.getConsistencyLevel();
 
         ServerData primaryReplica = getPrimaryReplicaForKey(key);
 
@@ -164,13 +161,13 @@ public class Server {
         int messageSentCounterToReplica = 0;
         for (ServerData replica : replicaServerList) {
 
-            Node.GetKeyFromCoordinator.Builder getKeyFromCoordinatorBuilder = Node.GetKeyFromCoordinator.newBuilder();
+        	MyCassandra.GetKeyFromCoordinator.Builder getKeyFromCoordinatorBuilder = MyCassandra.GetKeyFromCoordinator.newBuilder();
 
             getKeyFromCoordinatorBuilder.setKey(key);
             getKeyFromCoordinatorBuilder.setTimeStamp(timeStamp);
             getKeyFromCoordinatorBuilder.setCoordinatorName(name);
 
-            Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
+            MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage.newBuilder()
                     .setGetKeyFromCoordinator(getKeyFromCoordinatorBuilder).build();
 
             try {
@@ -190,10 +187,10 @@ public class Server {
     }
 
     // coordinator processing client's write request
-    private void processingClientWriteRequest(Node.ClientWriteRequest clientWriteRequest, Socket clientSocket) {
+    private void processingClientWriteRequest(MyCassandra.ClientWriteRequest clientWriteRequest, Socket clientSocket) {
         int key = clientWriteRequest.getKey();
         String value = clientWriteRequest.getValue();
-        Node.ConsistencyLevel clientConsistencyLevel = clientWriteRequest.getConsistencyLevel();
+        MyCassandra.ConsistencyLevel clientConsistencyLevel = clientWriteRequest.getConsistencyLevel();
 
         ServerData primaryReplica = getPrimaryReplicaForKey(key);
 
@@ -206,7 +203,7 @@ public class Server {
 
         for (ServerData replica : replicaServerList) {
 
-            Node.PutKeyFromCoordinator.Builder putKeyFromCoordinatorBuilder = Node.PutKeyFromCoordinator.newBuilder();
+        	MyCassandra.PutKeyFromCoordinator.Builder putKeyFromCoordinatorBuilder = MyCassandra.PutKeyFromCoordinator.newBuilder();
 
             putKeyFromCoordinatorBuilder.setKey(key);
             putKeyFromCoordinatorBuilder.setTimeStamp(timeStamp);
@@ -214,7 +211,7 @@ public class Server {
             putKeyFromCoordinatorBuilder.setCoordinatorName(name);
             putKeyFromCoordinatorBuilder.setIsReadRepair(false);
 
-            Node.WrapperMessage message = Node.WrapperMessage.newBuilder()
+            MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage.newBuilder()
                     .setPutKeyFromCoordinator(putKeyFromCoordinatorBuilder).build();
 
             try {
@@ -243,18 +240,18 @@ public class Server {
 
     private void writeToFile(Map<String, List<ConflictingReplica>> failedWritesI) {
     	
-    	Node.HintedHandOffBook.Builder hhfBook = Node.HintedHandOffBook.newBuilder();	       
+    	MyCassandra.HintedHandOffBook.Builder hhfBook = MyCassandra.HintedHandOffBook.newBuilder();	       
         
         for(Map.Entry<String, List<ConflictingReplica>> entry : failedWrites.entrySet()) {
             String serverName = entry.getKey();
             List<ConflictingReplica> listOfWriteMessages = entry.getValue();
             
-            ArrayList<Node.WrapperMessage> wrapperList = new ArrayList<>();
+            ArrayList<MyCassandra.WrapperMessage> wrapperList = new ArrayList<>();
             for(ConflictingReplica cr : listOfWriteMessages) {
             	wrapperList.add(cr.getMessage());
             }
             
-            Node.HintedHandOff hhf = Node.HintedHandOff.newBuilder().setServerName(serverName).addAllAllWrapperMessage(wrapperList).build();
+            MyCassandra.HintedHandOff hhf = MyCassandra.HintedHandOff.newBuilder().setServerName(serverName).addAllAllWrapperMessage(wrapperList).build();
             hhfBook.addLog(hhf);
         }
         
@@ -272,16 +269,16 @@ public class Server {
 	}
 
 	// normal server processing get key request from co-ordinator
-    private void processingGetKeyFromCoordinator(Node.GetKeyFromCoordinator getKeyFromCoordinator) {
+    private void processingGetKeyFromCoordinator(MyCassandra.GetKeyFromCoordinator getKeyFromCoordinator) {
         int key = getKeyFromCoordinator.getKey();
         String timeStamp = getKeyFromCoordinator.getTimeStamp();
         String coordinatorName = getKeyFromCoordinator.getCoordinatorName();
 
-        Node.AcknowledgementToCoordinator.Builder acknowledgementBuilder = Node.AcknowledgementToCoordinator.newBuilder();
+        MyCassandra.AcknowledgementToCoordinator.Builder acknowledgementBuilder = MyCassandra.AcknowledgementToCoordinator.newBuilder();
 
         acknowledgementBuilder.setKey(key);
         acknowledgementBuilder.setReplicaName(name);
-        acknowledgementBuilder.setRequestType(Node.RequestType.READ);
+        acknowledgementBuilder.setRequestType(MyCassandra.RequestType.READ);
         acknowledgementBuilder.setCoordinatorTimeStamp(timeStamp);
 
         if (keyValueDataStore.containsKey(key)) {
@@ -298,7 +295,7 @@ public class Server {
             acknowledgementBuilder.setErrorMessage("Key " + key + " not found ");
         }
 
-        Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setAcknowledgementToCoordinator(acknowledgementBuilder).build();
+        MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage.newBuilder().setAcknowledgementToCoordinator(acknowledgementBuilder).build();
 
         ServerData coordinator = allServersData.get(coordinatorName);
 
@@ -312,7 +309,7 @@ public class Server {
     }
 
     // normal server processing putkey request from co-ordinator
-    private void processingPutKeyFromCoordinatorRequest(Node.PutKeyFromCoordinator putKeyFromCoordinator) {
+    private void processingPutKeyFromCoordinatorRequest(MyCassandra.PutKeyFromCoordinator putKeyFromCoordinator) {
         int putKey = putKeyFromCoordinator.getKey();
         String putValue = putKeyFromCoordinator.getValue();
         String putTimeStamp = putKeyFromCoordinator.getTimeStamp();
@@ -320,11 +317,11 @@ public class Server {
 
         // BEGIN : Nikhil's pre commite code
 
-        Node.LogMessage logMessage = Node.LogMessage.newBuilder().setKey(putKey)
+        MyCassandra.LogMessage logMessage = MyCassandra.LogMessage.newBuilder().setKey(putKey)
                 .setValue(putValue).setTimeStamp(putTimeStamp)
                 .setLogEndFlag(false).build();
 
-        Node.LogBook.Builder logBook = Node.LogBook.newBuilder();
+        MyCassandra.LogBook.Builder logBook = MyCassandra.LogBook.newBuilder();
 
         // Read the existing Log book.
         try {
@@ -352,7 +349,7 @@ public class Server {
         }
 
         // Read the existing Log book.
-        logBook = Node.LogBook.newBuilder();
+        logBook = MyCassandra.LogBook.newBuilder();
         try {
             logBook.mergeFrom(new FileInputStream(logFilePath));
         } catch (FileNotFoundException e) {
@@ -365,8 +362,8 @@ public class Server {
         // END: Nikhil's pre commite code
         // DONE : do pre-commit processing via log file and code
 
-        Node.LogBook.Builder newLogBook = Node.LogBook.newBuilder();
-        for (Node.LogMessage log : logBook.getLogList()) {
+        MyCassandra.LogBook.Builder newLogBook = MyCassandra.LogBook.newBuilder();
+        for (MyCassandra.LogMessage log : logBook.getLogList()) {
             if (log.getLogEndFlag()) {
                 newLogBook.addLog(log);
             } else {
@@ -382,7 +379,7 @@ public class Server {
                 }
                 // do post commit processing via log file and code
                 // update log message and add to newLogBook
-                Node.LogMessage newLogMessage = Node.LogMessage.newBuilder().setKey(logKey)
+                MyCassandra.LogMessage newLogMessage = MyCassandra.LogMessage.newBuilder().setKey(logKey)
                         .setValue(logValue).setTimeStamp(logTimeStamp).setLogEndFlag(true).build();
                 newLogBook.addLog(newLogMessage);
 
@@ -390,16 +387,16 @@ public class Server {
                 // Create acknowledgement and message to coordinator
 
                 if (!putKeyFromCoordinator.getIsReadRepair()) {
-                    Node.AcknowledgementToCoordinator acknowledgement = Node.AcknowledgementToCoordinator
+                	MyCassandra.AcknowledgementToCoordinator acknowledgement = MyCassandra.AcknowledgementToCoordinator
                             .newBuilder()
                             .setKey(logKey)
                             .setReplicaTimeStamp(logTimeStamp)
                             .setCoordinatorTimeStamp(logTimeStamp)
                             .setValue(logValue)
                             .setReplicaName(name)
-                            .setRequestType(Node.RequestType.WRITE).build();
+                            .setRequestType(MyCassandra.RequestType.WRITE).build();
 
-                    Node.WrapperMessage message = Node.WrapperMessage
+                	MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage
                             .newBuilder()
                             .setAcknowledgementToCoordinator(acknowledgement)
                             .build();
@@ -431,11 +428,11 @@ public class Server {
     }
 
     // normal server sending acknowledgement To Coordinator
-    private synchronized void processingAcknowledgementToCoordinator(Node.AcknowledgementToCoordinator acknowledgementToCoordinator) {
+    private synchronized void processingAcknowledgementToCoordinator(MyCassandra.AcknowledgementToCoordinator acknowledgementToCoordinator) {
         int key = acknowledgementToCoordinator.getKey();
         String value = acknowledgementToCoordinator.getValue();
 
-        Node.RequestType requestType = acknowledgementToCoordinator.getRequestType();
+        MyCassandra.RequestType requestType = acknowledgementToCoordinator.getRequestType();
         String replicaName = acknowledgementToCoordinator.getReplicaName();
         String replicasCoordinatorTimeStamp = acknowledgementToCoordinator.getCoordinatorTimeStamp();
         String replicaTimeStamp = acknowledgementToCoordinator.getReplicaTimeStamp();
@@ -443,7 +440,7 @@ public class Server {
         AcknowledgementToClientListener acknowledgement = CoordinatorAcknowledgementLog.get(replicasCoordinatorTimeStamp);
 
         if (null != acknowledgement) {
-            Node.ConsistencyLevel consistencyLevel = acknowledgement.getRequestConsistencyLevel();
+        	MyCassandra.ConsistencyLevel consistencyLevel = acknowledgement.getRequestConsistencyLevel();
             Socket clientSocket = acknowledgement.getClientSocket();
             boolean isSentToClient = acknowledgement.isSentToClient();
 
@@ -454,7 +451,7 @@ public class Server {
                 int replicaKey = acknowledgementData.getKey();
                 String replicaValue = acknowledgementData.getValue();
 
-                if (requestType.equals(Node.RequestType.WRITE)) {
+                if (requestType.equals(MyCassandra.RequestType.WRITE)) {
                     if (key == replicaKey && replicaValue.equalsIgnoreCase(value)) {
                         acknowledgementData.setAcknowledge(true);
                     } else {
@@ -462,7 +459,7 @@ public class Server {
                     }
                 }
                 //Read request
-                else if (requestType.equals(Node.RequestType.READ)) {
+                else if (requestType.equals(MyCassandra.RequestType.READ)) {
                     if (value == null && errorMessage != null && errorMessage.trim().length() > 0) {
                         //value is null because key does not exist
 
@@ -476,13 +473,13 @@ public class Server {
                 int acknowledgeCount = replicaAcknowledgementList.size();
 
                 //check
-                if (requestType.equals(Node.RequestType.WRITE)) {
+                if (requestType.equals(MyCassandra.RequestType.WRITE)) {
                     if (acknowledgeCount >= consistencyLevel.getNumber() && !isSentToClient) {
                         acknowledgement.setSentToClient(true);
                         sentAcknowledgementToClient(key, value, errorMessage, clientSocket);
                     }
 
-                } else if (requestType.equals(Node.RequestType.READ)) {
+                } else if (requestType.equals(MyCassandra.RequestType.READ)) {
                     //un-comment to change time stamp of particular replica
                     //if (replicaName.equalsIgnoreCase("node2") && debugFlag && replicaTimeStamp != null && replicaTimeStamp.trim().length() > 0) {
                     //    debugFlag = false;
@@ -522,7 +519,7 @@ public class Server {
             for (String serverName : replicaAcknowledgementList) {
                 AcknowledgementData acknowledgementData = acknowledgement.getAcknowledgementDataByServerName(serverName);
                 if (!mostRecentValueFromReplica.getValue().equalsIgnoreCase(acknowledgementData.getValue())) {
-                    Node.PutKeyFromCoordinator.Builder putKeyFromCoordinatorToConflictingReplicaBuilder = Node.PutKeyFromCoordinator.newBuilder();
+                	MyCassandra.PutKeyFromCoordinator.Builder putKeyFromCoordinatorToConflictingReplicaBuilder = MyCassandra.PutKeyFromCoordinator.newBuilder();
 
                     putKeyFromCoordinatorToConflictingReplicaBuilder.setKey(mostRecentValueFromReplica.getKey())
                             .setTimeStamp(mostRecentValueFromReplica.getTimeStamp())
@@ -530,7 +527,7 @@ public class Server {
                             .setCoordinatorName(mostRecentValueFromReplica.getReplicaName())
                             .setIsReadRepair(true);
 
-                    Node.WrapperMessage message = Node.WrapperMessage
+                    MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage
                             .newBuilder()
                             .setPutKeyFromCoordinator(putKeyFromCoordinatorToConflictingReplicaBuilder)
                             .build();
@@ -558,8 +555,8 @@ public class Server {
         if (errorMessage == null) {
             errorMessage = "";
         }
-        Node.AcknowledgementToClient acknowledgementToClient = Node.AcknowledgementToClient.newBuilder().setKey(key).setValue(value).setErrorMessage(errorMessage).build();
-        Node.WrapperMessage message = Node.WrapperMessage.newBuilder().setAcknowledgementToClient(acknowledgementToClient).build();
+        MyCassandra.AcknowledgementToClient acknowledgementToClient = MyCassandra.AcknowledgementToClient.newBuilder().setKey(key).setValue(value).setErrorMessage(errorMessage).build();
+        MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage.newBuilder().setAcknowledgementToClient(acknowledgementToClient).build();
         print("Send to client: " + message + " " + clientSocket.isClosed());
         try {
             if (clientSocket != null && !clientSocket.isClosed()) {
@@ -572,7 +569,7 @@ public class Server {
         }
     }
 
-    private void sendMessageViaSocket(ServerData serverData, Node.WrapperMessage wrapperMessage) throws IOException {
+    private void sendMessageViaSocket(ServerData serverData, MyCassandra.WrapperMessage wrapperMessage) throws IOException {
         print("----Socket message Start----");
         Socket socket = new Socket(serverData.getIp(), serverData.getPort());
         wrapperMessage.writeDelimitedTo(socket.getOutputStream());
@@ -663,7 +660,7 @@ public class Server {
                 print("\n\n----------------------------------------");
                 print("====Message received count = " + (++msgCount));
                 print("----------------------------------------\n\n");
-                Node.WrapperMessage message = Node.WrapperMessage.parseDelimitedFrom(receiver.getInputStream());
+                MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage.parseDelimitedFrom(receiver.getInputStream());
 
                 print(message);
                 if (message != null) {
