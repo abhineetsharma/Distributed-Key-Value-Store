@@ -46,11 +46,9 @@ public class Server {
         keyValueDataStore = new ConcurrentSkipListMap<>();
         CoordinatorAcknowledgementLog = new ConcurrentSkipListMap<>();
         failedWrites = new HashMap<>();
-        replicaFactor = 2;
+        replicaFactor = 4;
 
         String str = "";
-
-
         while ((str = fPro.readLine()) != null) {
             ServerData nodeServerData = new ServerData(str);
             allServersData.put(nodeServerData.getName(), nodeServerData);
@@ -206,6 +204,7 @@ public class Server {
                 sendMessageViaSocket(replica, message);
                 messageSentCounterToReplica++;
             } catch (IOException e) {
+                CoordinatorAcknowledgementLog.get(timeStamp).getReplicaAcknowledgementMap().get(replica.getName()).setDown(true);
                 e.printStackTrace();
             }
 
@@ -253,6 +252,7 @@ public class Server {
                 sendMessageViaSocket(replica, message);
             } catch (IOException e) {
                 e.printStackTrace();
+                CoordinatorAcknowledgementLog.get(timeStamp).getReplicaAcknowledgementMap().get(replica.getName()).setDown(true);
                 System.out.println("replica server " + replica.getName() + " down");
                 ConflictingReplica conflictingReplica = new ConflictingReplica(replica.getName(), message);
                 failedWriteRequestListMap.put(replica, conflictingReplica);
@@ -527,6 +527,7 @@ public class Server {
                     if (acknowledgeCount >= consistencyLevel.getNumber() && !isSentToClient) {
                         acknowledgement.setSentToClient(true);
                         sendAcknowledgementToClient(key, value, errorMessage, clientSocket);
+                        CoordinatorAcknowledgementLog.remove(replicasCoordinatorTimeStamp);
                     }
 
                 } else if (requestType.equals(MyCassandra.RequestType.READ)) {
@@ -544,12 +545,13 @@ public class Server {
 
                         sendAcknowledgementToClient(key, acknowledgeData.getValue(), errorMessage, clientSocket);
                     }
+                    if (isSentToClient &&  acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
+                    //if (isSentToClient && acknowledgement.isInconsistent() && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
 
-                    if (isSentToClient && acknowledgement.isInconsistent()) {
-                        print("----Read Repair Start----");
-                        processReadRepair(acknowledgement);
-                        print("----Read Repair End------");
+                        processReadRepair(acknowledgement,replicasCoordinatorTimeStamp);
+
                     }
+
                 }
             }
         }
@@ -558,7 +560,7 @@ public class Server {
     //uncomment for the above if debug test
     //boolean debugFlag = true;
     //Read repair thread
-    private synchronized void processReadRepair(AcknowledgementToClientListener acknowledgement) {
+    private synchronized void processReadRepair(AcknowledgementToClientListener acknowledgement,String timeStamp) {
         Thread thread = new Thread(() -> {
 
             List<String> replicaAcknowledgementList = acknowledgement.getAcknowledgedListForTimeStamp();
@@ -571,6 +573,7 @@ public class Server {
             for (String serverName : replicaAcknowledgementList) {
                 AcknowledgementData acknowledgementData = acknowledgement.getAcknowledgementDataByServerName(serverName);
                 if (!mostRecentValueFromReplica.getValue().equalsIgnoreCase(acknowledgementData.getValue())) {
+                    print("----Read Repair Start----");
                     MyCassandra.PutKeyFromCoordinator.Builder putKeyFromCoordinatorToConflictingReplicaBuilder = MyCassandra.PutKeyFromCoordinator.newBuilder();
 
                     putKeyFromCoordinatorToConflictingReplicaBuilder.setKey(mostRecentValueFromReplica.getKey())
@@ -595,8 +598,11 @@ public class Server {
                         ConflictingReplica conflictingServer = new ConflictingReplica(replicaServer.getName(), message);
                         addFailedWriteRequestForReplica(replicaServer, conflictingServer);
                     }
+                    print("----Read Repair End------");
                 }
             }
+            CoordinatorAcknowledgementLog.remove(timeStamp);
+
         });
         thread.start();
     }
@@ -683,7 +689,7 @@ public class Server {
         while (true) {
             Socket receiver = null;
             try {
-                Thread.sleep(500);
+                //Thread.sleep(500);
                 receiver = serverSocket.accept();
                 print("\n\n----------------------------------------");
                 print("====Message received count = " + (++msgCount));
@@ -735,9 +741,7 @@ public class Server {
                 System.out.println("Error reading data from socket. Exiting main thread");
                 e.printStackTrace();
                 System.exit(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
+            }  finally {
                 print("\n\n---------------------------------------------");
                 print("=====Message received End count = " + msgCount);
                 print("---------------------------------------------\n\n");

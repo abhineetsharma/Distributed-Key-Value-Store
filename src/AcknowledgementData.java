@@ -6,6 +6,7 @@ public class AcknowledgementData implements Comparable {
     private boolean acknowledge;
     private String timeStamp;
     private String replicaName;
+    private boolean down;
     //</editor-fold>
 
     public AcknowledgementData(int keyI, String valueI, String timeStampI, String replicaNameI) {
@@ -68,5 +69,13 @@ public class AcknowledgementData implements Comparable {
 
     public String getReplicaName() {
         return replicaName;
+    }
+
+    public boolean isDown() {
+        return down;
+    }
+
+    public void setDown(boolean down) {
+        this.down = down;
     }
 }

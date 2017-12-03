@@ -17,7 +17,7 @@ public class Client {
     public static void main(String[] args) throws IOException, InterruptedException {
         ServerSocket branchSocket = null;
         Socket clientSocket = null;
-        if (args.length == 1) {
+        if (args.length == 2) {
             filePath = args[0];
             System.out.println("Client Started");
             FileProcessor fPro = new FileProcessor(filePath);
@@ -29,18 +29,19 @@ public class Client {
             print(nodeMap);
 
 
-            // for (int i = 0; i < 256; i++) {
-            // .. int no = (i + nodeMap.size()) % nodeMap.size();
+
             for (int i = 1; i < 256; i++) {
-                sendPUTRequestToCoordinator("node" + get(i), i, "XYZO" + i, MyCassandra.ConsistencyLevel.TWO);
+                sendPUTRequestToCoordinator("node"+args[1],i, "XYjZO" +i+args[1], MyCassandra.ConsistencyLevel.TWO);
 
                 //Thread.sleep(5000);
-                sendGETRequestToCoordinator("node" + get(i + 2), i, MyCassandra.ConsistencyLevel.ONE);
+                sendGETRequestToCoordinator("node"+args[1],i,  MyCassandra.ConsistencyLevel.ONE);
 
-                sendGETRequestToCoordinator("node" + get(i + 3), i, MyCassandra.ConsistencyLevel.TWO);
+                sendGETRequestToCoordinator("node"+args[1], i+1, MyCassandra.ConsistencyLevel.TWO);
             }
-            // }
 
+            // for (int i = 0; i < 100; i++)
+//            sendPUTRequestToCoordinator("node1", 9, "AC", MyCassandra.ConsistencyLevel.TWO);
+//            sendGETRequestToCoordinator("node5", 0, MyCassandra.ConsistencyLevel.TWO);
 
         }
     }

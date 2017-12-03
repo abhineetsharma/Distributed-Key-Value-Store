@@ -17,14 +17,14 @@ public class AcknowledgementToClientListener {
     //private boolean isReadRepair;
 
 
-	public AcknowledgementToClientListener(String clientNameI, Socket clientSocketI,
-			MyCassandra.ConsistencyLevel consistencyLevelI, String timeStampI, int keyI, String valueI,
-			List<ServerData> nodeServerDataList) {
+    public AcknowledgementToClientListener(String clientNameI, Socket clientSocketI,
+                                           MyCassandra.ConsistencyLevel consistencyLevelI, String timeStampI, int keyI, String valueI,
+                                           List<ServerData> nodeServerDataList) {
         clientName = clientNameI;
         clientSocket = clientSocketI;
         requestConsistencyLevel = consistencyLevelI;
         replicaAcknowledgementMap = new ConcurrentSkipListMap<>();
-		for (ServerData node : nodeServerDataList)
+        for (ServerData node : nodeServerDataList)
             replicaAcknowledgementMap.put(node.getName(), new AcknowledgementData(keyI, valueI, timeStampI, node.getName()));
     }
 
@@ -44,7 +44,7 @@ public class AcknowledgementToClientListener {
         return replicaAcknowledgementMap.get(nodeName);
     }
 
-    public synchronized List<String>    getAcknowledgedListForTimeStamp() {
+    public synchronized List<String> getAcknowledgedListForTimeStamp() {
         List<AcknowledgementData> AcknowledgementDataList = new ArrayList<>();
         for (String name : replicaAcknowledgementMap.keySet()) {
             AcknowledgementData data = replicaAcknowledgementMap.get(name);
@@ -73,7 +73,7 @@ public class AcknowledgementToClientListener {
         isSentToClient = sentToClient;
     }
 
-    public synchronized void setTimeStampAndValueFromReplica(String replicaName, String timeStamp,String value) {
+    public synchronized void setTimeStampAndValueFromReplica(String replicaName, String timeStamp, String value) {
         AcknowledgementData acknowledgementData = getAcknowledgementDataByServerName(replicaName);
         acknowledgementData.setTimeStamp(timeStamp);
         acknowledgementData.setValue(value);
@@ -94,6 +94,23 @@ public class AcknowledgementToClientListener {
 
     public void setFailed(boolean failed) {
         isFailed = failed;
+    }
+
+    public synchronized List<String> getIsReplicaUpList() {
+        List<AcknowledgementData> replicaList = new ArrayList<>();
+        for (String name : replicaAcknowledgementMap.keySet()) {
+            AcknowledgementData data = replicaAcknowledgementMap.get(name);
+            if (!data.isDown())
+                replicaList.add(data);
+        }
+        Collections.sort(replicaList);
+
+        List<String> list = new ArrayList<>();
+        for (AcknowledgementData replica : replicaList) {
+            list.add(replica.getReplicaName());
+        }
+        //Collections.reverse(list);
+        return list;
     }
 }
 
