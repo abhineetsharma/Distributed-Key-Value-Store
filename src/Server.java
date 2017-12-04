@@ -24,6 +24,7 @@ public class Server {
 
     // file paths
     private String nodeFilePath;
+    private static int readReapairOrHintedHfMode;
     private String logFilePath;
     private String hintedHandOffFilePath;
 
@@ -566,8 +567,7 @@ public class Server {
                         //sendAcknowledgementToClient(key, acknowledgeData.getValue(), errorMessage, clientSocket);
                         sendAcknowledgementToClient(key, acknowledgeData.getValue(), "Request processed successfully", clientSocket);
                     }
-                    if ((consistencyLevel.getNumber()!=1) && acknowledgement.isSentToClient() && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
-                        //if (isSentToClient && acknowledgement.isInconsistent() && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
+                    if ((readReapairOrHintedHfMode == 1)&&(consistencyLevel.getNumber() != 1) && acknowledgement.isSentToClient() && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
                         processReadRepair(acknowledgement, replicasCoordinatorTimeStamp);
                     }
                 }
@@ -698,8 +698,16 @@ public class Server {
     public static void main(String[] args) {
 
         Server server = new Server();
-        server.initServer(args);
+        if (args[2].equalsIgnoreCase("1"))
+            //Read Repair is ON
+            readReapairOrHintedHfMode = 1;
+        else if (args[2].equalsIgnoreCase("2"))
+            //Hinted Handoff is ON
+            readReapairOrHintedHfMode = 2;
+        else
+            System.err.println("Wrong mode number passed...");
 
+        server.initServer(args);
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(server.portNumber);
@@ -739,7 +747,8 @@ public class Server {
                     else if (message.hasGetKeyFromCoordinator()) {
                         print("----GetKeyFromCoordinator Start----");
                         String coordinatorName = message.getGetKeyFromCoordinator().getCoordinatorName();
-                        server.sendPendingRequestsToCoordinator(coordinatorName);
+                        if (readReapairOrHintedHfMode == 2)
+                            server.sendPendingRequestsToCoordinator(coordinatorName);
                         server.processingGetKeyFromCoordinator(message.getGetKeyFromCoordinator());
                         receiver.close();
                         print("----GetKeyFromCoordinator End----");
@@ -748,7 +757,8 @@ public class Server {
                     else if (message.hasPutKeyFromCoordinator()) {
                         print("----PutKeyFromCoordinator Start----");
                         String coordinatorName = message.getPutKeyFromCoordinator().getCoordinatorName();
-                        server.sendPendingRequestsToCoordinator(coordinatorName);
+                        if (readReapairOrHintedHfMode == 2)
+                            server.sendPendingRequestsToCoordinator(coordinatorName);
                         server.processingPutKeyFromCoordinatorRequest(message.getPutKeyFromCoordinator());
                         receiver.close();
                         print("----PutKeyFromCoordinator End----");
