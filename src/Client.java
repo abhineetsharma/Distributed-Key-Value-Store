@@ -112,10 +112,12 @@ public class Client {
     }
 
     private static void printResponse(MyCassandra.WrapperMessage message) {
-        System.out.println("" + message.getAcknowledgementToClient().getErrorMessage());
-        if (null == message.getAcknowledgementToClient().getValue()) {
+
+        System.out.print("Key   : " + message.getAcknowledgementToClient().getKey());
+        if (message.getAcknowledgementToClient().getValue().trim().length()==0) {
+            System.out.println("" + message.getAcknowledgementToClient().getErrorMessage());
         } else {
-            System.out.print("Key   : " + message.getAcknowledgementToClient().getKey());
+
             System.out.println("\t Value : " + message.getAcknowledgementToClient().getValue());
         }
     }

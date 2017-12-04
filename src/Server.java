@@ -564,8 +564,8 @@ public class Server {
                         AcknowledgementData acknowledgeData = acknowledgement.getAcknowledgementDataByServerName(mostRecentReplicaName);
                         print("Replica with latest data : " + acknowledgeData.getReplicaName() + " Time stamp : " + acknowledgeData.getTimeStamp() + " Value : " + acknowledgeData.getValue());
                         acknowledgement.setSentToClient(true);
-                        //sendAcknowledgementToClient(key, acknowledgeData.getValue(), errorMessage, clientSocket);
-                        sendAcknowledgementToClient(key, acknowledgeData.getValue(), "Request processed successfully", clientSocket);
+                        sendAcknowledgementToClient(key, acknowledgeData.getValue(), errorMessage, clientSocket);
+//                        sendAcknowledgementToClient(key, acknowledgeData.getValue(), "Request processed successfully", clientSocket);
                     }
                     if ((readReapairOrHintedHfMode == 1)&&(consistencyLevel.getNumber() != 1) && acknowledgement.isSentToClient() && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
                         processReadRepair(acknowledgement, replicasCoordinatorTimeStamp);
