@@ -78,4 +78,10 @@ public class AcknowledgementData implements Comparable {
     public void setDown(boolean down) {
         this.down = down;
     }
+
+    @Override
+    public String toString() {
+        return "\n[replica name: " + replicaName + ", written value timestamp: " + timeStamp + ", key: "
+                + key + ", value: " + value + ", has acknowledged: " + acknowledge + ", is down " + down + "]";
+    }
 }

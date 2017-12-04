@@ -26,7 +26,7 @@ public class ValueMetaData {
 
     @Override
     public String toString() {
-        return "[Time Stamp : " + getTimeStamp() + ", Value : " + getValue() + "]";
+        return " [Time Stamp : " + getTimeStamp() + ", Value : " + getValue() + "]";
     }
 
 

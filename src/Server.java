@@ -43,8 +43,24 @@ public class Server {
         FileProcessor fPro = new FileProcessor(nodeFilePath);
 
         allServersData = new TreeMap<>();
-        keyValueDataStore = new ConcurrentSkipListMap<>();
-        CoordinatorAcknowledgementLog = new ConcurrentSkipListMap<>();
+        keyValueDataStore = new ConcurrentSkipListMap<Integer, ValueMetaData>() {
+            @Override
+            public String toString() {
+                StringBuilder sbr = new StringBuilder();
+                sbr.append("\n\n------------------------------------------------------------\n");
+                sbr.append("Key Value Store\n");
+                sbr.append("------------------------------------------------------------\n");
+                sbr.append(String.format("%-50s%s\n","Key","Value"));
+                sbr.append("------------------------------------------------------------\n");
+                for (int key : this.keySet()) {
+                    sbr.append(String.format("%-15d%-10s\n",key,this.get(key)));
+                }
+                sbr.append("------------------------------------------------------------\n");
+                sbr.append("------------------------------------------------------------\n");
+                return sbr.toString();
+            }
+        };
+        CoordinatorAcknowledgementLog = new ConcurrentSkipListMap<String, AcknowledgementToClientListener>();
         failedWrites = new ConcurrentSkipListMap<>();
         replicaFactor = 4;
 
@@ -359,7 +375,6 @@ public class Server {
     }
 
 
-
     // normal server processing putkey request from co-ordinator
     private void processingPutKeyFromCoordinatorRequest(MyCassandra.PutKeyFromCoordinator putKeyFromCoordinator) {
         int putKey = putKeyFromCoordinator.getKey();
@@ -546,10 +561,10 @@ public class Server {
 
                         sendAcknowledgementToClient(key, acknowledgeData.getValue(), errorMessage, clientSocket);
                     }
-                    if (isSentToClient &&  acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
-                    //if (isSentToClient && acknowledgement.isInconsistent() && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
+                    if (isSentToClient && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
+                        //if (isSentToClient && acknowledgement.isInconsistent() && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
 
-                        processReadRepair(acknowledgement,replicasCoordinatorTimeStamp);
+                        processReadRepair(acknowledgement, replicasCoordinatorTimeStamp);
 
                     }
 
@@ -561,7 +576,7 @@ public class Server {
     //uncomment for the above if debug test
     //boolean debugFlag = true;
     //Read repair thread
-    private synchronized void processReadRepair(AcknowledgementToClientListener acknowledgement,String timeStamp) {
+    private synchronized void processReadRepair(AcknowledgementToClientListener acknowledgement, String timeStamp) {
         Thread thread = new Thread(() -> {
 
             List<String> replicaAcknowledgementList = acknowledgement.getAcknowledgedListForTimeStamp();
@@ -657,6 +672,7 @@ public class Server {
             e.printStackTrace();
         }
     }
+
     private void sendMessageViaSocket(ServerData serverData, MyCassandra.WrapperMessage wrapperMessage) throws IOException {
         print("----Socket message Start----");
         Socket socket = new Socket(serverData.getIp(), serverData.getPort());
@@ -718,6 +734,7 @@ public class Server {
         while (true) {
             Socket receiver = null;
             try {
+                //print(server.CoordinatorAcknowledgementLog);
                 //Thread.sleep(500);
                 receiver = serverSocket.accept();
                 print("\n\n----------------------------------------");
@@ -766,19 +783,20 @@ public class Server {
                         receiver.close();
                         print("----Acknowledgement To Coordinator End----");
                     }
-                    System.out.println("-----------------------------------------------------");
-                    System.out.println("---------------KEY\tVALUE\tTIME----------------------");
-                    for (Map.Entry<Integer, ValueMetaData> keyValue : server.keyValueDataStore.entrySet()) {
-                    System.out.println("\t\t\t\t"+keyValue.getKey()+"\t"+keyValue.getValue().getValue()+"\t\t"+keyValue.getValue().getTimeStamp());
-                    }
-                    System.out.println("-----------------------------------------------------");
+//                    System.out.println("-----------------------------------------------------");
+//                    System.out.println("---------------KEY\tVALUE\tTIME----------------------");
+//                    for (Map.Entry<Integer, ValueMetaData> keyValue : server.keyValueDataStore.entrySet()) {
+//                    System.out.println("\t\t\t\t"+keyValue.getKey()+"\t"+keyValue.getValue().getValue()+"\t\t"+keyValue.getValue().getTimeStamp());
+//                    }
+//                    System.out.println("-----------------------------------------------------");
 
                 }
+                print(server.keyValueDataStore);
             } catch (IOException e) {
                 System.out.println("Error reading data from socket. Exiting main thread");
                 e.printStackTrace();
                 System.exit(1);
-            }  finally {
+            } finally {
                 print("\n\n---------------------------------------------");
                 print("=====Message received End count = " + msgCount);
                 print("---------------------------------------------\n\n");

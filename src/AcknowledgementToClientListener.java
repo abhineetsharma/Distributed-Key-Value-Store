@@ -12,10 +12,7 @@ public class AcknowledgementToClientListener {
     private Socket clientSocket;
     private MyCassandra.ConsistencyLevel requestConsistencyLevel;
     private boolean isSentToClient;
-    private boolean isFailed;
     private Map<String, AcknowledgementData> replicaAcknowledgementMap;
-    //private boolean isReadRepair;
-
 
     public AcknowledgementToClientListener(String clientNameI, Socket clientSocketI,
                                            MyCassandra.ConsistencyLevel consistencyLevelI, String timeStampI, int keyI, String valueI,
@@ -57,7 +54,7 @@ public class AcknowledgementToClientListener {
         for (AcknowledgementData acknowledgementData : AcknowledgementDataList) {
             list.add(acknowledgementData.getReplicaName());
         }
-        //Collections.reverse(list);
+
         return list;
     }
 
@@ -88,14 +85,6 @@ public class AcknowledgementToClientListener {
         return set.size() != 1;
     }
 
-    public boolean isFailed() {
-        return isFailed;
-    }
-
-    public void setFailed(boolean failed) {
-        isFailed = failed;
-    }
-
     public synchronized List<String> getIsReplicaUpList() {
         List<AcknowledgementData> replicaList = new ArrayList<>();
         for (String name : replicaAcknowledgementMap.keySet()) {
@@ -111,6 +100,20 @@ public class AcknowledgementToClientListener {
         }
         //Collections.reverse(list);
         return list;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sbr = new StringBuilder();
+        for (String str : replicaAcknowledgementMap.keySet()) {
+            sbr.append(replicaAcknowledgementMap.get(str));
+        }
+        return String.format(
+                " : \n" +
+                        "request ConsistencyLevel: " + requestConsistencyLevel +
+                        "\nrequest is sent to client: " + isSentToClient +
+                        sbr +
+                        "\n\n");
     }
 }
 
