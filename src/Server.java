@@ -6,7 +6,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public class Server {
@@ -29,7 +34,7 @@ public class Server {
     private Map<String, List<ConflictingReplica>> failedWrites;
 
     // flag to stop print
-    private static boolean printFlag = false;
+    private static boolean printFlag = true;
 
     private void initServer(String[] args) {
         if (args.length > 1) {
@@ -78,7 +83,6 @@ public class Server {
             System.out.println("Not enough servers in the file, require " + replicaFactor + " for the system");
             System.exit(1);
         }
-
 
         File dir = new File("dir");
         if (!dir.exists()) {
@@ -229,7 +233,6 @@ public class Server {
                     System.err.println("Replica server " + replica.getName() + "is down while Co-od processing Client's Read Request....");
 //                e.printStackTrace();
                 }
-
             }
             //if message sent is less then the consistency level then send an error acknowledgement ot he client
             if (messageSentCounterToReplica < clientConsistencyLevel.getNumber()) {
@@ -260,7 +263,6 @@ public class Server {
             String timeStamp = getCurrentTimeString();
             CoordinatorAcknowledgementLog.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, value, replicaServerList));
 
-
             for (ServerData replica : replicaServerList) {
                 MyCassandra.WrapperMessage message = null;
                 try {
@@ -273,10 +275,8 @@ public class Server {
                     putKeyFromCoordinatorBuilder.setCoordinatorName(name);
                     putKeyFromCoordinatorBuilder.setIsReadRepair(false);
 
-
                     message = MyCassandra.WrapperMessage.newBuilder()
                             .setPutKeyFromCoordinator(putKeyFromCoordinatorBuilder).build();
-
 
                     sendMessageViaSocket(replica, message);
                 } catch (IOException e) {
@@ -289,7 +289,6 @@ public class Server {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
             if ((replicaFactor - failedWriteRequestListMap.size()) < clientConsistencyLevel.getNumber()) {
                 String errorMessage = "Cannot write the key " + key;
@@ -372,7 +371,6 @@ public class Server {
 
             acknowledgementBuilder.setReplicaTimeStamp(replicaTimeStamp);
             acknowledgementBuilder.setValue(value);
-
         } else {
             acknowledgementBuilder.setErrorMessage("Key " + key + " not found ");
         }
@@ -389,7 +387,6 @@ public class Server {
             e.printStackTrace();
         }
     }
-
 
     // normal server processing putkey request from co-ordinator
     private void processingPutKeyFromCoordinatorRequest(MyCassandra.PutKeyFromCoordinator putKeyFromCoordinator) {
@@ -506,7 +503,6 @@ public class Server {
                 e.printStackTrace();
             }
         }
-
     }
 
     // normal server sending acknowledgement To Coordinator
@@ -556,35 +552,24 @@ public class Server {
 
                 //check
                 if (requestType.equals(MyCassandra.RequestType.WRITE)) {
-                    if (acknowledgeCount >= consistencyLevel.getNumber() && !isSentToClient) {
+                    if (acknowledgeCount >= consistencyLevel.getNumber() && !acknowledgement.isSentToClient()) {
                         acknowledgement.setSentToClient(true);
                         sendAcknowledgementToClient(key, value, "Request processed successfully", clientSocket);
                         CoordinatorAcknowledgementLog.remove(replicasCoordinatorTimeStamp);
                     }
-
                 } else if (requestType.equals(MyCassandra.RequestType.READ)) {
-                    //un-comment to change time stamp of particular replica
-                    //if (replicaName.equalsIgnoreCase("node2") && debugFlag && replicaTimeStamp != null && replicaTimeStamp.trim().length() > 0) {
-                    //    debugFlag = false;
-                    //    acknowledgement.setValueFromReplicaAcknowledgement(replicaName, value + "abhineet");
-                    //    acknowledgement.setTimeStampFromReplica(replicaName, Long.toString(Long.parseLong(replicaTimeStamp) - 10000));
-                    //}
-                    if (acknowledgeCount >= consistencyLevel.getNumber() && !isSentToClient) {
+                    if (acknowledgeCount >= consistencyLevel.getNumber() && !acknowledgement.isSentToClient()) {
                         String mostRecentReplicaName = replicaAcknowledgementList.get(0);
                         AcknowledgementData acknowledgeData = acknowledgement.getAcknowledgementDataByServerName(mostRecentReplicaName);
                         print("Replica with latest data : " + acknowledgeData.getReplicaName() + " Time stamp : " + acknowledgeData.getTimeStamp() + " Value : " + acknowledgeData.getValue());
                         acknowledgement.setSentToClient(true);
-
                         //sendAcknowledgementToClient(key, acknowledgeData.getValue(), errorMessage, clientSocket);
                         sendAcknowledgementToClient(key, acknowledgeData.getValue(), "Request processed successfully", clientSocket);
                     }
-                    if (isSentToClient && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
+                    if (acknowledgement.isSentToClient() && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
                         //if (isSentToClient && acknowledgement.isInconsistent() && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
-
                         processReadRepair(acknowledgement, replicasCoordinatorTimeStamp);
-
                     }
-
                 }
             }
         }
@@ -635,7 +620,6 @@ public class Server {
                 }
             }
             CoordinatorAcknowledgementLog.remove(timeStamp);
-
         });
         thread.start();
     }
@@ -657,35 +641,6 @@ public class Server {
                 clientSocket.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private synchronized void processingOldReachedButNoAck(String coordinatorName) {
-        //CHECK current sender (Co-ordinator) failed in past after taking read/Write request
-        //From co-ordinator of that time ( receiver of now)
-        try {
-            for (Map.Entry<String, AcknowledgementToClientListener> e : CoordinatorAcknowledgementLog.entrySet()) {
-                AcknowledgementToClientListener value = e.getValue();
-                Map<String, AcknowledgementData> acknoledgedReplicas = value.getReplicaAcknowledgementMap();
-                for (Map.Entry<String, AcknowledgementData> replica : acknoledgedReplicas.entrySet()) {
-                    AcknowledgementData replicaAckData = replica.getValue();
-                    if (replica.getKey().equals(coordinatorName) && (replicaAckData.isAcknowledge() == false) && (replicaAckData.isDown() == false) && (null != replicaAckData.getValue())) {
-                        //Add that replica to write failed Q
-
-                        MyCassandra.PutKeyFromCoordinator.Builder putKeyFromCoordinatorBuilder = MyCassandra.PutKeyFromCoordinator.newBuilder();
-                        putKeyFromCoordinatorBuilder.setKey(replicaAckData.getKey());
-                        putKeyFromCoordinatorBuilder.setTimeStamp(replicaAckData.getTimeStamp());
-                        putKeyFromCoordinatorBuilder.setValue(replicaAckData.getValue());
-                        putKeyFromCoordinatorBuilder.setCoordinatorName(name);
-                        putKeyFromCoordinatorBuilder.setIsReadRepair(true);
-                        MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage.newBuilder()
-                                .setPutKeyFromCoordinator(putKeyFromCoordinatorBuilder).build();
-                        sendMessageViaSocket(allServersData.get(replicaAckData.getReplicaName()), message);
-                    }
-                }
-            }
-        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -731,12 +686,10 @@ public class Server {
 
     public final void clearConsole() {
         try {
-            for (int i = 0; i < 50; ++i) System.out.println();
-
-
+            System.out.println();
         } catch (final Exception e) {
             //  Handle any exceptions.
-        }finally {
+        } finally {
             System.out.println("Server started with " + portNumber);
             System.out.println(keyValueDataStore);
         }
@@ -745,21 +698,17 @@ public class Server {
     public static void main(String[] args) {
 
         Server server = new Server();
-
-
         server.initServer(args);
 
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(server.portNumber);
-            System.out.println("Server started with " +server.portNumber);
-
+            System.out.println("Server started with " + server.portNumber);
         } catch (IOException ex) {
             System.out.println("Server socket cannot be created");
             ex.printStackTrace();
             System.exit(1);
         }
-
         int msgCount = 0;
 
         while (true) {
@@ -814,12 +763,10 @@ public class Server {
 //                    System.out.println("-----------------------------------------------------");
 //                    System.out.println("---------------KEY\tVALUE\tTIME----------------------");
 //                    for (Map.Entry<Integer, ValueMetaData> keyValue : server.keyValueDataStore.entrySet()) {
-//                    System.out.println("\t\t\t\t"+keyValue.getKey()+"\t"+keyValue.getValue().getValue()+"\t\t"+keyValue.getValue().getTimeStamp());
+//                        System.out.println("\t\t\t\t" + keyValue.getKey() + "\t" + keyValue.getValue().getValue() + "\t\t" + keyValue.getValue().getTimeStamp());
 //                    }
 //                    System.out.println("-----------------------------------------------------");
-
                 }
-
                 server.clearConsole();
             } catch (IOException e) {
                 System.out.println("Error reading data from socket. Exiting main thread");
