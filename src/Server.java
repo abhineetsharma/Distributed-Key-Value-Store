@@ -358,13 +358,14 @@ public class Server {
         }
     }
 
+
+
     // normal server processing putkey request from co-ordinator
     private void processingPutKeyFromCoordinatorRequest(MyCassandra.PutKeyFromCoordinator putKeyFromCoordinator) {
         int putKey = putKeyFromCoordinator.getKey();
         String putValue = putKeyFromCoordinator.getValue();
         String putTimeStamp = putKeyFromCoordinator.getTimeStamp();
         String coordinatorName = putKeyFromCoordinator.getCoordinatorName();
-
         // BEGIN : Nikhil's pre commite code
 
         MyCassandra.LogMessage logMessage = MyCassandra.LogMessage.newBuilder().setKey(putKey)
@@ -628,6 +629,34 @@ public class Server {
         }
     }
 
+    private synchronized void processingOldReachedButNoAck(String coordinatorName) {
+        //CHECK current sender (Co-ordinator) failed in past after taking read/Write request
+        //From co-ordinator of that time ( receiver of now)
+        try {
+            for (Map.Entry<String, AcknowledgementToClientListener> e : CoordinatorAcknowledgementLog.entrySet()) {
+                AcknowledgementToClientListener value = e.getValue();
+                Map<String, AcknowledgementData> acknoledgedReplicas = value.getReplicaAcknowledgementMap();
+                for (Map.Entry<String, AcknowledgementData> replica : acknoledgedReplicas.entrySet()) {
+                    AcknowledgementData replicaAckData = replica.getValue();
+                    if (replica.getKey().equals(coordinatorName) && (replicaAckData.isAcknowledge() == false) && (replicaAckData.isDown() == false) && (null != replicaAckData.getValue())) {
+                        //Add that replica to write failed Q
+
+                        MyCassandra.PutKeyFromCoordinator.Builder putKeyFromCoordinatorBuilder = MyCassandra.PutKeyFromCoordinator.newBuilder();
+                        putKeyFromCoordinatorBuilder.setKey(replicaAckData.getKey());
+                        putKeyFromCoordinatorBuilder.setTimeStamp(replicaAckData.getTimeStamp());
+                        putKeyFromCoordinatorBuilder.setValue(replicaAckData.getValue());
+                        putKeyFromCoordinatorBuilder.setCoordinatorName(name);
+                        putKeyFromCoordinatorBuilder.setIsReadRepair(true);
+                        MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage.newBuilder()
+                                .setPutKeyFromCoordinator(putKeyFromCoordinatorBuilder).build();
+                        sendMessageViaSocket(allServersData.get(replicaAckData.getReplicaName()), message);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void sendMessageViaSocket(ServerData serverData, MyCassandra.WrapperMessage wrapperMessage) throws IOException {
         print("----Socket message Start----");
         Socket socket = new Socket(serverData.getIp(), serverData.getPort());
@@ -714,8 +743,8 @@ public class Server {
                     else if (message.hasGetKeyFromCoordinator()) {
                         print("----GetKeyFromCoordinator Start----");
                         String coordinatorName = message.getGetKeyFromCoordinator().getCoordinatorName();
+                        server.processingOldReachedButNoAck(coordinatorName);
                         server.sendPendingRequestsToCoordinator(coordinatorName);
-
                         server.processingGetKeyFromCoordinator(message.getGetKeyFromCoordinator());
                         receiver.close();
                         print("----GetKeyFromCoordinator End----");
@@ -724,6 +753,7 @@ public class Server {
                     else if (message.hasPutKeyFromCoordinator()) {
                         print("----PutKeyFromCoordinator Start----");
                         String coordinatorName = message.getPutKeyFromCoordinator().getCoordinatorName();
+                        server.processingOldReachedButNoAck(coordinatorName);
                         server.sendPendingRequestsToCoordinator(coordinatorName);
                         server.processingPutKeyFromCoordinatorRequest(message.getPutKeyFromCoordinator());
                         receiver.close();
@@ -736,6 +766,13 @@ public class Server {
                         receiver.close();
                         print("----Acknowledgement To Coordinator End----");
                     }
+                    System.out.println("-----------------------------------------------------");
+                    System.out.println("---------------KEY\tVALUE\tTIME----------------------");
+                    for (Map.Entry<Integer, ValueMetaData> keyValue : server.keyValueDataStore.entrySet()) {
+                    System.out.println("\t\t\t\t"+keyValue.getKey()+"\t"+keyValue.getValue().getValue()+"\t\t"+keyValue.getValue().getTimeStamp());
+                    }
+                    System.out.println("-----------------------------------------------------");
+
                 }
             } catch (IOException e) {
                 System.out.println("Error reading data from socket. Exiting main thread");

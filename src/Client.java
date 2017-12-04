@@ -28,16 +28,30 @@ public class Client {
             }
             print(nodeMap);
 
-
-
-            for (int i = 1; i < 256; i++) {
-                sendPUTRequestToCoordinator("node"+args[1],i, "XYjZO" +i+args[1], MyCassandra.ConsistencyLevel.TWO);
-
-                //Thread.sleep(5000);
-                sendGETRequestToCoordinator("node"+args[1],i,  MyCassandra.ConsistencyLevel.ONE);
-
-                sendGETRequestToCoordinator("node"+args[1], i+1, MyCassandra.ConsistencyLevel.TWO);
-            }
+            sendPUTRequestToCoordinator("node0", 1, "ABC", MyCassandra.ConsistencyLevel.TWO);
+            sendGETRequestToCoordinator("node0", 1, MyCassandra.ConsistencyLevel.TWO);
+            sendGETRequestToCoordinator("node1", 1, MyCassandra.ConsistencyLevel.TWO);
+            sendGETRequestToCoordinator("node2", 1, MyCassandra.ConsistencyLevel.TWO);
+            sendGETRequestToCoordinator("node3", 1, MyCassandra.ConsistencyLevel.TWO);
+            sendGETRequestToCoordinator("node4", 1, MyCassandra.ConsistencyLevel.TWO);
+            sendGETRequestToCoordinator("node5", 1, MyCassandra.ConsistencyLevel.TWO);
+            sendPUTRequestToCoordinator("node0", 1, "XYZ", MyCassandra.ConsistencyLevel.TWO);
+            sendGETRequestToCoordinator("node0", 1, MyCassandra.ConsistencyLevel.TWO);
+            sendGETRequestToCoordinator("node1", 1, MyCassandra.ConsistencyLevel.TWO);
+            sendGETRequestToCoordinator("node2", 1, MyCassandra.ConsistencyLevel.TWO);
+            sendGETRequestToCoordinator("node3", 1, MyCassandra.ConsistencyLevel.TWO);
+            sendGETRequestToCoordinator("node4", 1, MyCassandra.ConsistencyLevel.TWO);
+            sendGETRequestToCoordinator("node5", 1, MyCassandra.ConsistencyLevel.TWO);
+//
+//            for (int i = 1; i < 256; i++)
+//            {
+//                sendPUTRequestToCoordinator("node"+args[1],i, "XYjZO" +i+args[1], MyCassandra.ConsistencyLevel.TWO);
+//
+//                //Thread.sleep(5000);
+//                sendGETRequestToCoordinator("node"+args[1],i,  MyCassandra.ConsistencyLevel.ONE);
+//
+//                sendGETRequestToCoordinator("node"+args[1], i+1, MyCassandra.ConsistencyLevel.TWO);
+//            }
 
             // for (int i = 0; i < 100; i++)
 //            sendPUTRequestToCoordinator("node1", 9, "AC", MyCassandra.ConsistencyLevel.TWO);
