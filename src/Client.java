@@ -32,7 +32,7 @@ public class Client {
             String[] reqTokens = null;
             while (true) {
                 System.out.println("------------------------------------------------------------------------------------");
-                System.out.println("Please enter the Read/Write req.\n\t<READ NODE-NAME KEY CONSISTENCY-LEVEL>\n\t<WRITE NODE-NAME KEY VALUE CONSISTENCY-LEVEL>");
+                System.out.println("Please enter the Read/Write request in following format\n<READ NODE-NAME KEY CONSISTENCY-LEVEL>\n<WRITE NODE-NAME KEY VALUE CONSISTENCY-LEVEL>");
                 requestLine = scanner.nextLine();
                 reqTokens = requestLine.split("\\s+");
                 if (reqTokens[0].equalsIgnoreCase("exit")) {
@@ -40,13 +40,16 @@ public class Client {
                 } else {
                     switch (reqTokens[0].toLowerCase()) {
                         case "read":
+                            if(reqTokens.length!=4)
+                                break;
                             if (reqTokens[3].equals("1") || reqTokens[3].equalsIgnoreCase("ONE"))
                                 sendGETRequestToCoordinator(reqTokens[1], Integer.parseInt(reqTokens[2]), MyCassandra.ConsistencyLevel.ONE);
                             if (reqTokens[3].equals("2") || reqTokens[3].equalsIgnoreCase("TWO"))
                                 sendGETRequestToCoordinator(reqTokens[1], Integer.parseInt(reqTokens[2]), MyCassandra.ConsistencyLevel.TWO);
                             break;
                         case "write":
-
+                            if(reqTokens.length!=5)
+                                break;
                             if (reqTokens[4].equals("1") || reqTokens[4].equalsIgnoreCase("ONE"))
                                 sendGETRequestToCoordinator(reqTokens[1], Integer.parseInt(reqTokens[2]), MyCassandra.ConsistencyLevel.ONE);
                             if (reqTokens[4].equals("2") || reqTokens[4].equalsIgnoreCase("TWO"))

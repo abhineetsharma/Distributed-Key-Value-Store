@@ -558,7 +558,7 @@ public class Server {
                 if (requestType.equals(MyCassandra.RequestType.WRITE)) {
                     if (acknowledgeCount >= consistencyLevel.getNumber() && !isSentToClient) {
                         acknowledgement.setSentToClient(true);
-                        sendAcknowledgementToClient(key, value, errorMessage, clientSocket);
+                        sendAcknowledgementToClient(key, value, "Request processed successfully", clientSocket);
                         CoordinatorAcknowledgementLog.remove(replicasCoordinatorTimeStamp);
                     }
 
@@ -575,7 +575,8 @@ public class Server {
                         print("Replica with latest data : " + acknowledgeData.getReplicaName() + " Time stamp : " + acknowledgeData.getTimeStamp() + " Value : " + acknowledgeData.getValue());
                         acknowledgement.setSentToClient(true);
 
-                        sendAcknowledgementToClient(key, acknowledgeData.getValue(), errorMessage, clientSocket);
+                        //sendAcknowledgementToClient(key, acknowledgeData.getValue(), errorMessage, clientSocket);
+                        sendAcknowledgementToClient(key, acknowledgeData.getValue(), "Request processed successfully", clientSocket);
                     }
                     if (isSentToClient && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
                         //if (isSentToClient && acknowledgement.isInconsistent() && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
