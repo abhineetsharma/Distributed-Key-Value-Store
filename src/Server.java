@@ -38,12 +38,22 @@ public class Server {
     private static boolean printFlag = true;
 
     private void initServer(String[] args) {
-        if (args.length > 1) {
+        if (args.length > 2) {
             portNumber = Integer.parseInt(args[0]);
             nodeFilePath = args[1];
+            if (args[2].equalsIgnoreCase("1"))
+                //Read Repair is ON
+                readReapairOrHintedHfMode = 1;
+            else if (args[2].equalsIgnoreCase("2"))
+                //Hinted Handoff is ON
+                readReapairOrHintedHfMode = 2;
+            else{
+                System.err.println("Wrong mode number passed...");
+                System.exit(1);
+            }
         } else {
             System.out.println("Invalid number of arguments to controller");
-            System.exit(0);
+            System.exit(1);
         }
 
         FileProcessor fPro = new FileProcessor(nodeFilePath);
@@ -698,14 +708,7 @@ public class Server {
     public static void main(String[] args) {
 
         Server server = new Server();
-        if (args[2].equalsIgnoreCase("1"))
-            //Read Repair is ON
-            readReapairOrHintedHfMode = 1;
-        else if (args[2].equalsIgnoreCase("2"))
-            //Hinted Handoff is ON
-            readReapairOrHintedHfMode = 2;
-        else
-            System.err.println("Wrong mode number passed...");
+
 
         server.initServer(args);
         ServerSocket serverSocket = null;
