@@ -45,7 +45,7 @@ public class Server {
         allServersData = new TreeMap<>();
         keyValueDataStore = new ConcurrentSkipListMap<>();
         CoordinatorAcknowledgementLog = new ConcurrentSkipListMap<>();
-        failedWrites = new HashMap<>();
+        failedWrites = new ConcurrentSkipListMap<>();
         replicaFactor = 4;
 
         String str = "";
@@ -285,11 +285,11 @@ public class Server {
             messages.add(conflictingReplica);
             failedWrites.put(serverName, messages);
         }
-        writeToFile(failedWrites);
+        writeToFile();
         print("----Failed WriteRequest For Replica End-----");
     }
 
-    private void writeToFile(Map<String, List<ConflictingReplica>> failedWritesI) {
+    private void writeToFile() {
 
         MyCassandra.HintedHandOffBook.Builder hhfBook = MyCassandra.HintedHandOffBook.newBuilder();
 
@@ -691,7 +691,7 @@ public class Server {
             //delete the server name from failedWrites.
             if (allSent) {
                 failedWrites.remove(respawnReplica);
-                writeToFile(failedWrites);
+                writeToFile();
             }
             print("----Hinted hand off message End------");
         }
