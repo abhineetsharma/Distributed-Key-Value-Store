@@ -29,7 +29,7 @@ public class Server {
     private Map<String, List<ConflictingReplica>> failedWrites;
 
     // flag to stop print
-    private static boolean printFlag = true;
+    private static boolean printFlag = false;
 
     private void initServer(String[] args) {
         if (args.length > 1) {
@@ -60,7 +60,7 @@ public class Server {
                 return sbr.toString();
             }
         };
-        CoordinatorAcknowledgementLog = new ConcurrentSkipListMap<String, AcknowledgementToClientListener>();
+        CoordinatorAcknowledgementLog = new ConcurrentSkipListMap<>();
         failedWrites = new ConcurrentSkipListMap<>();
         replicaFactor = 4;
 
@@ -127,9 +127,11 @@ public class Server {
                     } else {
                         keyValueDataStore.put(log.getKey(), new ValueMetaData(log.getTimeStamp(), log.getValue()));
                     }
-                    print(keyValueDataStore.get(log.getKey()));
+                    //print(keyValueDataStore.get(log.getKey()));
                 }
             }
+
+            print(keyValueDataStore);
             print("\nReading From log End");
         }
 
@@ -726,6 +728,19 @@ public class Server {
         }
     }
 
+    public final void clearConsole() {
+        try {
+            for (int i = 0; i < 50; ++i) System.out.println();
+
+
+        } catch (final Exception e) {
+            //  Handle any exceptions.
+        }finally {
+            System.out.println("Server started with " + portNumber);
+            System.out.println(keyValueDataStore);
+        }
+    }
+
     public static void main(String[] args) {
 
         Server server = new Server();
@@ -736,7 +751,8 @@ public class Server {
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(server.portNumber);
-            System.out.println("Server started with " + server.portNumber);
+            System.out.println("Server started with " +server.portNumber);
+
         } catch (IOException ex) {
             System.out.println("Server socket cannot be created");
             ex.printStackTrace();
@@ -802,7 +818,8 @@ public class Server {
 //                    System.out.println("-----------------------------------------------------");
 
                 }
-                print(server.keyValueDataStore);
+
+                server.clearConsole();
             } catch (IOException e) {
                 System.out.println("Error reading data from socket. Exiting main thread");
                 e.printStackTrace();
