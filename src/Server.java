@@ -566,7 +566,7 @@ public class Server {
                         //sendAcknowledgementToClient(key, acknowledgeData.getValue(), errorMessage, clientSocket);
                         sendAcknowledgementToClient(key, acknowledgeData.getValue(), "Request processed successfully", clientSocket);
                     }
-                    if (acknowledgement.isSentToClient() && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
+                    if ((consistencyLevel.getNumber()!=1) && acknowledgement.isSentToClient() && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
                         //if (isSentToClient && acknowledgement.isInconsistent() && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
                         processReadRepair(acknowledgement, replicasCoordinatorTimeStamp);
                     }
