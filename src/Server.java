@@ -205,7 +205,8 @@ public class Server {
                 messageSentCounterToReplica++;
             } catch (IOException e) {
                 CoordinatorAcknowledgementLog.get(timeStamp).getReplicaAcknowledgementMap().get(replica.getName()).setDown(true);
-                e.printStackTrace();
+                System.err.println("Replica server " + replica.getName() + "is down while Co-od processing Client's Read Request....");
+//                e.printStackTrace();
             }
 
         }
@@ -251,9 +252,9 @@ public class Server {
             try {
                 sendMessageViaSocket(replica, message);
             } catch (IOException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
                 CoordinatorAcknowledgementLog.get(timeStamp).getReplicaAcknowledgementMap().get(replica.getName()).setDown(true);
-                System.out.println("replica server " + replica.getName() + " down");
+                System.err.println("Replica server " + replica.getName() + "is down while Co-od processing Client Write Request....");
                 ConflictingReplica conflictingReplica = new ConflictingReplica(replica.getName(), message);
                 failedWriteRequestListMap.put(replica, conflictingReplica);
                 //addFailedWriteRequestForReplica(replica, conflictingReplica);
@@ -357,7 +358,6 @@ public class Server {
             e.printStackTrace();
         }
     }
-
 
 
     // normal server processing putkey request from co-ordinator
@@ -546,10 +546,10 @@ public class Server {
 
                         sendAcknowledgementToClient(key, acknowledgeData.getValue(), errorMessage, clientSocket);
                     }
-                    if (isSentToClient &&  acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
-                    //if (isSentToClient && acknowledgement.isInconsistent() && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
+                    if (isSentToClient && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
+                        //if (isSentToClient && acknowledgement.isInconsistent() && acknowledgeCount == acknowledgement.getIsReplicaUpList().size()) {
 
-                        processReadRepair(acknowledgement,replicasCoordinatorTimeStamp);
+                        processReadRepair(acknowledgement, replicasCoordinatorTimeStamp);
 
                     }
 
@@ -561,7 +561,7 @@ public class Server {
     //uncomment for the above if debug test
     //boolean debugFlag = true;
     //Read repair thread
-    private synchronized void processReadRepair(AcknowledgementToClientListener acknowledgement,String timeStamp) {
+    private synchronized void processReadRepair(AcknowledgementToClientListener acknowledgement, String timeStamp) {
         Thread thread = new Thread(() -> {
 
             List<String> replicaAcknowledgementList = acknowledgement.getAcknowledgedListForTimeStamp();
@@ -594,7 +594,7 @@ public class Server {
                         print("Read repair message sent to " + replicaServer);
                         sendMessageViaSocket(replicaServer, message);
                     } catch (IOException ex) {
-                        ex.printStackTrace();
+//                        ex.printStackTrace();
 
                         ConflictingReplica conflictingServer = new ConflictingReplica(replicaServer.getName(), message);
                         addFailedWriteRequestForReplica(replicaServer, conflictingServer);
@@ -657,6 +657,7 @@ public class Server {
             e.printStackTrace();
         }
     }
+
     private void sendMessageViaSocket(ServerData serverData, MyCassandra.WrapperMessage wrapperMessage) throws IOException {
         print("----Socket message Start----");
         Socket socket = new Socket(serverData.getIp(), serverData.getPort());
@@ -682,7 +683,7 @@ public class Server {
                     sendMessageViaSocket(allServersData.get(cr.getServerName()), cr.getMessage());
                 } catch (IOException e) {
                     System.out.println("could not send message to " + cr.getServerName());
-                    e.printStackTrace();
+//                    e.printStackTrace();
                     allSent = false;
                 }
             }
@@ -736,14 +737,17 @@ public class Server {
                     //Client Write Request
                     else if (message.hasClientWriteRequest()) {
                         print("----ClientWriteRequest Start----");
-                        server.processingClientWriteRequest(message.getClientWriteRequest(), receiver);
+                        if (message.getClientWriteRequest().getKey() > 255 || message.getClientWriteRequest().getKey() < 0)
+                            server.sendAcknowledgementToClient(message.getClientWriteRequest().getKey(), "0", "Wrong key requested", receiver);
+                        else
+                            server.processingClientWriteRequest(message.getClientWriteRequest(), receiver);
                         print("----ClientWriteRequest End----");
                     }
                     //Get Key From Coordinator
                     else if (message.hasGetKeyFromCoordinator()) {
                         print("----GetKeyFromCoordinator Start----");
                         String coordinatorName = message.getGetKeyFromCoordinator().getCoordinatorName();
-                        server.processingOldReachedButNoAck(coordinatorName);
+//                        server.processingOldReachedButNoAck(coordinatorName);
                         server.sendPendingRequestsToCoordinator(coordinatorName);
                         server.processingGetKeyFromCoordinator(message.getGetKeyFromCoordinator());
                         receiver.close();
@@ -753,7 +757,7 @@ public class Server {
                     else if (message.hasPutKeyFromCoordinator()) {
                         print("----PutKeyFromCoordinator Start----");
                         String coordinatorName = message.getPutKeyFromCoordinator().getCoordinatorName();
-                        server.processingOldReachedButNoAck(coordinatorName);
+//                        server.processingOldReachedButNoAck(coordinatorName);
                         server.sendPendingRequestsToCoordinator(coordinatorName);
                         server.processingPutKeyFromCoordinatorRequest(message.getPutKeyFromCoordinator());
                         receiver.close();
@@ -769,7 +773,7 @@ public class Server {
                     System.out.println("-----------------------------------------------------");
                     System.out.println("---------------KEY\tVALUE\tTIME----------------------");
                     for (Map.Entry<Integer, ValueMetaData> keyValue : server.keyValueDataStore.entrySet()) {
-                    System.out.println("\t\t\t\t"+keyValue.getKey()+"\t"+keyValue.getValue().getValue()+"\t\t"+keyValue.getValue().getTimeStamp());
+                        System.out.println("\t\t\t\t" + keyValue.getKey() + "\t" + keyValue.getValue().getValue() + "\t\t" + keyValue.getValue().getTimeStamp());
                     }
                     System.out.println("-----------------------------------------------------");
 
@@ -778,7 +782,7 @@ public class Server {
                 System.out.println("Error reading data from socket. Exiting main thread");
                 e.printStackTrace();
                 System.exit(1);
-            }  finally {
+            } finally {
                 print("\n\n---------------------------------------------");
                 print("=====Message received End count = " + msgCount);
                 print("---------------------------------------------\n\n");
