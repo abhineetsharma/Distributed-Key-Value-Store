@@ -50,10 +50,10 @@ public class Server {
                 sbr.append("\n\n------------------------------------------------------------\n");
                 sbr.append("Key Value Store\n");
                 sbr.append("------------------------------------------------------------\n");
-                sbr.append(String.format("%-50s%s\n","Key","Value"));
+                sbr.append(String.format("%-50s%s\n", "Key", "Value"));
                 sbr.append("------------------------------------------------------------\n");
                 for (int key : this.keySet()) {
-                    sbr.append(String.format("%-15d%-10s\n",key,this.get(key)));
+                    sbr.append(String.format("%-15d%-10s\n", key, this.get(key)));
                 }
                 sbr.append("------------------------------------------------------------\n");
                 sbr.append("------------------------------------------------------------\n");
@@ -191,100 +191,113 @@ public class Server {
     // coordinator processing client's read request
     private void processingClientReadRequest(MyCassandra.ClientReadRequest clientReadRequest, Socket clientSocket) {
         int key = clientReadRequest.getKey();
-        //String value = clientReadRequest.getValue();
-        MyCassandra.ConsistencyLevel clientConsistencyLevel = clientReadRequest.getConsistencyLevel();
+        if (key > 255 || key < 0) {
+            sendAcknowledgementToClient(key, null, "Wrong key requested", clientSocket);
+        } else {
+            //String value = clientReadRequest.getValue();
+            MyCassandra.ConsistencyLevel clientConsistencyLevel = clientReadRequest.getConsistencyLevel();
 
-        ServerData primaryReplica = getPrimaryReplicaForKey(key);
+            ServerData primaryReplica = getPrimaryReplicaForKey(key);
 
-        print(primaryReplica.toString());
-        List<ServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
-        print("The replica servers for key " + key + "\n" + replicaServerList);
+            print(primaryReplica.toString());
+            List<ServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
+            print("The replica servers for key " + key + "\n" + replicaServerList);
 
-        String timeStamp = getCurrentTimeString();
+            String timeStamp = getCurrentTimeString();
 
-        CoordinatorAcknowledgementLog.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, null, replicaServerList));
+            CoordinatorAcknowledgementLog.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, null, replicaServerList));
 
-        int messageSentCounterToReplica = 0;
-        for (ServerData replica : replicaServerList) {
+            int messageSentCounterToReplica = 0;
+            for (ServerData replica : replicaServerList) {
 
-            MyCassandra.GetKeyFromCoordinator.Builder getKeyFromCoordinatorBuilder = MyCassandra.GetKeyFromCoordinator.newBuilder();
+                MyCassandra.GetKeyFromCoordinator.Builder getKeyFromCoordinatorBuilder = MyCassandra.GetKeyFromCoordinator.newBuilder();
 
-            getKeyFromCoordinatorBuilder.setKey(key)
-                    .setTimeStamp(timeStamp)
-                    .setCoordinatorName(name);
+                getKeyFromCoordinatorBuilder.setKey(key)
+                        .setTimeStamp(timeStamp)
+                        .setCoordinatorName(name);
 
-            MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage.newBuilder()
-                    .setGetKeyFromCoordinator(getKeyFromCoordinatorBuilder).build();
+                MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage.newBuilder()
+                        .setGetKeyFromCoordinator(getKeyFromCoordinatorBuilder).build();
 
-            try {
-                sendMessageViaSocket(replica, message);
-                messageSentCounterToReplica++;
-            } catch (IOException e) {
-                CoordinatorAcknowledgementLog.get(timeStamp).getReplicaAcknowledgementMap().get(replica.getName()).setDown(true);
-                System.err.println("Replica server " + replica.getName() + "is down while Co-od processing Client's Read Request....");
+                try {
+                    sendMessageViaSocket(replica, message);
+                    messageSentCounterToReplica++;
+                } catch (IOException e) {
+                    CoordinatorAcknowledgementLog.get(timeStamp).getReplicaAcknowledgementMap().get(replica.getName()).setDown(true);
+                    System.err.println("Replica server " + replica.getName() + "is down while Co-od processing Client's Read Request....");
 //                e.printStackTrace();
-            }
+                }
 
-        }
-        //if message sent is less then the consistency level then send an error acknowledgement ot he client
-        if (messageSentCounterToReplica < clientConsistencyLevel.getNumber()) {
-            //return client an error message
-            String errorMessage = "Cannot find the key " + key;
-            sendAcknowledgementToClient(key, null, errorMessage, clientSocket);
-            CoordinatorAcknowledgementLog.remove(timeStamp);
+            }
+            //if message sent is less then the consistency level then send an error acknowledgement ot he client
+            if (messageSentCounterToReplica < clientConsistencyLevel.getNumber()) {
+                //return client an error message
+                String errorMessage = "Cannot find the key " + key;
+                sendAcknowledgementToClient(key, null, errorMessage, clientSocket);
+                CoordinatorAcknowledgementLog.remove(timeStamp);
+            }
         }
     }
 
     // coordinator processing client's write request
     private void processingClientWriteRequest(MyCassandra.ClientWriteRequest clientWriteRequest, Socket clientSocket) {
         int key = clientWriteRequest.getKey();
-        Map<ServerData, ConflictingReplica> failedWriteRequestListMap = new LinkedHashMap<>();
-        String value = clientWriteRequest.getValue();
-        MyCassandra.ConsistencyLevel clientConsistencyLevel = clientWriteRequest.getConsistencyLevel();
-
-        ServerData primaryReplica = getPrimaryReplicaForKey(key);
-
-        print(primaryReplica.toString());
-        List<ServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
-        print(replicaServerList);
-
-        String timeStamp = getCurrentTimeString();
-        CoordinatorAcknowledgementLog.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, value, replicaServerList));
-
-        for (ServerData replica : replicaServerList) {
-
-            MyCassandra.PutKeyFromCoordinator.Builder putKeyFromCoordinatorBuilder = MyCassandra.PutKeyFromCoordinator.newBuilder();
-
-            putKeyFromCoordinatorBuilder.setKey(key);
-            putKeyFromCoordinatorBuilder.setTimeStamp(timeStamp);
-            putKeyFromCoordinatorBuilder.setValue(value);
-            putKeyFromCoordinatorBuilder.setCoordinatorName(name);
-            putKeyFromCoordinatorBuilder.setIsReadRepair(false);
-
-
-            MyCassandra.WrapperMessage message = MyCassandra.WrapperMessage.newBuilder()
-                    .setPutKeyFromCoordinator(putKeyFromCoordinatorBuilder).build();
-
-            try {
-                sendMessageViaSocket(replica, message);
-            } catch (IOException e) {
-//                e.printStackTrace();
-                CoordinatorAcknowledgementLog.get(timeStamp).getReplicaAcknowledgementMap().get(replica.getName()).setDown(true);
-                System.err.println("Replica server " + replica.getName() + "is down while Co-od processing Client Write Request....");
-                ConflictingReplica conflictingReplica = new ConflictingReplica(replica.getName(), message);
-                failedWriteRequestListMap.put(replica, conflictingReplica);
-                //addFailedWriteRequestForReplica(replica, conflictingReplica);
-            }
-
-        }
-        if ((replicaFactor - failedWriteRequestListMap.size()) < clientConsistencyLevel.getNumber()) {
-            String errorMessage = "Cannot write the key " + key;
-            sendAcknowledgementToClient(key, null, errorMessage, clientSocket);
-            CoordinatorAcknowledgementLog.remove(timeStamp);
+        if (key > 255 || key < 0) {
+            sendAcknowledgementToClient(key, null, "Wrong key requested", clientSocket);
         } else {
-            for (ServerData serverData : failedWriteRequestListMap.keySet()) {
-                ConflictingReplica conflictingReplica = failedWriteRequestListMap.get(serverData);
-                addFailedWriteRequestForReplica(serverData, conflictingReplica);
+            Map<ServerData, ConflictingReplica> failedWriteRequestListMap = new LinkedHashMap<>();
+            String value = clientWriteRequest.getValue();
+            MyCassandra.ConsistencyLevel clientConsistencyLevel = clientWriteRequest.getConsistencyLevel();
+
+            ServerData primaryReplica = getPrimaryReplicaForKey(key);
+
+            print(primaryReplica.toString());
+            List<ServerData> replicaServerList = getReplicaServersList(primaryReplica.getName());
+            print(replicaServerList);
+
+            String timeStamp = getCurrentTimeString();
+            CoordinatorAcknowledgementLog.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, value, replicaServerList));
+
+
+            for (ServerData replica : replicaServerList) {
+                MyCassandra.WrapperMessage message = null;
+                try {
+
+                    MyCassandra.PutKeyFromCoordinator.Builder putKeyFromCoordinatorBuilder = MyCassandra.PutKeyFromCoordinator.newBuilder();
+
+                    putKeyFromCoordinatorBuilder.setKey(key);
+                    putKeyFromCoordinatorBuilder.setTimeStamp(timeStamp);
+                    putKeyFromCoordinatorBuilder.setValue(value);
+                    putKeyFromCoordinatorBuilder.setCoordinatorName(name);
+                    putKeyFromCoordinatorBuilder.setIsReadRepair(false);
+
+
+                    message = MyCassandra.WrapperMessage.newBuilder()
+                            .setPutKeyFromCoordinator(putKeyFromCoordinatorBuilder).build();
+
+
+                    sendMessageViaSocket(replica, message);
+                } catch (IOException e) {
+//                e.printStackTrace();
+                    CoordinatorAcknowledgementLog.get(timeStamp).getReplicaAcknowledgementMap().get(replica.getName()).setDown(true);
+                    System.err.println("Replica server " + replica.getName() + "is down while Co-od processing Client Write Request....");
+                    ConflictingReplica conflictingReplica = new ConflictingReplica(replica.getName(), message);
+                    failedWriteRequestListMap.put(replica, conflictingReplica);
+                    //addFailedWriteRequestForReplica(replica, conflictingReplica);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+            if ((replicaFactor - failedWriteRequestListMap.size()) < clientConsistencyLevel.getNumber()) {
+                String errorMessage = "Cannot write the key " + key;
+                sendAcknowledgementToClient(key, null, errorMessage, clientSocket);
+                CoordinatorAcknowledgementLog.remove(timeStamp);
+            } else {
+                for (ServerData serverData : failedWriteRequestListMap.keySet()) {
+                    ConflictingReplica conflictingReplica = failedWriteRequestListMap.get(serverData);
+                    addFailedWriteRequestForReplica(serverData, conflictingReplica);
+                }
             }
         }
     }
@@ -753,17 +766,13 @@ public class Server {
                     //Client Write Request
                     else if (message.hasClientWriteRequest()) {
                         print("----ClientWriteRequest Start----");
-                        if (message.getClientWriteRequest().getKey() > 255 || message.getClientWriteRequest().getKey() < 0)
-                            server.sendAcknowledgementToClient(message.getClientWriteRequest().getKey(), "0", "Wrong key requested", receiver);
-                        else
-                            server.processingClientWriteRequest(message.getClientWriteRequest(), receiver);
+                        server.processingClientWriteRequest(message.getClientWriteRequest(), receiver);
                         print("----ClientWriteRequest End----");
                     }
                     //Get Key From Coordinator
                     else if (message.hasGetKeyFromCoordinator()) {
                         print("----GetKeyFromCoordinator Start----");
                         String coordinatorName = message.getGetKeyFromCoordinator().getCoordinatorName();
-//                        server.processingOldReachedButNoAck(coordinatorName);
                         server.sendPendingRequestsToCoordinator(coordinatorName);
                         server.processingGetKeyFromCoordinator(message.getGetKeyFromCoordinator());
                         receiver.close();
@@ -773,7 +782,6 @@ public class Server {
                     else if (message.hasPutKeyFromCoordinator()) {
                         print("----PutKeyFromCoordinator Start----");
                         String coordinatorName = message.getPutKeyFromCoordinator().getCoordinatorName();
-//                        server.processingOldReachedButNoAck(coordinatorName);
                         server.sendPendingRequestsToCoordinator(coordinatorName);
                         server.processingPutKeyFromCoordinatorRequest(message.getPutKeyFromCoordinator());
                         receiver.close();

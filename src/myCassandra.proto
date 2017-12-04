@@ -2,25 +2,25 @@ syntax = "proto3";
 
 message GetKeyFromCoordinator {
     string timeStamp = 1;
-    uint32 key = 2;
+    int32 key = 2;
     string coordinatorName = 3;
 }
 
 message PutKeyFromCoordinator {
     string timeStamp = 1;
-    uint32 key = 2;
+    int32 key = 2;
     string value = 3;
     string coordinatorName = 4;
     bool isReadRepair = 5;
 }
 
 message ClientReadRequest {
-    uint32 key = 1;
+    int32 key = 1;
     ConsistencyLevel consistencyLevel = 2;
 }
 
 message ClientWriteRequest {
-    uint32 key = 1;
+    int32 key = 1;
     string value = 2;
     ConsistencyLevel consistencyLevel = 3;
 }
@@ -59,7 +59,7 @@ message HintedHandOffBook{
 
 message AcknowledgementToCoordinator {
     string coordinatorTimeStamp = 1;
-    uint32 key = 2;
+    int32 key = 2;
     string value = 3;
     string replicaName = 4;
     RequestType request_type = 5;
@@ -68,7 +68,7 @@ message AcknowledgementToCoordinator {
 }
 
 message AcknowledgementToClient {
-    uint32 key = 1;
+    int32 key = 1;
     string value = 2;
     string errorMessage = 3;
 }
