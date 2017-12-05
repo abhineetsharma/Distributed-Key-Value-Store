@@ -241,7 +241,7 @@ public class Server {
                     messageSentCounterToReplica++;
                 } catch (IOException e) {
                     CoordinatorAcknowledgementLog.get(timeStamp).getReplicaAcknowledgementMap().get(replica.getName()).setDown(true);
-                    System.err.println("Replica server " + replica.getName() + "is down while Co-od processing Client's Read Request....");
+                    System.err.println("Replica server " + replica.getName() + " is down while Co-od processing Client's Read Request....");
 //                e.printStackTrace();
                 }
             }
@@ -256,12 +256,12 @@ public class Server {
     }
 
     // coordinator processing client's write request
-    private void processingClientWriteRequest(MyCassandra.ClientWriteRequest clientWriteRequest, Socket clientSocket) {
+    private synchronized void processingClientWriteRequest(MyCassandra.ClientWriteRequest clientWriteRequest, Socket clientSocket) {
         int key = clientWriteRequest.getKey();
         if (key > 255 || key < 0) {
             sendAcknowledgementToClient(key, null, "Wrong key requested", clientSocket);
         } else {
-            Map<ServerData, ConflictingReplica> failedWriteRequestListMap = new LinkedHashMap<>();
+            //Map<ServerData, ConflictingReplica> failedWriteRequestListMap = new LinkedHashMap<>();
             String value = clientWriteRequest.getValue();
             MyCassandra.ConsistencyLevel clientConsistencyLevel = clientWriteRequest.getConsistencyLevel();
 
@@ -273,7 +273,7 @@ public class Server {
 
             String timeStamp = getCurrentTimeString();
             CoordinatorAcknowledgementLog.put(timeStamp, new AcknowledgementToClientListener(null, clientSocket, clientConsistencyLevel, timeStamp, key, value, replicaServerList));
-
+            int failCount=0;
             for (ServerData replica : replicaServerList) {
                 MyCassandra.WrapperMessage message = null;
                 try {
@@ -292,24 +292,20 @@ public class Server {
                     sendMessageViaSocket(replica, message);
                 } catch (IOException e) {
 //                e.printStackTrace();
+                    failCount++;
                     CoordinatorAcknowledgementLog.get(timeStamp).getReplicaAcknowledgementMap().get(replica.getName()).setDown(true);
-                    System.err.println("Replica server " + replica.getName() + "is down while Co-od processing Client Write Request....");
+                    System.err.println("Replica server " + replica.getName() + " is down while Co-od processing Client Write Request....");
                     ConflictingReplica conflictingReplica = new ConflictingReplica(replica.getName(), message);
-                    failedWriteRequestListMap.put(replica, conflictingReplica);
-                    //addFailedWriteRequestForReplica(replica, conflictingReplica);
+                    //failedWriteRequestListMap.put(replica, conflictingReplica);
+                    addFailedWriteRequestForReplica(replica, conflictingReplica);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            if ((replicaFactor - failedWriteRequestListMap.size()) < clientConsistencyLevel.getNumber()) {
-                String errorMessage = "Cannot write the key " + key;
+            if ((replicaFactor - failCount) < clientConsistencyLevel.getNumber()) {
+                String errorMessage = "Were not able to write the key to "+clientConsistencyLevel.getNumber()+" number of replicas : " + key;
                 sendAcknowledgementToClient(key, null, errorMessage, clientSocket);
                 CoordinatorAcknowledgementLog.remove(timeStamp);
-            } else {
-                for (ServerData serverData : failedWriteRequestListMap.keySet()) {
-                    ConflictingReplica conflictingReplica = failedWriteRequestListMap.get(serverData);
-                    addFailedWriteRequestForReplica(serverData, conflictingReplica);
-                }
             }
         }
     }

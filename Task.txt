@@ -1,2 +1,9 @@
 Tasks.
+Chetan
+Client and Read Reair
 
+Nikhil
+Hinted Handoff and Write Key
+
+Abhineet
+All Read requests, acknoledgements and proto file.
