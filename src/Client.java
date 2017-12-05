@@ -112,7 +112,7 @@ public class Client {
     }
 
     private static void printResponse(MyCassandra.WrapperMessage message) {
-
+        System.out.println("Receiving......");
         System.out.print("Key   : " + message.getAcknowledgementToClient().getKey());
         if (message.getAcknowledgementToClient().getValue().trim().length()==0) {
             System.out.println("" + message.getAcknowledgementToClient().getErrorMessage());
