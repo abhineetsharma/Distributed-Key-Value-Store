@@ -51,7 +51,7 @@ public class Client {
                             if(reqTokens.length!=5)
                                 break;
                             if (reqTokens[4].equals("1") || reqTokens[4].equalsIgnoreCase("ONE"))
-                                sendGETRequestToCoordinator(reqTokens[1], Integer.parseInt(reqTokens[2]), MyCassandra.ConsistencyLevel.ONE);
+                                sendPUTRequestToCoordinator(reqTokens[1], Integer.parseInt(reqTokens[2]), reqTokens[3], MyCassandra.ConsistencyLevel.ONE);
                             if (reqTokens[4].equals("2") || reqTokens[4].equalsIgnoreCase("TWO"))
                                 sendPUTRequestToCoordinator(reqTokens[1], Integer.parseInt(reqTokens[2]), reqTokens[3], MyCassandra.ConsistencyLevel.TWO);
                             break;
